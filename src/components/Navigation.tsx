@@ -8,6 +8,7 @@ function Navigation() {
     { to: '/', label: 'Home' },
     { to: '/about', label: 'About' },
     { to: '/music', label: 'Music' },
+    { to: '/live-sets', label: 'Live Sets' },
     { to: '/shows', label: 'Shows' },
     { to: '/contact', label: 'Contact' },
   ]

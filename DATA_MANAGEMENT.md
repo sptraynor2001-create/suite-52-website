@@ -8,6 +8,7 @@ This guide explains how to easily add and manage content on your Suite 52 websit
 src/
   data/           # All your content lives here
     songs.ts      # Music releases
+    liveSets.ts   # Live performances and DJ sets
     shows.ts      # Show dates and venues
     social.ts     # Social media links
   types/
@@ -71,6 +72,41 @@ export const shows: Show[] = [
 2. Recommended size: 1200x800px
 3. Reference it: `/images/shows/your-image.jpg`
 
+## 🎧 Adding Live Sets
+
+Edit `src/data/liveSets.ts`:
+
+```typescript
+export const liveSets: LiveSet[] = [
+  {
+    id: '1',                       // Unique ID
+    title: 'Live Set Name',        // Set title
+    date: '2025-02-15',            // Format: YYYY-MM-DD
+    venue: 'Example Venue',        // Venue (optional)
+    city: 'Los Angeles',           // City (optional)
+    duration: '60 minutes',        // Duration (optional)
+    thumbnail: '/images/livesets/thumbnail.jpg',  // Video thumbnail
+    youtubeUrl: 'https://youtube.com/watch?v=...',
+    soundcloudUrl: 'https://soundcloud.com/...',  // (optional)
+    mixcloudUrl: 'https://mixcloud.com/...',      // (optional)
+    spotifyUrl: 'https://open.spotify.com/...',   // (optional)
+    description: 'Description of the live set',
+    setlist: [                     // (optional)
+      'Track 1',
+      'Track 2',
+      'Track 3'
+    ]
+  },
+  // Add more live sets here...
+]
+```
+
+### Image Setup for Live Sets:
+1. Add thumbnails/screenshots to `public/images/livesets/`
+2. Recommended size: 1280x720px (16:9 aspect ratio)
+3. Format: JPG, PNG, or WebP
+4. Reference it: `/images/livesets/your-thumbnail.jpg`
+
 ## 🔗 Updating Social Links
 
 Edit `src/data/social.ts`:
@@ -92,6 +128,7 @@ export const socialLinks: SocialLinks = {
 ```
 public/images/
   songs/         # Album covers
+  livesets/      # Live set thumbnails and screenshots
   shows/         # Show posters, venue photos
   backgrounds/   # Background images for pages
   band/          # Band photos, press photos
@@ -105,6 +142,7 @@ public/images/
 
 ### Recommended Sizes:
 - Album covers: 800x800px to 1000x1000px
+- Live set thumbnails: 1280x720px (16:9 aspect ratio)
 - Show images: 1200x800px (landscape)
 - Background images: 1920x1080px or larger
 - Band photos: 1200x800px
@@ -125,13 +163,19 @@ All pages are automatically mobile-responsive! The design includes:
    - Add song entry to `src/data/songs.ts`
    - Save and the website updates automatically!
 
-2. **Add a new show:**
+2. **Add a new live set:**
+   - Upload thumbnail to `public/images/livesets/`
+   - Add live set entry to `src/data/liveSets.ts`
+   - Include streaming/video links
+   - Save and it appears on the Live Sets page!
+
+3. **Add a new show:**
    - (Optional) Upload show image to `public/images/shows/`
    - Add show entry to `src/data/shows.ts`
    - Include ticket link
    - Save and it appears on the Shows page!
 
-3. **Update social links:**
+4. **Update social links:**
    - Edit `src/data/social.ts`
    - Links appear on Contact page automatically
 

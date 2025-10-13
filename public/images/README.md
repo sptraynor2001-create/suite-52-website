@@ -5,6 +5,7 @@ Store your static images in these folders for use throughout the website.
 ## Folder Organization
 
 - **`songs/`** - Album covers and single artwork
+- **`livesets/`** - Live set thumbnails, video screenshots, and DJ set artwork
 - **`shows/`** - Show posters, venue photos, and event images
 - **`backgrounds/`** - Background images for pages and sections
 - **`band/`** - Band photos, press photos, and team photos
@@ -16,6 +17,7 @@ Store your static images in these folders for use throughout the website.
 - Optimize images before uploading (compress them)
 - Recommended sizes:
   - Song covers: 800x800px
+  - Live set thumbnails: 1280x720px (16:9 aspect ratio)
   - Show images: 1200x800px
   - Backgrounds: 1920x1080px (or larger for scroll effects)
   - Band photos: 1200x800px

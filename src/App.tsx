@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Music from './pages/Music'
+import LiveSets from './pages/LiveSets'
 import Shows from './pages/Shows'
 import EPK from './pages/EPK'
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/music" element={<Music />} />
+          <Route path="/live-sets" element={<LiveSets />} />
           <Route path="/shows" element={<Shows />} />
           <Route path="/epk" element={<EPK />} />
         </Routes>

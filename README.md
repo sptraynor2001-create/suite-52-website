@@ -24,6 +24,7 @@ A modern, mobile-responsive website built with React, TypeScript, and Tailwind C
 - **Home** - Landing page with hero section
 - **About** - Band information and bio
 - **Music** - Song releases with streaming links
+- **Live Sets** - Live performances, DJ sets, and recorded sessions
 - **Shows** - Upcoming and past shows with ticket links
 - **Contact** - Contact info and social links
 - **EPK** - Hidden press kit page (accessible at `/epk`)
@@ -58,6 +59,9 @@ All content is managed through simple TypeScript files - no database needed!
 ### Adding Songs
 Edit `src/data/songs.ts` to add new music releases with streaming links.
 
+### Adding Live Sets
+Edit `src/data/liveSets.ts` to add live performances and DJ sets with video/audio links.
+
 ### Adding Shows
 Edit `src/data/shows.ts` to add show dates, venues, and ticket links.
 
@@ -70,6 +74,7 @@ Edit `src/data/social.ts` to update your social media links.
 
 Store images in organized folders:
 - `public/images/songs/` - Album covers
+- `public/images/livesets/` - Live set thumbnails and video screenshots
 - `public/images/shows/` - Show posters and venue photos
 - `public/images/backgrounds/` - Background images
 - `public/images/band/` - Band photos
@@ -113,6 +118,7 @@ suite-52-website/
 │   ├── pages/           # Page components
 │   ├── data/            # Content data files
 │   │   ├── songs.ts     # Music releases
+│   │   ├── liveSets.ts  # Live performances and DJ sets
 │   │   ├── shows.ts     # Show information
 │   │   └── social.ts    # Social media links
 │   ├── types/           # TypeScript type definitions
