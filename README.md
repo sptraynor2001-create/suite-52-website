@@ -124,6 +124,7 @@ suite-52-website/
 
 ### For Developers
 - **[DEVELOPMENT.md](docs/DEVELOPMENT.md)** - Technical documentation
+- **[DESIGN.md](docs/DESIGN.md)** - Design system and styling guide
 - **[DEPLOYMENT.md](docs/DEPLOYMENT.md)** - Deploy to production
 
 ## Deployment
