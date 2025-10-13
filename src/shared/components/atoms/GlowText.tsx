@@ -1,5 +1,4 @@
 import { ReactNode } from 'react'
-import { colors, tokens } from '@/design'
 
 interface GlowTextProps {
   children: ReactNode
@@ -10,24 +9,17 @@ interface GlowTextProps {
 
 /**
  * GlowText - Atomic component
- * GRAYSCALE MODE - Subtle white highlights
+ * GRAYSCALE MODE - No glow, just clean white text
  */
 function GlowText({ 
   children, 
-  variant = 'cyan',  // Ignored in grayscale
-  intensity = 'md',
   className = '' 
 }: GlowTextProps) {
-  // Use white with subtle glow in grayscale mode
-  const glowColor = '#ffffff'
-  const shadow = tokens.shadows.glow.cyan[intensity]
-
   return (
     <span
       className={`${className}`}
       style={{
-        color: glowColor,
-        textShadow: shadow,
+        color: '#ffffff',
       }}
     >
       {children}

@@ -1,147 +1,89 @@
 import { Link } from 'react-router-dom'
-import { Card, Button, GlowText } from '@/shared/components/atoms'
-import { colors, gradients } from '@/design'
+import { colors } from '@/design'
 
 function Home() {
+  const pages = [
+    { to: '/about', label: 'ABOUT', description: 'Learn about Suite 52' },
+    { to: '/music', label: 'MUSIC', description: 'Latest releases and catalog' },
+    { to: '/live-sets', label: 'LIVE SETS', description: 'Recorded performances' },
+    { to: '/shows', label: 'SHOWS', description: 'Upcoming events' },
+    { to: '/contact', label: 'CONTACT', description: 'Get in touch' },
+  ]
+
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <div className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
-        {/* Animated gradient overlay */}
-        <div 
-          className="absolute inset-0 opacity-20 animate-pulse-slow"
-          style={{
-            backgroundImage: gradients.neon.blue,
-          }}
-        />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32">
-          <div className="text-center space-y-8">
-            <h1 className="text-5xl sm:text-6xl md:text-8xl font-display font-black tracking-tight">
-              <GlowText variant="cyan" intensity="lg">
-                SUITE 52
-              </GlowText>
-            </h1>
-            
-            <p 
-              className="text-xl sm:text-2xl md:text-3xl font-light tracking-wide max-w-3xl mx-auto"
-              style={{
-                color: colors.text.secondary,
-              }}
-            >
-              At the forefront of{' '}
-              <span style={{ color: colors.text.primary }}>technology</span>,{' '}
-              <span style={{ color: colors.accent.medium }}>culture</span>, and{' '}
-              <span style={{ color: colors.text.primary }}>creativity</span>
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-              <Link to="/music">
-                <Button variant="primary" size="lg">
-                  Listen Now
-                </Button>
-              </Link>
-              <Link to="/shows">
-                <Button variant="ghost" size="lg">
-                  See Shows
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Features Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          <Link to="/music" className="group">
-            <Card variant="default" className="p-8 h-full">
-              <div className="space-y-4">
-                <div 
-                  className="text-4xl font-display font-bold"
-                  style={{ color: colors.text.primary }}
-                >
-                  MUSIC
-                </div>
-                <p style={{ color: colors.text.tertiary }} className="text-sm sm:text-base">
-                  Technical, digital production. Introspective soundscapes pushing the boundaries of electronic music.
-                </p>
-                <div 
-                  className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider"
-                  style={{ color: colors.text.primary }}
-                >
-                  Explore <span className="group-hover:translate-x-1 transition-transform">→</span>
-                </div>
-              </div>
-            </Card>
-          </Link>
-
-          <Link to="/live-sets" className="group">
-            <Card variant="default" className="p-8 h-full">
-              <div className="space-y-4">
-                <div 
-                  className="text-4xl font-display font-bold"
-                  style={{ color: colors.text.primary }}
-                >
-                  LIVE SETS
-                </div>
-                <p style={{ color: colors.text.tertiary }} className="text-sm sm:text-base">
-                  Recorded performances and DJ sets. Experience the evolution of sound through live performance.
-                </p>
-                <div 
-                  className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider"
-                  style={{ color: colors.text.primary }}
-                >
-                  Watch <span className="group-hover:translate-x-1 transition-transform">→</span>
-                </div>
-              </div>
-            </Card>
-          </Link>
-
-          <Link to="/shows" className="group">
-            <Card variant="default" className="p-8 h-full">
-              <div className="space-y-4">
-                <div 
-                  className="text-4xl font-display font-bold"
-                  style={{ color: colors.text.primary }}
-                >
-                  SHOWS
-                </div>
-                <p style={{ color: colors.text.tertiary }} className="text-sm sm:text-base">
-                  Upcoming performances and events. Join us as we explore the future of music.
-                </p>
-                <div 
-                  className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider"
-                  style={{ color: colors.text.primary }}
-                >
-                  Tickets <span className="group-hover:translate-x-1 transition-transform">→</span>
-                </div>
-              </div>
-            </Card>
-          </Link>
-        </div>
-      </div>
-
-      {/* Call to Action */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-        <Card variant="elevated" className="p-12">
-          <h2 className="text-3xl sm:text-4xl font-display font-bold mb-4">
-            <GlowText variant="cyan" intensity="md">
-              STAY CONNECTED
-            </GlowText>
-          </h2>
-          <p 
-            className="text-lg mb-8"
-            style={{ color: colors.text.tertiary }}
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Header */}
+        <header className="text-center mb-16 sm:mb-24">
+          <h1 
+            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-black tracking-tight mb-6"
+            style={{ color: colors.text.primary }}
           >
-            Follow the journey. Be part of something beyond the ordinary.
+            SUITE 52
+          </h1>
+          <p 
+            className="text-lg sm:text-xl md:text-2xl font-light tracking-wide max-w-2xl mx-auto"
+            style={{ color: colors.text.secondary }}
+          >
+            Technical. Digital. At the forefront of sound.
           </p>
-          <Link to="/contact">
-            <Button variant="primary" size="lg">
-              Get in Touch
-            </Button>
-          </Link>
-        </Card>
+        </header>
+
+        {/* Navigation Grid - Mobile: Stack, Desktop: Grid */}
+        <nav className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6">
+          {pages.map((page) => (
+            <Link
+              key={page.to}
+              to={page.to}
+              className="block group"
+            >
+              <div
+                className="p-8 border transition-all duration-300 hover:border-white"
+                style={{
+                  borderColor: colors.border.default,
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = colors.border.highlight
+                  e.currentTarget.style.backgroundColor = 'rgba(38, 38, 38, 0.3)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = colors.border.default
+                  e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.3)'
+                }}
+              >
+                <h2 
+                  className="text-2xl sm:text-3xl font-display font-bold mb-2 transition-all duration-300"
+                  style={{ color: colors.text.primary }}
+                >
+                  {page.label}
+                </h2>
+                <p 
+                  className="text-sm sm:text-base"
+                  style={{ color: colors.text.tertiary }}
+                >
+                  {page.description}
+                </p>
+                <div 
+                  className="mt-4 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{ color: colors.text.secondary }}
+                >
+                  Enter <span className="group-hover:translate-x-1 transition-transform">→</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </nav>
+
+        {/* Footer note */}
+        <footer className="text-center mt-16 sm:mt-24">
+          <p 
+            className="text-sm tracking-wide"
+            style={{ color: colors.text.muted }}
+          >
+            Introspective. Deep. Technical.
+          </p>
+        </footer>
       </div>
     </div>
   )
