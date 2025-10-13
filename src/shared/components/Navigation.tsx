@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { activeFont } from '@/design/fonts'
 
 type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'
@@ -10,6 +10,18 @@ interface NavigationProps {
 
 function Navigation({ currentPage, onNavigate }: NavigationProps) {
   const [hoveredLink, setHoveredLink] = useState<Page | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const navLinks: { page: Page; label: string }[] = [
     { page: 'home', label: 'HOME' },
@@ -37,15 +49,16 @@ function Navigation({ currentPage, onNavigate }: NavigationProps) {
         fontFamily: activeFont.family
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
         <div 
           style={{ 
-            width: '70%',
+            width: isMobile ? '95%' : '70%',
             maxWidth: '1200px',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            padding: '8px'
+            padding: isMobile ? '4px 8px' : '8px',
+            gap: isMobile ? '4px' : '8px',
           }}
         >
           {navLinks.map((link) => {
@@ -70,19 +83,20 @@ function Navigation({ currentPage, onNavigate }: NavigationProps) {
                     outline: 'none',
                     cursor: 'pointer',
                     color: active ? POKER_RED : WHITE,
-                    fontSize: '14px',
+                    fontSize: isMobile ? '9px' : '14px',
                     fontWeight: '700',
                     fontStyle: active ? 'italic' : 'normal',
-                    letterSpacing: '0.1em',
+                    letterSpacing: isMobile ? '0.05em' : '0.1em',
                     textDecoration: 'none',
                     transition: 'all 0.15s ease-out',
                     fontFamily: activeFont.family,
                     textTransform: 'uppercase',
                     position: 'relative',
-                    padding: '8px 4px',
+                    padding: isMobile ? '6px 2px' : '8px 4px',
                     display: 'inline-block',
                     borderBottom: (isHovered && !active) ? `2px solid ${WHITE}` : '2px solid transparent',
                     transform: (isHovered && !active) ? 'translateY(-2px)' : 'translateY(0)', // Lift up on hover
+                    whiteSpace: 'nowrap',
                   }}
                       onMouseEnter={() => {
                         setHoveredLink(link.page)

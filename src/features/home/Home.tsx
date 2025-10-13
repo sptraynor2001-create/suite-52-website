@@ -4,9 +4,18 @@ import { activeFont } from '@/design/fonts'
 function Home() {
   const [displayText, setDisplayText] = useState('')
   const [showCursor, setShowCursor] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
   const fullText = 'Suite 52'
 
   useEffect(() => {
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
     // Load Ubuntu Mono font
     const link = document.createElement('link')
     link.href = activeFont.googleFontsUrl
@@ -52,6 +61,7 @@ function Home() {
     }, 530)
 
     return () => {
+      window.removeEventListener('resize', checkMobile)
       document.head.removeChild(link)
       clearTimeout(startDelay)
       clearInterval(cursorInterval)
@@ -68,17 +78,17 @@ function Home() {
         width: '100%'
       }}
     >
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'center', padding: isMobile ? '0 20px' : '0' }}>
         <h1 
           style={{ 
             color: '#ffffff',
-            fontSize: '96px',
+            fontSize: isMobile ? '48px' : '96px',
             fontWeight: '700',
             letterSpacing: '-0.02em',
             fontFamily: activeFont.family,
-            marginBottom: '8px', // Reduced from 24px for tighter spacing
+            marginBottom: '8px',
             marginTop: 0,
-            minHeight: '120px', // Prevent layout shift
+            minHeight: isMobile ? '60px' : '120px', // Prevent layout shift
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -100,7 +110,7 @@ function Home() {
         <p 
           style={{ 
             color: 'rgba(255, 255, 255, 0.7)',
-            fontSize: '20px',
+            fontSize: isMobile ? '14px' : '20px',
             letterSpacing: '0.05em',
             fontFamily: activeFont.family,
             margin: 0,
