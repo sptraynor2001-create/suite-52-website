@@ -1,10 +1,17 @@
 import { useEffect, useState } from 'react'
 import { activeFont } from '@/design/fonts'
 
-function Home() {
+type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'
+
+interface HomeProps {
+  onNavigate: (page: Page) => void
+}
+
+function Home({ onNavigate }: HomeProps) {
   const [displayText, setDisplayText] = useState('')
   const [showCursor, setShowCursor] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
+  const [hoveredLink, setHoveredLink] = useState<Page | null>(null)
   const fullText = 'Suite 52'
 
   useEffect(() => {
@@ -68,13 +75,24 @@ function Home() {
     }
   }, [])
 
+  const navLinks: { page: Page; label: string }[] = [
+    { page: 'music', label: 'MUSIC' },
+    { page: 'shows', label: 'SHOWS' },
+    { page: 'live-sets', label: 'LIVE_SETS' },
+    { page: 'about', label: 'ABOUT' },
+    { page: 'contact', label: 'CONTACT' },
+  ]
+
+  const POKER_RED = '#e63946'
+  const WHITE = '#ffffff'
+
   return (
     <div 
       style={{ 
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: 'calc(100vh - 80px)',
+        minHeight: '100vh',
         width: '100%'
       }}
     >
@@ -86,7 +104,7 @@ function Home() {
             fontWeight: '700',
             letterSpacing: '-0.02em',
             fontFamily: activeFont.family,
-            marginBottom: '8px',
+            marginBottom: isMobile ? '8px' : '12px',
             marginTop: 0,
             minHeight: isMobile ? '60px' : '120px', // Prevent layout shift
             display: 'flex',
@@ -114,12 +132,58 @@ function Home() {
             letterSpacing: '0.05em',
             fontFamily: activeFont.family,
             margin: 0,
+            marginBottom: isMobile ? '16px' : '20px',
             opacity: displayText.length === fullText.length ? 1 : 0,
             transition: 'opacity 0.8s ease-in 0.8s',
           }}
         >
           Producer // DJ // Artist
         </p>
+
+        {/* Floating navigation links */}
+        <nav
+          style={{
+            opacity: displayText.length === fullText.length ? 1 : 0,
+            transition: 'opacity 0.8s ease-in 1.2s',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: isMobile ? '12px' : '24px',
+            flexWrap: 'wrap',
+            padding: isMobile ? '0 10px' : '0',
+          }}
+        >
+          {navLinks.map((link) => {
+            const isHovered = hoveredLink === link.page
+            
+            return (
+              <button
+                key={link.page}
+                onClick={() => onNavigate(link.page)}
+                onMouseEnter={() => setHoveredLink(link.page)}
+                onMouseLeave={() => setHoveredLink(null)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  outline: 'none',
+                  cursor: 'pointer',
+                  color: isHovered ? POKER_RED : WHITE,
+                  fontSize: isMobile ? '12px' : '16px',
+                  fontWeight: '700',
+                  letterSpacing: '0.1em',
+                  fontFamily: activeFont.family,
+                  textTransform: 'uppercase',
+                  transition: 'all 0.2s ease-out',
+                  padding: isMobile ? '8px 12px' : '10px 16px',
+                  borderBottom: isHovered ? `2px solid ${POKER_RED}` : '2px solid transparent',
+                  transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
+                }}
+              >
+                {link.label}
+              </button>
+            )
+          })}
+        </nav>
       </div>
     </div>
   )

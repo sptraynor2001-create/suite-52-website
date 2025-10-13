@@ -18,7 +18,7 @@ function MainApp() {
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
-        return <Home />
+        return <Home onNavigate={setCurrentPage} />
       case 'about':
         return <About />
       case 'music':
@@ -30,7 +30,7 @@ function MainApp() {
       case 'contact':
         return <Contact />
       default:
-        return <Home />
+        return <Home onNavigate={setCurrentPage} />
     }
   }
 
@@ -46,8 +46,10 @@ function MainApp() {
       {/* Falling code background */}
       <FallingCode />
       
-      {/* Sticky header */}
-      <Navigation currentPage={currentPage} onNavigate={setCurrentPage} />
+      {/* Sticky header - only show on non-home pages */}
+      {currentPage !== 'home' && (
+        <Navigation currentPage={currentPage} onNavigate={setCurrentPage} />
+      )}
       
       {/* Dynamic content - no URL changes */}
       <div style={{ position: 'relative', zIndex: 10 }}>
