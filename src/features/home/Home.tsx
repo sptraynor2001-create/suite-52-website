@@ -148,9 +148,10 @@ function Home({ onNavigate }: HomeProps) {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            gap: isMobile ? '12px' : '24px',
+            gap: isMobile ? '8px' : '24px',
             flexWrap: 'wrap',
             padding: isMobile ? '0 10px' : '0',
+            maxWidth: isMobile ? '320px' : '100%',
           }}
         >
           {navLinks.map((link) => {
@@ -174,9 +175,11 @@ function Home({ onNavigate }: HomeProps) {
                   fontFamily: activeFont.family,
                   textTransform: 'uppercase',
                   transition: 'all 0.2s ease-out',
-                  padding: isMobile ? '8px 12px' : '10px 16px',
+                  padding: isMobile ? '8px 8px' : '10px 16px',
                   borderBottom: isHovered ? `2px solid ${POKER_RED}` : '2px solid transparent',
                   transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
+                  flexBasis: isMobile ? 'calc(33.333% - 6px)' : 'auto',
+                  minWidth: isMobile ? 'fit-content' : 'auto',
                 }}
               >
                 {link.label}
