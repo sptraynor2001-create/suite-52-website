@@ -22,7 +22,7 @@ function Navigation() {
     <nav 
       className="backdrop-blur-md sticky top-0 z-50 border-b"
       style={{
-        backgroundColor: 'rgba(5, 9, 14, 0.8)',
+        backgroundColor: 'rgba(10, 10, 10, 0.8)',
         borderColor: colors.border.default,
       }}
     >
@@ -48,11 +48,11 @@ function Navigation() {
                 to={link.to} 
                 className="inline-flex items-center px-1 pt-1 text-sm font-semibold uppercase tracking-wider transition-all duration-200"
                 style={{
-                  color: isActive(link.to) ? colors.neon.cyan : colors.text.secondary,
+                  color: isActive(link.to) ? colors.text.primary : colors.text.secondary,
                   textShadow: isActive(link.to) ? tokens.shadows.glow.cyan.sm : 'none',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.color = colors.neon.cyan
+                  e.currentTarget.style.color = colors.text.primary
                   e.currentTarget.style.textShadow = tokens.shadows.glow.cyan.sm
                 }}
                 onMouseLeave={(e) => {
@@ -73,7 +73,7 @@ function Navigation() {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md transition-all duration-200"
               style={{
-                color: colors.neon.cyan,
+                color: colors.text.primary,
               }}
               aria-expanded="false"
             >
@@ -97,7 +97,7 @@ function Navigation() {
         <div 
           className="md:hidden border-t backdrop-blur-md"
           style={{
-            backgroundColor: 'rgba(5, 9, 14, 0.95)',
+            backgroundColor: 'rgba(10, 10, 10, 0.95)',
             borderColor: colors.border.default,
           }}
         >
@@ -108,8 +108,8 @@ function Navigation() {
                 to={link.to}
                 className="block px-3 py-2 rounded-md text-base font-semibold uppercase tracking-wider transition-all duration-200"
                 style={{
-                  color: isActive(link.to) ? colors.neon.cyan : colors.text.secondary,
-                  backgroundColor: isActive(link.to) ? 'rgba(0, 243, 255, 0.1)' : 'transparent',
+                  color: isActive(link.to) ? colors.text.primary : colors.text.secondary,
+                  backgroundColor: isActive(link.to) ? 'rgba(255, 255, 255, 0.05)' : 'transparent',
                 }}
                 onClick={() => setIsMenuOpen(false)}
               >

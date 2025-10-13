@@ -6,38 +6,37 @@ export default {
   ],
   theme: {
     extend: {
-      // Color palette - Midnight blue futuristic theme
+      // Grayscale palette for development
       colors: {
-        midnight: {
-          50: '#0a0e1a',
-          100: '#0f1420',
-          200: '#141a2e',
-          300: '#1a2138',
-          400: '#1f2843',
-          500: '#252f4f',
-          600: '#2b365a',
-          700: '#323d66',
-          800: '#384471',
-          900: '#3f4b7d',
+        gray: {
+          50: '#fafafa',
+          100: '#f5f5f5',
+          200: '#e5e5e5',
+          300: '#d4d4d4',
+          400: '#a3a3a3',
+          500: '#737373',
+          600: '#525252',
+          700: '#404040',
+          800: '#262626',
+          900: '#171717',
+          950: '#0a0a0a',
         },
-        abyss: {
+        black: {
           50: '#000000',
-          100: '#010203',
-          200: '#020406',
-          300: '#030609',
-          400: '#04080c',
-          500: '#05090e',
-          600: '#060b11',
-          700: '#070d14',
-          800: '#080f17',
-          900: '#09111a',
+          100: '#0a0a0a',
+          200: '#141414',
+          300: '#1a1a1a',
+          400: '#1f1f1f',
+          500: '#262626',
+          600: '#2e2e2e',
+          700: '#3d3d3d',
+          800: '#4a4a4a',
+          900: '#5a5a5a',
         },
-        neon: {
-          cyan: '#00f3ff',
-          blue: '#0088ff',
-          purple: '#8b5cf6',
-          pink: '#ec4899',
-          green: '#10b981',
+        accent: {
+          light: '#e5e5e5',
+          medium: '#a3a3a3',
+          dark: '#525252',
         },
       },
 
@@ -48,26 +47,19 @@ export default {
         display: ['Orbitron', 'Inter', 'sans-serif'],
       },
 
-      // Box shadows with neon glows
+      // Box shadows - Grayscale
       boxShadow: {
-        'glow-blue-sm': '0 0 10px rgba(0, 136, 255, 0.5)',
-        'glow-blue-md': '0 0 20px rgba(0, 136, 255, 0.6)',
-        'glow-blue-lg': '0 0 30px rgba(0, 136, 255, 0.7)',
-        'glow-cyan-sm': '0 0 10px rgba(0, 243, 255, 0.5)',
-        'glow-cyan-md': '0 0 20px rgba(0, 243, 255, 0.6)',
-        'glow-cyan-lg': '0 0 30px rgba(0, 243, 255, 0.7)',
-        'glow-purple-sm': '0 0 10px rgba(139, 92, 246, 0.5)',
-        'glow-purple-md': '0 0 20px rgba(139, 92, 246, 0.6)',
-        'glow-purple-lg': '0 0 30px rgba(139, 92, 246, 0.7)',
+        'glow-sm': '0 0 10px rgba(255, 255, 255, 0.1)',
+        'glow-md': '0 0 20px rgba(255, 255, 255, 0.15)',
+        'glow-lg': '0 0 30px rgba(255, 255, 255, 0.2)',
       },
 
-      // Background gradients
+      // Background gradients - Grayscale
       backgroundImage: {
-        'gradient-midnight': 'linear-gradient(to bottom, #000000, #252f4f, #000000)',
-        'gradient-abyss': 'linear-gradient(to bottom, #000000, #05090e, #000000)',
-        'gradient-neon-blue': 'linear-gradient(135deg, rgba(0, 136, 255, 0.3), rgba(0, 243, 255, 0.1))',
-        'gradient-neon-purple': 'linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.1))',
-        'gradient-mesh': 'radial-gradient(at 20% 30%, rgba(37, 47, 79, 0.3) 0px, transparent 50%), radial-gradient(at 80% 70%, rgba(0, 136, 255, 0.15) 0px, transparent 50%), radial-gradient(at 40% 80%, rgba(0, 243, 255, 0.1) 0px, transparent 50%)',
+        'gradient-midnight': 'linear-gradient(to bottom, #000000, #262626, #000000)',
+        'gradient-abyss': 'linear-gradient(to bottom, #000000, #0a0a0a, #000000)',
+        'gradient-subtle': 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
+        'gradient-mesh': 'radial-gradient(at 20% 30%, rgba(38, 38, 38, 0.2) 0px, transparent 50%), radial-gradient(at 80% 70%, rgba(82, 82, 82, 0.1) 0px, transparent 50%), radial-gradient(at 40% 80%, rgba(163, 163, 163, 0.05) 0px, transparent 50%)',
       },
 
       // Backdrop blur
@@ -83,17 +75,15 @@ export default {
 
       keyframes: {
         glow: {
-          '0%': { boxShadow: '0 0 5px rgba(0, 243, 255, 0.5)' },
-          '100%': { boxShadow: '0 0 20px rgba(0, 243, 255, 0.8)' },
+          '0%': { boxShadow: '0 0 5px rgba(255, 255, 255, 0.1)' },
+          '100%': { boxShadow: '0 0 20px rgba(255, 255, 255, 0.2)' },
         },
       },
 
-      // Text shadow for glow effects
+      // Text shadow for subtle highlights
       textShadow: {
-        'glow-blue-sm': '0 0 10px rgba(0, 136, 255, 0.8)',
-        'glow-blue-md': '0 0 20px rgba(0, 136, 255, 0.9)',
-        'glow-cyan-sm': '0 0 10px rgba(0, 243, 255, 0.8)',
-        'glow-cyan-md': '0 0 20px rgba(0, 243, 255, 0.9)',
+        'glow-sm': '0 0 10px rgba(255, 255, 255, 0.3)',
+        'glow-md': '0 0 20px rgba(255, 255, 255, 0.4)',
       },
     },
   },
@@ -111,3 +101,14 @@ export default {
     },
   ],
 }
+
+/* 
+ * COLOR PALETTE (PRESERVED FOR RESTORATION)
+ * 
+ * midnight: { 50-900 scale }
+ * abyss: { 50-900 scale }
+ * neon: { cyan, blue, purple, pink, green }
+ * 
+ * boxShadow: { glow-cyan-sm, glow-blue-md, etc. }
+ * backgroundImage: { gradient-neon-blue, etc. }
+ */

@@ -3,39 +3,31 @@ import { colors, tokens } from '@/design'
 
 interface GlowTextProps {
   children: ReactNode
-  variant?: 'blue' | 'cyan' | 'purple'
+  variant?: 'blue' | 'cyan' | 'purple'  // Kept for API consistency
   intensity?: 'sm' | 'md' | 'lg'
   className?: string
 }
 
 /**
  * GlowText - Atomic component
- * Text with neon glow effect
+ * GRAYSCALE MODE - Subtle white highlights
  */
 function GlowText({ 
   children, 
-  variant = 'cyan', 
+  variant = 'cyan',  // Ignored in grayscale
   intensity = 'md',
   className = '' 
 }: GlowTextProps) {
-  const glowColors = {
-    blue: colors.neon.blue,
-    cyan: colors.neon.cyan,
-    purple: colors.neon.purple,
-  }
-
-  const shadows = {
-    blue: tokens.shadows.glow.blue,
-    cyan: tokens.shadows.glow.cyan,
-    purple: tokens.shadows.glow.purple,
-  }
+  // Use white with subtle glow in grayscale mode
+  const glowColor = '#ffffff'
+  const shadow = tokens.shadows.glow.cyan[intensity]
 
   return (
     <span
       className={`${className}`}
       style={{
-        color: glowColors[variant],
-        textShadow: shadows[variant][intensity],
+        color: glowColor,
+        textShadow: shadow,
       }}
     >
       {children}
@@ -44,4 +36,3 @@ function GlowText({
 }
 
 export default GlowText
-

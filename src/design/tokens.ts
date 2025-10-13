@@ -72,7 +72,7 @@ export const tokens = {
     },
   },
 
-  // Shadows - Neon glow effects
+  // Shadows - Grayscale depth
   shadows: {
     // Subtle depth
     sm: '0 1px 2px 0 rgba(0, 0, 0, 0.5)',
@@ -82,29 +82,29 @@ export const tokens = {
     xl: '0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5)',
     '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
 
-    // Neon glows
+    // Subtle highlights (grayscale glows)
     glow: {
       blue: {
-        sm: '0 0 10px rgba(0, 136, 255, 0.5)',
-        md: '0 0 20px rgba(0, 136, 255, 0.6)',
-        lg: '0 0 30px rgba(0, 136, 255, 0.7)',
+        sm: '0 0 10px rgba(255, 255, 255, 0.1)',
+        md: '0 0 20px rgba(255, 255, 255, 0.15)',
+        lg: '0 0 30px rgba(255, 255, 255, 0.2)',
       },
       cyan: {
-        sm: '0 0 10px rgba(0, 243, 255, 0.5)',
-        md: '0 0 20px rgba(0, 243, 255, 0.6)',
-        lg: '0 0 30px rgba(0, 243, 255, 0.7)',
+        sm: '0 0 10px rgba(255, 255, 255, 0.1)',
+        md: '0 0 20px rgba(255, 255, 255, 0.15)',
+        lg: '0 0 30px rgba(255, 255, 255, 0.2)',
       },
       purple: {
-        sm: '0 0 10px rgba(139, 92, 246, 0.5)',
-        md: '0 0 20px rgba(139, 92, 246, 0.6)',
-        lg: '0 0 30px rgba(139, 92, 246, 0.7)',
+        sm: '0 0 10px rgba(255, 255, 255, 0.1)',
+        md: '0 0 20px rgba(255, 255, 255, 0.15)',
+        lg: '0 0 30px rgba(255, 255, 255, 0.2)',
       },
     },
 
-    // Inner glows
+    // Inner shadows
     inner: {
-      blue: 'inset 0 2px 4px 0 rgba(0, 136, 255, 0.2)',
-      cyan: 'inset 0 2px 4px 0 rgba(0, 243, 255, 0.2)',
+      blue: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.3)',
+      cyan: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.3)',
     },
   },
 

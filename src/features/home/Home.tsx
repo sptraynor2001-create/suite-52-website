@@ -30,9 +30,9 @@ function Home() {
               }}
             >
               At the forefront of{' '}
-              <span style={{ color: colors.neon.blue }}>technology</span>,{' '}
-              <span style={{ color: colors.neon.purple }}>culture</span>, and{' '}
-              <span style={{ color: colors.neon.cyan }}>creativity</span>
+              <span style={{ color: colors.text.primary }}>technology</span>,{' '}
+              <span style={{ color: colors.accent.medium }}>culture</span>, and{' '}
+              <span style={{ color: colors.text.primary }}>creativity</span>
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
@@ -59,7 +59,7 @@ function Home() {
               <div className="space-y-4">
                 <div 
                   className="text-4xl font-display font-bold"
-                  style={{ color: colors.neon.blue }}
+                  style={{ color: colors.text.primary }}
                 >
                   MUSIC
                 </div>
@@ -68,7 +68,7 @@ function Home() {
                 </p>
                 <div 
                   className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider"
-                  style={{ color: colors.neon.cyan }}
+                  style={{ color: colors.text.primary }}
                 >
                   Explore <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </div>
@@ -81,7 +81,7 @@ function Home() {
               <div className="space-y-4">
                 <div 
                   className="text-4xl font-display font-bold"
-                  style={{ color: colors.neon.cyan }}
+                  style={{ color: colors.text.primary }}
                 >
                   LIVE SETS
                 </div>
@@ -90,7 +90,7 @@ function Home() {
                 </p>
                 <div 
                   className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider"
-                  style={{ color: colors.neon.cyan }}
+                  style={{ color: colors.text.primary }}
                 >
                   Watch <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </div>
@@ -103,7 +103,7 @@ function Home() {
               <div className="space-y-4">
                 <div 
                   className="text-4xl font-display font-bold"
-                  style={{ color: colors.neon.purple }}
+                  style={{ color: colors.text.primary }}
                 >
                   SHOWS
                 </div>
@@ -112,7 +112,7 @@ function Home() {
                 </p>
                 <div 
                   className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider"
-                  style={{ color: colors.neon.cyan }}
+                  style={{ color: colors.text.primary }}
                 >
                   Tickets <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </div>
