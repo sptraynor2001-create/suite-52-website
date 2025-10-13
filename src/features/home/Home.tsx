@@ -175,17 +175,18 @@ function Home({ onNavigate }: HomeProps) {
                   letterSpacing: '0.1em',
                   fontFamily: activeFont.family,
                   textTransform: 'uppercase',
-                  transition: `opacity 0.8s ease-out ${baseDelay + staggerDelay}s, transform 0.8s ease-out ${baseDelay + staggerDelay}s, color 0.2s ease-out, border-bottom 0.2s ease-out`,
+                  transition: `opacity 0.8s ease-out ${baseDelay + staggerDelay}s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) ${isVisible ? '0s' : baseDelay + staggerDelay + 's'}, color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), margin 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)`,
                   padding: isMobile ? '8px 8px' : '10px 16px',
-                  borderBottom: isHovered ? `2px solid ${POKER_RED}` : '2px solid transparent',
+                  margin: isHovered ? '0 10px' : '0',
                   flexBasis: isMobile ? 'calc(33.333% - 6px)' : 'auto',
                   minWidth: isMobile ? 'fit-content' : 'auto',
                   opacity: isVisible ? 1 : 0,
                   transform: isHovered 
-                    ? 'translateY(-2px)' 
+                    ? 'scale(1.3)' 
                     : isVisible 
-                      ? 'translateY(0)' 
-                      : 'translateY(16px)',
+                      ? 'translateY(0) scale(1)' 
+                      : 'translateY(16px) scale(1)',
+                  filter: isHovered ? 'brightness(1.2)' : 'brightness(1)',
                 }}
               >
                 {link.label}
