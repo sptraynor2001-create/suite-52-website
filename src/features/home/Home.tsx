@@ -104,7 +104,7 @@ function Home({ onNavigate }: HomeProps) {
             fontWeight: '700',
             letterSpacing: '-0.02em',
             fontFamily: activeFont.family,
-            marginBottom: isMobile ? '8px' : '12px',
+            marginBottom: isMobile ? '4px' : '8px',
             marginTop: 0,
             minHeight: isMobile ? '60px' : '120px', // Prevent layout shift
             display: 'flex',
@@ -143,8 +143,6 @@ function Home({ onNavigate }: HomeProps) {
         {/* Floating navigation links */}
         <nav
           style={{
-            opacity: displayText.length === fullText.length ? 1 : 0,
-            transition: 'opacity 0.8s ease-in 1.2s',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -154,8 +152,11 @@ function Home({ onNavigate }: HomeProps) {
             maxWidth: isMobile ? '320px' : '100%',
           }}
         >
-          {navLinks.map((link) => {
+          {navLinks.map((link, index) => {
             const isHovered = hoveredLink === link.page
+            const baseDelay = 1.2 // Base delay after typing animation
+            const staggerDelay = index * 0.15 // 150ms delay between each button (slower)
+            const isVisible = displayText.length === fullText.length
             
             return (
               <button
@@ -174,12 +175,17 @@ function Home({ onNavigate }: HomeProps) {
                   letterSpacing: '0.1em',
                   fontFamily: activeFont.family,
                   textTransform: 'uppercase',
-                  transition: 'all 0.2s ease-out',
+                  transition: `opacity 0.8s ease-out ${baseDelay + staggerDelay}s, transform 0.8s ease-out ${baseDelay + staggerDelay}s, color 0.2s ease-out, border-bottom 0.2s ease-out`,
                   padding: isMobile ? '8px 8px' : '10px 16px',
                   borderBottom: isHovered ? `2px solid ${POKER_RED}` : '2px solid transparent',
-                  transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
                   flexBasis: isMobile ? 'calc(33.333% - 6px)' : 'auto',
                   minWidth: isMobile ? 'fit-content' : 'auto',
+                  opacity: isVisible ? 1 : 0,
+                  transform: isHovered 
+                    ? 'translateY(-2px)' 
+                    : isVisible 
+                      ? 'translateY(0)' 
+                      : 'translateY(16px)',
                 }}
               >
                 {link.label}
