@@ -1,4 +1,4 @@
-import { songs } from '../data/songs'
+import { songs } from './data'
 
 function Music() {
   return (
@@ -94,3 +94,4 @@ function Music() {
 }
 
 export default Music
+

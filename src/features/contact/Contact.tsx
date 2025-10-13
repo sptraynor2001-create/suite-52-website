@@ -1,4 +1,4 @@
-import { socialLinks } from '../data/social'
+import { socialLinks } from './data'
 
 function Contact() {
   return (

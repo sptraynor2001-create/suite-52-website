@@ -1,4 +1,4 @@
-import { LiveSet } from '../types'
+import { LiveSet } from './types'
 
 export const liveSets: LiveSet[] = [
   {

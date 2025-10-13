@@ -1,4 +1,4 @@
-import { SocialLinks } from '../types'
+import { SocialLinks } from './types'
 
 export const socialLinks: SocialLinks = {
   instagram: 'https://instagram.com/suite52',

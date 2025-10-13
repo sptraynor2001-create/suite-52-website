@@ -37,18 +37,26 @@ npm run preview
 
 ## Project Structure
 
+**Feature-based modular architecture** for easy scaling:
+
 ```
 suite-52-website/
 ├── src/
-│   ├── components/         # Reusable UI components
-│   ├── pages/              # Route pages
-│   ├── data/               # Content data files
-│   │   ├── songs.ts        # Music releases
-│   │   ├── liveSets.ts     # Live performances
-│   │   ├── shows.ts        # Show dates
-│   │   └── social.ts       # Social links
-│   ├── types/              # TypeScript definitions
-│   └── App.tsx             # Root component
+│   ├── features/           # Self-contained feature modules
+│   │   ├── music/          # Music feature
+│   │   │   ├── Music.tsx   # Component
+│   │   │   ├── data.ts     # Songs data
+│   │   │   ├── types.ts    # Music types
+│   │   │   └── index.ts    # Public exports
+│   │   ├── live-sets/      # Live sets feature
+│   │   ├── shows/          # Shows feature
+│   │   ├── contact/        # Contact feature
+│   │   ├── home/           # Home page
+│   │   ├── about/          # About page
+│   │   └── epk/            # EPK page
+│   ├── shared/             # Shared resources
+│   │   └── components/     # Shared components (Navigation, etc.)
+│   └── App.tsx             # Root with routing
 ├── public/
 │   └── images/             # Static images
 ├── docs/                   # Documentation
@@ -75,24 +83,24 @@ suite-52-website/
 
 ### Add a Song
 1. Upload album art to `public/images/songs/`
-2. Edit `src/data/songs.ts`
+2. Edit `src/features/music/data.ts`
 3. Add entry with title, date, streaming links
 4. Save and deploy
 
 ### Add a Live Set
 1. Upload thumbnail to `public/images/livesets/`
-2. Edit `src/data/liveSets.ts`
+2. Edit `src/features/live-sets/data.ts`
 3. Add entry with video links
 4. Save and deploy
 
 ### Add a Show
 1. (Optional) Upload poster to `public/images/shows/`
-2. Edit `src/data/shows.ts`
+2. Edit `src/features/shows/data.ts`
 3. Add venue, date, ticket link
 4. Save and deploy
 
 ### Update Social Links
-1. Edit `src/data/social.ts`
+1. Edit `src/features/contact/data.ts`
 2. Update URLs
 3. Save and deploy
 
@@ -198,11 +206,13 @@ git push origin feature/new-page
 
 ## Common Tasks
 
-### Adding a New Page
-1. Create component in `src/pages/PageName.tsx`
-2. Add route in `src/App.tsx`
-3. Add to navigation in `src/components/Navigation.tsx`
-4. Test mobile responsiveness
+### Adding a New Feature
+1. Create folder in `src/features/my-feature/`
+2. Add component, data, and types files
+3. Create `index.ts` barrel export
+4. Add route in `src/App.tsx`
+5. Add to navigation in `src/shared/components/Navigation.tsx`
+6. Test mobile responsiveness
 
 ### Customizing Styles
 - Edit Tailwind classes in components
@@ -210,7 +220,7 @@ git push origin feature/new-page
 - Add custom CSS to `src/index.css` (sparingly)
 
 ### Updating Content
-- All content in `src/data/` files
+- All content in feature `data.ts` files
 - No database required
 - TypeScript ensures data format correctness
 

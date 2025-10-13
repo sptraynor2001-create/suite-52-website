@@ -1,4 +1,4 @@
-import { shows } from '../data/shows'
+import { shows } from './data'
 
 function Shows() {
   // Sort shows by date (upcoming first)

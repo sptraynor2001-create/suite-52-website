@@ -1,4 +1,4 @@
-import { liveSets } from '../data/liveSets'
+import { liveSets } from './data'
 
 function LiveSets() {
   // Sort live sets by date (most recent first)

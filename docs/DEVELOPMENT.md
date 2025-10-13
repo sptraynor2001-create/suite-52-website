@@ -20,34 +20,60 @@ Technical reference for developers working on the Suite 52 website.
 
 ## Project Architecture
 
+**Feature-Based Modular Structure** - Each feature is self-contained and scalable.
+
 ```
 suite-52-website/
 ├── src/
 │   ├── main.tsx              # App entry point
 │   ├── App.tsx               # Root component with routing
 │   ├── index.css             # Global styles (Tailwind)
-│   ├── components/           # Reusable components
-│   │   └── Navigation.tsx    # Site navigation
-│   ├── pages/                # Route components
-│   │   ├── Home.tsx
-│   │   ├── About.tsx
-│   │   ├── Music.tsx
-│   │   ├── LiveSets.tsx
-│   │   ├── Shows.tsx
-│   │   ├── Contact.tsx
-│   │   └── EPK.tsx
-│   ├── data/                 # Content data files
-│   │   ├── songs.ts
-│   │   ├── liveSets.ts
-│   │   ├── shows.ts
-│   │   └── social.ts
-│   └── types/                # TypeScript definitions
-│       └── index.ts
+│   ├── features/             # Feature modules (self-contained)
+│   │   ├── music/
+│   │   │   ├── index.ts      # Public exports
+│   │   │   ├── Music.tsx     # Page component
+│   │   │   ├── data.ts       # Songs data
+│   │   │   └── types.ts      # Music-specific types
+│   │   ├── live-sets/
+│   │   │   ├── index.ts
+│   │   │   ├── LiveSets.tsx
+│   │   │   ├── data.ts       # Live sets data
+│   │   │   └── types.ts
+│   │   ├── shows/
+│   │   │   ├── index.ts
+│   │   │   ├── Shows.tsx
+│   │   │   ├── data.ts       # Shows data
+│   │   │   └── types.ts
+│   │   ├── contact/
+│   │   │   ├── index.ts
+│   │   │   ├── Contact.tsx
+│   │   │   ├── data.ts       # Social links
+│   │   │   └── types.ts
+│   │   ├── home/
+│   │   │   ├── index.ts
+│   │   │   └── Home.tsx
+│   │   ├── about/
+│   │   │   ├── index.ts
+│   │   │   └── About.tsx
+│   │   └── epk/
+│   │       ├── index.ts
+│   │       └── EPK.tsx
+│   └── shared/               # Shared across features
+│       └── components/
+│           ├── index.ts      # Public exports
+│           └── Navigation.tsx
 ├── public/                   # Static assets
 │   └── images/              # Image storage
 ├── docs/                    # Documentation
 └── dist/                    # Production build (ignored)
 ```
+
+### Architecture Benefits
+- ✅ **Modular** - Each feature is self-contained
+- ✅ **Scalable** - Easy to add new features without touching others
+- ✅ **Maintainable** - Changes isolated to feature folders
+- ✅ **Clear ownership** - Each feature owns its data and types
+- ✅ **Easy testing** - Test features independently
 
 ## Development Setup
 
@@ -82,7 +108,7 @@ npm run lint      # Run ESLint
 
 ### Core Types
 
-Located in `src/types/index.ts`:
+Located in feature-specific `types.ts` files:
 
 ```typescript
 interface Song {
@@ -139,9 +165,9 @@ interface SocialLinks {
 ```
 
 ### Adding New Types
-1. Define in `src/types/index.ts`
-2. Export for use across app
-3. Import where needed
+1. Define in feature's `types.ts` file (e.g., `src/features/music/types.ts`)
+2. Export from feature's `index.ts`
+3. Import where needed: `import { Song } from '@/features/music'`
 
 ## Component Development
 
@@ -306,24 +332,29 @@ Not currently needed. If required:
 
 ## Adding Features
 
-### New Content Type
-1. Define TypeScript interface in `src/types/index.ts`
-2. Create data file in `src/data/`
-3. Create page component in `src/pages/`
-4. Add route in `src/App.tsx`
-5. Add to navigation if public
-6. Document in CONTENT.md
+### New Feature Module
+1. Create feature folder: `src/features/my-feature/`
+2. Add component: `MyFeature.tsx`
+3. Add types: `types.ts` (if needed)
+4. Add data: `data.ts` (if needed)
+5. Create barrel export: `index.ts`
+6. Add route in `src/App.tsx`
+7. Add to navigation if public
+8. Document in `docs/CONTENT.md`
 
-### New Page
-1. Create component in `src/pages/PageName.tsx`
-2. Add route in `src/App.tsx`
-3. Add to navigation in `src/components/Navigation.tsx`
-4. Test on mobile and desktop
+**Example - Adding "Merch" Feature:**
+```
+src/features/merch/
+├── index.ts           # export { default } from './Merch'
+├── Merch.tsx          # Page component
+├── types.ts           # interface Product { ... }
+└── data.ts            # export const products: Product[]
+```
 
-### New Component
-1. Create in `src/components/ComponentName.tsx`
-2. Export as default
-3. Import where needed
+### New Shared Component
+1. Create in `src/shared/components/ComponentName.tsx`
+2. Export from `src/shared/components/index.ts`
+3. Import: `import { ComponentName } from '@/shared/components'`
 4. Keep components focused and reusable
 
 ## Performance
@@ -404,17 +435,20 @@ return <Card key={item.id} data={cardData} />
 
 ### File Organization
 ```
-// ✅ Do: Group by feature
-pages/Music/
-  ├── Music.tsx
-  ├── SongCard.tsx
-  └── types.ts
+// ✅ Do: Feature-based (current structure)
+features/music/
+  ├── index.ts        # Barrel exports
+  ├── Music.tsx       # Page component
+  ├── data.ts         # Songs data
+  └── types.ts        # Music types
 
-// ❌ Don't: Random organization
-components/
-  ├── Component1.tsx
-  ├── random-helper.ts
-  └── Component2.tsx
+// ❌ Don't: Type-based organization
+pages/
+  └── Music.tsx
+data/
+  └── songs.ts
+types/
+  └── musicTypes.ts
 ```
 
 ## Git Workflow

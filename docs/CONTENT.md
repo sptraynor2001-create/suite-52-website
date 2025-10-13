@@ -6,14 +6,14 @@ Complete guide for managing all website content without touching code.
 
 | Content Type | File | Folder |
 |-------------|------|--------|
-| Songs | `src/data/songs.ts` | `public/images/songs/` |
-| Live Sets | `src/data/liveSets.ts` | `public/images/livesets/` |
-| Shows | `src/data/shows.ts` | `public/images/shows/` |
-| Social Links | `src/data/social.ts` | N/A |
+| Songs | `src/features/music/data.ts` | `public/images/songs/` |
+| Live Sets | `src/features/live-sets/data.ts` | `public/images/livesets/` |
+| Shows | `src/features/shows/data.ts` | `public/images/shows/` |
+| Social Links | `src/features/contact/data.ts` | N/A |
 
 ## Adding Songs
 
-**File:** `src/data/songs.ts`
+**File:** `src/features/music/data.ts`
 
 ```typescript
 export const songs: Song[] = [
@@ -44,7 +44,7 @@ export const songs: Song[] = [
 
 ## Adding Live Sets
 
-**File:** `src/data/liveSets.ts`
+**File:** `src/features/live-sets/data.ts`
 
 ```typescript
 export const liveSets: LiveSet[] = [
@@ -84,7 +84,7 @@ export const liveSets: LiveSet[] = [
 
 ## Adding Shows
 
-**File:** `src/data/shows.ts`
+**File:** `src/features/shows/data.ts`
 
 ```typescript
 export const shows: Show[] = [
@@ -122,7 +122,7 @@ export const shows: Show[] = [
 
 ## Updating Social Links
 
-**File:** `src/data/social.ts`
+**File:** `src/features/contact/data.ts`
 
 ```typescript
 export const socialLinks: SocialLinks = {
@@ -168,7 +168,7 @@ Use forward slashes, start with `/images/`
 1. Export album art (1000x1000px)
 2. Compress image (TinyPNG, ImageOptim)
 3. Upload to `public/images/songs/album-name.jpg`
-4. Add entry to `src/data/songs.ts`
+4. Add entry to `src/features/music/data.ts`
 5. Include all streaming links
 6. Save and test locally (`npm run dev`)
 7. Commit and push to deploy
@@ -176,7 +176,7 @@ Use forward slashes, start with `/images/`
 ### Typical Show Announcement
 1. (Optional) Create show poster
 2. Upload to `public/images/shows/`
-3. Add entry to `src/data/shows.ts`
+3. Add entry to `src/features/shows/data.ts`
 4. Include ticket link and venue details
 5. Save and push to deploy
 
@@ -184,7 +184,7 @@ Use forward slashes, start with `/images/`
 1. Upload video to YouTube/SoundCloud
 2. Take screenshot for thumbnail
 3. Upload thumbnail to `public/images/livesets/`
-4. Add entry to `src/data/liveSets.ts`
+4. Add entry to `src/features/live-sets/data.ts`
 5. Include video links and optional setlist
 6. Save and push to deploy
 

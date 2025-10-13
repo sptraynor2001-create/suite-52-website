@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Navigation from './components/Navigation'
-import Home from './pages/Home'
-import About from './pages/About'
-import Contact from './pages/Contact'
-import Music from './pages/Music'
-import LiveSets from './pages/LiveSets'
-import Shows from './pages/Shows'
-import EPK from './pages/EPK'
+import { Navigation } from './shared/components'
+import Home from './features/home'
+import About from './features/about'
+import Music from './features/music'
+import LiveSets from './features/live-sets'
+import Shows from './features/shows'
+import Contact from './features/contact'
+import EPK from './features/epk'
 
 function App() {
   return (
@@ -16,10 +16,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
           <Route path="/music" element={<Music />} />
           <Route path="/live-sets" element={<LiveSets />} />
           <Route path="/shows" element={<Shows />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/epk" element={<EPK />} />
         </Routes>
       </div>
