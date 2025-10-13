@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navigation from '@/shared/components/Navigation'
 import FallingCode from '@/shared/components/FallingCode'
 import Home from '@/features/home'
@@ -14,6 +14,35 @@ type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'
 
 function MainApp() {
   const [currentPage, setCurrentPage] = useState<Page>('home')
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Prevent body scroll on mobile home page
+  useEffect(() => {
+    const isHomeMobile = currentPage === 'home' && isMobile
+    if (isHomeMobile) {
+      document.body.style.overflow = 'hidden'
+      document.body.style.height = '100vh'
+    } else {
+      document.body.style.overflow = ''
+      document.body.style.height = ''
+    }
+    
+    return () => {
+      document.body.style.overflow = ''
+      document.body.style.height = ''
+    }
+  }, [currentPage, isMobile])
 
   const renderPage = () => {
     switch (currentPage) {
@@ -34,13 +63,17 @@ function MainApp() {
     }
   }
 
+  const isHomeMobile = currentPage === 'home' && isMobile
+
   return (
     <div 
       style={{ 
         backgroundColor: '#000000',
-        minHeight: '100vh',
+        height: isHomeMobile ? '100vh' : 'auto',
+        minHeight: isHomeMobile ? 'auto' : '100vh',
         width: '100%',
         position: 'relative',
+        overflow: isHomeMobile ? 'hidden' : 'visible',
       }}
     >
       {/* Falling code background */}

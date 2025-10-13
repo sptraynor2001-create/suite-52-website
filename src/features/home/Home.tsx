@@ -92,10 +92,9 @@ function Home({ onNavigate }: HomeProps) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        height: isMobile ? '100vh' : 'auto',
-        minHeight: isMobile ? 'auto' : '100vh',
+        height: '100%',
+        minHeight: '100vh',
         width: '100%',
-        overflow: isMobile ? 'hidden' : 'visible',
       }}
     >
       <div style={{ textAlign: 'center', padding: isMobile ? '0 20px' : '0' }}>
