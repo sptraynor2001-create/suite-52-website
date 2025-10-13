@@ -10,11 +10,9 @@ interface CodeLine {
 
 function FallingCode() {
   const [codeLines, setCodeLines] = useState<CodeLine[]>([])
-  const [lineId, setLineId] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    let lineIdCounter = 0
 
     const terms = [
       'MIDI', 'OSC', 'LFO', 'ADSR', 'VCA', 'VCF', 'VCO', 'FM', 'AM', 'PM',
@@ -115,21 +113,23 @@ function FallingCode() {
       return chaos.join(' ')
     }
 
-    // Initialize with a massive blob of code to fill entire screen (50 lines)
+    // Initialize with lines at fixed vertical positions (no vertical movement)
     const initialLines: CodeLine[] = []
-    for (let i = 0; i < 50; i++) {
+    const numLines = 35 // Number of horizontal lines to fill the screen
+    
+    for (let i = 0; i < numLines; i++) {
       const speedRoll = Math.random()
       let speed
       if (speedRoll < 0.4) {
-        speed = 8 + Math.random() * 10 // Fast: 8-18s (slower)
+        speed = 8 + Math.random() * 10 // Fast: 8-18s
       } else if (speedRoll < 0.7) {
-        speed = 18 + Math.random() * 17 // Medium: 18-35s (slower)
+        speed = 18 + Math.random() * 17 // Medium: 18-35s
       } else {
-        speed = 35 + Math.random() * 25 // Slow: 35-60s (slower)
+        speed = 35 + Math.random() * 25 // Slow: 35-60s
       }
       
       initialLines.push({
-        id: lineIdCounter++,
+        id: i, // Use index as ID for fixed positions
         content: generateChaos() + ' ' + generateChaos() + ' ' + generateChaos(),
         speed: speed,
         direction: Math.random() > 0.5 ? 'left' : 'right' as 'left' | 'right'
@@ -142,33 +142,7 @@ function FallingCode() {
       setIsVisible(true)
     }, 500)
 
-    // Add new line every 600ms (faster vertical scroll)
-    const interval = setInterval(() => {
-      setCodeLines(prev => {
-        const speedRoll = Math.random()
-        let speed
-        if (speedRoll < 0.4) {
-          speed = 8 + Math.random() * 10 // Fast: 8-18s (slower)
-        } else if (speedRoll < 0.7) {
-          speed = 18 + Math.random() * 17 // Medium: 18-35s (slower)
-        } else {
-          speed = 35 + Math.random() * 25 // Slow: 35-60s (slower)
-        }
-        
-        const newLine = {
-          id: lineIdCounter++,
-          content: generateChaos() + ' ' + generateChaos() + ' ' + generateChaos(), // Triple for loop
-          speed: speed,
-          direction: Math.random() > 0.5 ? 'left' : 'right' as 'left' | 'right'
-        }
-        // Keep max 50 lines
-        const updated = [newLine, ...prev]
-        return updated.slice(0, 50)
-      })
-    }, 600)
-
     return () => {
-      clearInterval(interval)
       clearTimeout(fadeInTimer)
     }
   }, []) // Empty dependency array - runs only once on mount
@@ -194,23 +168,24 @@ function FallingCode() {
           width: '100%',
           height: '100%',
           fontFamily: activeFont.family,
-          fontSize: '13px', // Increased from 11px
+          fontSize: '13px',
           fontWeight: '700',
           color: '#ffffff',
           letterSpacing: '0.05em',
+          lineHeight: '1.5',
         }}
       >
-        {codeLines.map((line, index) => (
+        {codeLines.map((line) => (
           <div
             key={line.id}
             style={{
               position: 'absolute',
-              top: `${index * 2}%`, // Spacing between lines
+              top: `${(line.id / (codeLines.length - 1)) * 100}%`, // Fixed vertical position based on ID
               left: 0,
               width: '100%',
+              height: '13px', // Consistent line height
               whiteSpace: 'nowrap',
-              opacity: Math.max(0.02, 0.06 - (index * 0.0008)), // Even more transparent, starts at 0.06
-              transition: 'top 0.6s linear, opacity 0.6s linear',
+              opacity: 0.045, // Consistent opacity for all lines
               animation: line.direction === 'left' 
                 ? `scrollLeft ${line.speed}s linear infinite`
                 : `scrollRight ${line.speed}s linear infinite`,
