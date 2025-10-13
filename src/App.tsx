@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { useState } from 'react'
 import Navigation from '@/shared/components/Navigation'
 import Home from '@/features/home'
 import About from '@/features/about'
@@ -8,24 +9,54 @@ import LiveSets from '@/features/live-sets'
 import Shows from '@/features/shows'
 import EPK from '@/features/epk'
 
+type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'
+
+function MainApp() {
+  const [currentPage, setCurrentPage] = useState<Page>('home')
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'home':
+        return <Home />
+      case 'about':
+        return <About />
+      case 'music':
+        return <Music />
+      case 'live-sets':
+        return <LiveSets />
+      case 'shows':
+        return <Shows />
+      case 'contact':
+        return <Contact />
+      default:
+        return <Home />
+    }
+  }
+
+  return (
+    <div 
+      style={{ 
+        backgroundColor: '#000000',
+        minHeight: '100vh',
+        width: '100%',
+      }}
+    >
+      {/* Sticky header */}
+      <Navigation currentPage={currentPage} onNavigate={setCurrentPage} />
+      
+      {/* Dynamic content - no URL changes */}
+      {renderPage()}
+    </div>
+  )
+}
+
 function App() {
   return (
     <Router>
-      <div 
-        className="min-h-screen"
-        style={{ backgroundColor: '#000000' }}
-      >
-        <Navigation />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/music" element={<Music />} />
-          <Route path="/live-sets" element={<LiveSets />} />
-          <Route path="/shows" element={<Shows />} />
-          <Route path="/epk" element={<EPK />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/epk" element={<EPK />} />
+        <Route path="*" element={<MainApp />} />
+      </Routes>
     </Router>
   )
 }

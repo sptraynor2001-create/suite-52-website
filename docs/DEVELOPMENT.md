@@ -8,110 +8,203 @@ Technical reference for developers working on the Suite 52 website.
 - **React 18** - UI library with hooks
 - **TypeScript 5** - Type-safe JavaScript
 - **Vite 7** - Build tool and dev server
-- **React Router 6** - Client-side routing
+- **React Router 6** - Routing (EPK page only)
 
 ### Styling
 - **Tailwind CSS 3** - Utility-first CSS framework
 - **PostCSS** - CSS processing
+- **Inline Styles** - Dynamic styling with design tokens
 
 ### Type Safety
 - **TypeScript** - Full type coverage
 - **ESLint** - Code linting
 
-## Project Architecture
+## Architecture
 
-**Feature-Based Modular Structure** - Each feature is self-contained and scalable.
+### Single-Page App (SPA)
+The site uses **state-based navigation** - no URL changes between main sections.
+
+**How it works:**
+1. `App.tsx` manages current page state
+2. Navigation buttons update state (not URL)
+3. Content switches instantly without reload
+4. Only `/epk` has its own URL route
+
+**Benefits:**
+- ⚡ Instant page transitions
+- 🎯 No scrollbar flickering
+- 🚀 Better UX for music sites
+- 📱 Smoother mobile experience
+
+### Project Structure
+
+**Feature-based modular architecture:**
 
 ```
-suite-52-website/
-├── src/
-│   ├── main.tsx              # App entry point
-│   ├── App.tsx               # Root component with routing
-│   ├── index.css             # Global styles (Tailwind)
-│   ├── features/             # Feature modules (self-contained)
-│   │   ├── music/
-│   │   │   ├── index.ts      # Public exports
-│   │   │   ├── Music.tsx     # Page component
-│   │   │   ├── data.ts       # Songs data
-│   │   │   └── types.ts      # Music-specific types
-│   │   ├── live-sets/
-│   │   │   ├── index.ts
-│   │   │   ├── LiveSets.tsx
-│   │   │   ├── data.ts       # Live sets data
-│   │   │   └── types.ts
-│   │   ├── shows/
-│   │   │   ├── index.ts
-│   │   │   ├── Shows.tsx
-│   │   │   ├── data.ts       # Shows data
-│   │   │   └── types.ts
-│   │   ├── contact/
-│   │   │   ├── index.ts
-│   │   │   ├── Contact.tsx
-│   │   │   ├── data.ts       # Social links
-│   │   │   └── types.ts
-│   │   ├── home/
-│   │   │   ├── index.ts
-│   │   │   └── Home.tsx
-│   │   ├── about/
-│   │   │   ├── index.ts
-│   │   │   └── About.tsx
-│   │   └── epk/
-│   │       ├── index.ts
-│   │       └── EPK.tsx
-│   └── shared/               # Shared across features
-│       └── components/
-│           ├── index.ts      # Public exports
-│           └── Navigation.tsx
-├── public/                   # Static assets
-│   └── images/              # Image storage
-├── docs/                    # Documentation
-└── dist/                    # Production build (ignored)
+src/
+├── features/              # Self-contained feature modules
+│   ├── home/
+│   │   ├── index.ts      # Barrel export
+│   │   └── Home.tsx      # Landing page
+│   ├── music/
+│   │   ├── index.ts
+│   │   ├── Music.tsx
+│   │   ├── data.ts       # Songs content
+│   │   └── types.ts      # Song interface
+│   ├── shows/
+│   ├── live-sets/
+│   ├── about/
+│   ├── contact/
+│   │   ├── data.ts       # Social links (Instagram, email)
+│   │   └── types.ts
+│   └── epk/              # Separate URL route
+├── shared/
+│   └── components/
+│       ├── Navigation.tsx    # Header with tab buttons
+│       └── atoms/            # Atomic components
+│           ├── Button.tsx
+│           ├── Card.tsx
+│           └── GlowText.tsx
+├── design/                   # Design system (atomic)
+│   ├── colors.ts            # Color palette (grayscale mode)
+│   ├── gradients.ts         # Gradient definitions
+│   ├── tokens.ts            # Design tokens (spacing, shadows, etc)
+│   ├── fonts.ts             # Font system (Ubuntu Mono + 9 alternates)
+│   └── index.ts             # Barrel export
+├── App.tsx                  # Root app with state management
+├── main.tsx                 # React entry point
+└── index.css                # Global styles + Ubuntu Mono import
 ```
 
-### Architecture Benefits
-- ✅ **Modular** - Each feature is self-contained
-- ✅ **Scalable** - Easy to add new features without touching others
-- ✅ **Maintainable** - Changes isolated to feature folders
-- ✅ **Clear ownership** - Each feature owns its data and types
-- ✅ **Easy testing** - Test features independently
+## Design System
 
-## Development Setup
+### Typography (`src/design/fonts.ts`)
 
-### Prerequisites
-```bash
-node --version    # v18+ required
-npm --version     # v9+ required
-```
+**Active Font:** Ubuntu Mono (monospace)
 
-### Installation
-```bash
-# Clone repository
-git clone https://github.com/user/suite-52-website.git
-cd suite-52-website
+**Available alternates (10 total):**
+- Share Tech Mono
+- Overpass Mono
+- Red Hat Mono
+- Cutive Mono
+- Oxygen Mono
+- PT Mono
+- Inconsolata
+- Nova Mono
+- Azeret Mono
+- Ubuntu Mono ✓
 
-# Install dependencies
-npm install
+**Switch fonts app-wide:**
+Edit `activeFont` object in `fonts.ts`
 
-# Start dev server
-npm run dev
-```
+### Colors (`src/design/colors.ts`)
 
-### Available Scripts
-```bash
-npm run dev       # Start dev server (localhost:5173)
-npm run build     # Production build
-npm run preview   # Preview production build
-npm run lint      # Run ESLint
-```
-
-## Type System
-
-### Core Types
-
-Located in feature-specific `types.ts` files:
+**Current Mode:** Grayscale
 
 ```typescript
-interface Song {
+colors = {
+  background: {
+    app: '#000000',        // Pure black
+    nav: 'rgba(0,0,0,0.7)', // Translucent black
+  },
+  text: {
+    primary: '#ffffff',    // White
+    secondary: 'rgba(255,255,255,0.8)',
+  },
+  accent: {
+    primary: '#e63946',    // Poker red (active tabs)
+  }
+}
+```
+
+**Color palette preserved in comments** for easy restoration to full color mode.
+
+### Design Tokens (`src/design/tokens.ts`)
+
+Includes:
+- Spacing scale
+- Typography scale
+- Shadow definitions
+- Border radius
+- Transitions
+- Breakpoints
+
+### Gradients (`src/design/gradients.ts`)
+
+Currently grayscale. Commented color gradients available for restoration.
+
+## Navigation System
+
+### State-Based Navigation
+
+**File:** `src/shared/components/Navigation.tsx`
+
+```typescript
+type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'
+
+interface NavigationProps {
+  currentPage: Page
+  onNavigate: (page: Page) => void
+}
+```
+
+**States:**
+- **Normal:** White text
+- **Hover:** White underline appears
+- **Active:** Poker red + italic
+
+**Navigation order:**
+HOME → MUSIC → SHOWS → LIVE SETS → ABOUT → CONTACT
+
+### Sticky Header
+
+```css
+position: sticky
+top: 0
+z-index: 1000
+```
+
+Always visible, content scrolls beneath.
+
+### Forced Scrollbar
+
+```css
+/* index.css */
+html, body {
+  overflow-y: scroll;  /* Prevent layout shift */
+}
+```
+
+Keeps layout stable when switching between short/long pages.
+
+## Content Management
+
+### Data Files
+
+Each feature has a `data.ts` file:
+
+```typescript
+// src/features/music/data.ts
+export const songs: Song[] = [
+  {
+    id: '1',
+    title: 'Track Name',
+    releaseDate: '2025-01-15',
+    spotifyUrl: 'https://...',
+    // ... more fields
+  }
+]
+```
+
+**No database needed** - just edit TypeScript files.
+
+### Types
+
+Each feature defines its own types:
+
+```typescript
+// src/features/music/types.ts
+export interface Song {
   id: string
   title: string
   artist?: string
@@ -122,444 +215,180 @@ interface Song {
   youtubeUrl?: string
   description?: string
 }
-
-interface LiveSet {
-  id: string
-  title: string
-  date: string
-  venue?: string
-  city?: string
-  duration?: string
-  thumbnail?: string
-  youtubeUrl?: string
-  soundcloudUrl?: string
-  mixcloudUrl?: string
-  spotifyUrl?: string
-  description?: string
-  setlist?: string[]
-}
-
-interface Show {
-  id: string
-  date: string
-  venue: string
-  city: string
-  state?: string
-  country?: string
-  ticketUrl?: string
-  time?: string
-  description?: string
-  image?: string
-  isSoldOut?: boolean
-}
-
-interface SocialLinks {
-  instagram?: string
-  tiktok?: string
-  spotify?: string
-  appleMusic?: string
-  youtube?: string
-  facebook?: string
-  twitter?: string
-}
 ```
 
-### Adding New Types
-1. Define in feature's `types.ts` file (e.g., `src/features/music/types.ts`)
-2. Export from feature's `index.ts`
-3. Import where needed: `import { Song } from '@/features/music'`
+## Development Workflow
 
-## Component Development
+### Commands
 
-### Component Structure
-```tsx
-// Standard functional component
-function ComponentName() {
-  // Hooks at top
-  const [state, setState] = useState(initialValue)
-  
-  // Event handlers
-  const handleClick = () => {
-    // Logic here
-  }
-  
-  // Render
-  return (
-    <div className="tailwind classes">
-      {/* JSX */}
-    </div>
-  )
-}
+```bash
+# Install dependencies
+npm install
 
-export default ComponentName
+# Start dev server with HMR
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Lint code
+npm run lint
 ```
 
-### Props with TypeScript
-```tsx
-interface Props {
-  title: string
-  count?: number
-  onClick: () => void
-}
+### Development Server
 
-function Component({ title, count = 0, onClick }: Props) {
-  return <button onClick={onClick}>{title}: {count}</button>
-}
+- **Hot Module Replacement (HMR)** - Instant updates
+- **Console logging** - Extensive debug info
+- **Port:** Usually 5173 or 5174
+
+### Console Logs
+
+The app logs everything for easy debugging:
+
 ```
-
-### Common Patterns
-
-**Mapping Arrays:**
-```tsx
-{songs.map((song) => (
-  <div key={song.id}>
-    <h2>{song.title}</h2>
-  </div>
-))}
+📐 Navigation dimensions
+🖱️ Hover on: MUSIC
+🔗 Navigating to: music
+🏠 Home page mounted
+📱 Viewport: { width: 1354, height: 900 }
+🔤 Active font: Ubuntu Mono
+✅ Font loaded: Ubuntu Mono
 ```
-
-**Conditional Rendering:**
-```tsx
-{isLoggedIn && <UserProfile />}
-{songs.length > 0 ? <SongList /> : <EmptyState />}
-```
-
-**Event Handling:**
-```tsx
-<button onClick={() => handleClick(id)}>
-  Click Me
-</button>
-```
-
-## Routing
-
-### Route Configuration
-Located in `src/App.tsx`:
-
-```tsx
-<Routes>
-  <Route path="/" element={<Home />} />
-  <Route path="/about" element={<About />} />
-  <Route path="/music" element={<Music />} />
-  <Route path="/live-sets" element={<LiveSets />} />
-  <Route path="/shows" element={<Shows />} />
-  <Route path="/contact" element={<Contact />} />
-  <Route path="/epk" element={<EPK />} />
-</Routes>
-```
-
-### Adding New Route
-1. Create page component in `src/pages/`
-2. Import in `src/App.tsx`
-3. Add `<Route>` element
-4. Add to navigation if public
-
-### Navigation Links
-```tsx
-import { Link } from 'react-router-dom'
-
-<Link to="/about">About</Link>
-```
-
-## Styling with Tailwind
-
-### Common Classes
-```tsx
-// Layout
-className="flex items-center justify-between"
-className="grid grid-cols-1 md:grid-cols-3 gap-4"
-className="max-w-7xl mx-auto px-4"
-
-// Spacing
-className="p-4 m-2"           // padding, margin
-className="py-8 px-4"         // vertical/horizontal
-className="space-y-4"         // gap between children
-
-// Typography
-className="text-xl font-bold text-gray-900"
-className="text-sm text-gray-600"
-
-// Responsive
-className="hidden md:block"   // hide on mobile
-className="text-sm md:text-lg" // responsive size
-```
-
-### Custom Styles
-When Tailwind isn't enough:
-
-```tsx
-// Inline styles
-<div style={{ backgroundImage: 'url(/images/bg.jpg)' }}>
-
-// Custom CSS (use sparingly)
-// Add to src/index.css or component-specific .css file
-```
-
-### Tailwind Configuration
-Edit `tailwind.config.js` for customization:
-
-```javascript
-export default {
-  theme: {
-    extend: {
-      colors: {
-        brand: '#your-color',
-      },
-      fontFamily: {
-        custom: ['Your Font', 'sans-serif'],
-      },
-    },
-  },
-}
-```
-
-## State Management
-
-### Local State (useState)
-```tsx
-const [isOpen, setIsOpen] = useState(false)
-```
-
-### Data Fetching
-Currently: Static imports from data files
-Future: Add API calls with fetch or Axios
-
-### Global State
-Not currently needed. If required:
-- React Context for theme/auth
-- Zustand for complex state
-- TanStack Query for server state
 
 ## Adding Features
 
-### New Feature Module
-1. Create feature folder: `src/features/my-feature/`
-2. Add component: `MyFeature.tsx`
-3. Add types: `types.ts` (if needed)
-4. Add data: `data.ts` (if needed)
-5. Create barrel export: `index.ts`
-6. Add route in `src/App.tsx`
-7. Add to navigation if public
-8. Document in `docs/CONTENT.md`
+### 1. Create Feature Folder
 
-**Example - Adding "Merch" Feature:**
-```
-src/features/merch/
-├── index.ts           # export { default } from './Merch'
-├── Merch.tsx          # Page component
-├── types.ts           # interface Product { ... }
-└── data.ts            # export const products: Product[]
+```bash
+src/features/new-feature/
+├── index.ts           # Export component
+├── NewFeature.tsx     # Page component
+├── data.ts            # Content
+└── types.ts           # TypeScript types
 ```
 
-### New Shared Component
-1. Create in `src/shared/components/ComponentName.tsx`
-2. Export from `src/shared/components/index.ts`
-3. Import: `import { ComponentName } from '@/shared/components'`
-4. Keep components focused and reusable
+### 2. Update App.tsx
+
+```typescript
+import NewFeature from '@/features/new-feature'
+
+type Page = 'home' | ... | 'new-feature'
+
+const renderPage = () => {
+  switch (currentPage) {
+    // ... existing cases
+    case 'new-feature':
+      return <NewFeature />
+  }
+}
+```
+
+### 3. Update Navigation
+
+```typescript
+const navLinks = [
+  // ... existing links
+  { page: 'new-feature', label: 'NEW FEATURE' },
+]
+```
+
+## Styling Approach
+
+### Atomic Design
+
+1. **Design tokens** → Define once in `design/`
+2. **Atomic components** → Use tokens
+3. **Feature components** → Use atoms
+
+### Inline Styles vs Tailwind
+
+```tsx
+// Use inline styles for dynamic values
+<div style={{ color: colors.text.primary }}>
+
+// Use Tailwind for static utilities
+<div className="flex items-center">
+```
+
+## TypeScript Configuration
+
+### Path Aliases
+
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
+Usage:
+```typescript
+import { colors } from '@/design'
+import Home from '@/features/home'
+```
+
+### Strict Mode
+
+Full strict mode enabled for maximum type safety.
 
 ## Performance
 
-### Built-in Optimizations
-- ✅ Code splitting by route
-- ✅ Tree shaking
-- ✅ CSS minification
-- ✅ Asset optimization
+### Optimizations
+- ✅ State-based navigation (no reloads)
+- ✅ Lazy loading ready (React.lazy)
+- ✅ Vite code splitting
+- ✅ Font preloading in index.css
+- ✅ Minimal dependencies
 
-### Image Optimization
-```tsx
-<img 
-  loading="lazy"           // Lazy load below fold
-  src="/images/photo.jpg"
-  alt="Description"
-/>
-```
+### Bundle Size
+- React + Router: ~45KB gzipped
+- No heavy libraries
+- Images served from `/public`
 
-### Bundle Analysis
-```bash
-npm run build -- --analyze
-```
+## Browser Support
 
-## Testing
-
-### Manual Testing Checklist
-- [ ] All routes load correctly
-- [ ] Navigation works
-- [ ] Images display
-- [ ] Links work (internal/external)
-- [ ] Mobile responsive
-- [ ] No console errors
-- [ ] Forms submit (if any)
-
-### Browser Testing
-Test in:
-- Chrome (latest)
-- Safari (latest)
-- Firefox (latest)
-- Mobile Safari (iOS)
-- Mobile Chrome (Android)
-
-## Code Quality
-
-### TypeScript Best Practices
-```typescript
-// ✅ Do: Explicit types
-function greet(name: string): string {
-  return `Hello ${name}`
-}
-
-// ❌ Don't: 'any' type
-function process(data: any) { }
-
-// ✅ Do: Optional chaining
-const city = show?.venue?.city
-
-// ✅ Do: Nullish coalescing
-const name = song.artist ?? 'Unknown'
-```
-
-### React Best Practices
-```tsx
-// ✅ Do: Destructure props
-function Card({ title, description }: Props) { }
-
-// ❌ Don't: Inline object creation in render
-{items.map(item => <Card key={item.id} data={{...}} />)}
-
-// ✅ Do: Extract to variable
-const cardData = prepareCardData(item)
-return <Card key={item.id} data={cardData} />
-
-// ✅ Do: Use key prop in lists
-{items.map(item => <div key={item.id}>{item.name}</div>)}
-```
-
-### File Organization
-```
-// ✅ Do: Feature-based (current structure)
-features/music/
-  ├── index.ts        # Barrel exports
-  ├── Music.tsx       # Page component
-  ├── data.ts         # Songs data
-  └── types.ts        # Music types
-
-// ❌ Don't: Type-based organization
-pages/
-  └── Music.tsx
-data/
-  └── songs.ts
-types/
-  └── musicTypes.ts
-```
+- **Modern browsers** (ES2020+)
+- **Mobile optimized** (iOS Safari, Chrome)
+- **Responsive** design
+- **No IE11** support
 
 ## Git Workflow
 
-### Branch Naming
-```
-feature/add-merch-page
-fix/navigation-mobile
-refactor/update-types
-```
-
-### Commit Messages
 ```bash
-# Good commits
-git commit -m "Add merch page with product grid"
-git commit -m "Fix mobile navigation menu toggle"
-git commit -m "Update TypeScript interfaces for shows"
+# Make changes
+git add -A
 
-# Bad commits
-git commit -m "update"
-git commit -m "fix bug"
-git commit -m "changes"
+# Commit with descriptive message
+git commit -m "Add feature X"
+
+# Push to origin
+git push
 ```
-
-### Pull Request Process
-1. Create feature branch
-2. Make changes
-3. Test thoroughly
-4. Commit with clear messages
-5. Push to remote
-6. Create PR with description
-7. Address review comments
-8. Merge when approved
 
 ## Troubleshooting
 
+### Layout Shifts
+**Issue:** Content jumps when switching pages
+**Fix:** Forced scrollbar in `index.css`
+
+### Font Not Loading
+**Issue:** Ubuntu Mono not appearing
+**Fix:** Check Google Fonts import in `index.css`
+
+### Navigation Not Updating
+**Issue:** Active state not changing
+**Fix:** Check `currentPage` state in `App.tsx`
+
 ### TypeScript Errors
-```bash
-# Clear cache
-rm -rf node_modules .vite
-npm install
+**Issue:** Import errors with `@/` paths
+**Fix:** Check `tsconfig.json` and `vite.config.ts`
 
-# Check for errors
-npm run build
-```
+---
 
-### Hot Reload Not Working
-```bash
-# Restart dev server
-# (Ctrl+C then npm run dev)
-
-# Or delete .vite folder
-rm -rf .vite
-```
-
-### Import Errors
-```typescript
-// ✅ Correct: .tsx extension
-import Component from './Component'
-
-// ❌ Wrong: Including extension
-import Component from './Component.tsx'
-```
-
-## Environment Setup
-
-### VS Code Extensions
-Recommended:
-- ESLint
-- Tailwind CSS IntelliSense
-- TypeScript Vue Plugin (Volar)
-- Auto Rename Tag
-- Prettier
-
-### VS Code Settings
-```json
-{
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
-  "typescript.preferences.importModuleSpecifier": "relative"
-}
-```
-
-## Deployment
-
-See **DEPLOYMENT.md** for complete deployment guide.
-
-Quick deploy to Vercel:
-```bash
-npm install -g vercel
-vercel
-```
-
-## Resources
-
-### Documentation
-- [React Docs](https://react.dev)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
-- [Tailwind CSS](https://tailwindcss.com/docs)
-- [Vite Guide](https://vitejs.dev/guide/)
-- [React Router](https://reactrouter.com)
-
-### Tools
-- [TypeScript Playground](https://www.typescriptlang.org/play)
-- [Tailwind Play](https://play.tailwindcss.com)
-- [Can I Use](https://caniuse.com) - Browser support
-
-### Community
-- [React Discord](https://discord.gg/react)
-- [TypeScript Discord](https://discord.gg/typescript)
-- [Stack Overflow](https://stackoverflow.com)
-
+**Architecture Status:** Production-ready single-page app with atomic design system.
