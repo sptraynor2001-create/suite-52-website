@@ -1,16 +1,146 @@
-# React + Vite
+# Suite 52 Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, mobile-responsive website built with React, TypeScript, and Tailwind CSS. Optimized for Instagram and TikTok bio links.
 
-Currently, two official plugins are available:
+## 🚀 Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 18** - Modern UI library
+- **TypeScript** - Type-safe development
+- **Vite** - Lightning-fast build tool
+- **React Router** - Client-side routing
+- **Tailwind CSS** - Utility-first CSS framework
 
-## React Compiler
+## 📱 Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- ✅ Fully mobile-responsive design
+- ✅ Easy content management (no database needed)
+- ✅ TypeScript for type safety
+- ✅ Fast loading and optimized for mobile networks
+- ✅ SEO-friendly routing
+- ✅ Hidden EPK page (accessible only by direct URL)
 
-## Expanding the ESLint configuration
+## 🎯 Pages
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Home** - Landing page with hero section
+- **About** - Band information and bio
+- **Music** - Song releases with streaming links
+- **Shows** - Upcoming and past shows with ticket links
+- **Contact** - Contact info and social links
+- **EPK** - Hidden press kit page (accessible at `/epk`)
+
+## 🏃 Quick Start
+
+### Install Dependencies
+```bash
+npm install
+```
+
+### Development Server
+```bash
+npm run dev
+```
+Visit `http://localhost:5173`
+
+### Build for Production
+```bash
+npm run build
+```
+
+### Preview Production Build
+```bash
+npm run preview
+```
+
+## 📝 Managing Content
+
+All content is managed through simple TypeScript files - no database needed!
+
+### Adding Songs
+Edit `src/data/songs.ts` to add new music releases with streaming links.
+
+### Adding Shows
+Edit `src/data/shows.ts` to add show dates, venues, and ticket links.
+
+### Updating Social Links
+Edit `src/data/social.ts` to update your social media links.
+
+**📖 For detailed instructions, see [DATA_MANAGEMENT.md](./DATA_MANAGEMENT.md)**
+
+## 🖼️ Managing Images
+
+Store images in organized folders:
+- `public/images/songs/` - Album covers
+- `public/images/shows/` - Show posters and venue photos
+- `public/images/backgrounds/` - Background images
+- `public/images/band/` - Band photos
+
+**📖 For image guidelines, see [public/images/README.md](./public/images/README.md)**
+
+## 📱 Mobile Optimization
+
+This website is optimized for mobile devices:
+- Responsive navigation with hamburger menu
+- Touch-friendly buttons and links
+- Optimized images for mobile networks
+- Fast loading times
+- Perfect for Instagram/TikTok bio links
+
+## 🔒 Hidden EPK Page
+
+The Electronic Press Kit page is hidden from navigation but accessible at:
+```
+yourdomain.com/epk
+```
+
+Share this URL directly with press, venues, and industry professionals.
+
+## 🌐 Deployment
+
+This site is configured for easy deployment to:
+- Vercel
+- Netlify
+- GitHub Pages
+- Any static hosting service
+
+Changes pushed to the `main` branch will automatically deploy if set up with your hosting provider.
+
+## 📦 Project Structure
+
+```
+suite-52-website/
+├── src/
+│   ├── components/      # Reusable components (Navigation, etc.)
+│   ├── pages/           # Page components
+│   ├── data/            # Content data files
+│   │   ├── songs.ts     # Music releases
+│   │   ├── shows.ts     # Show information
+│   │   └── social.ts    # Social media links
+│   ├── types/           # TypeScript type definitions
+│   ├── App.tsx          # Main app component with routing
+│   └── main.tsx         # Application entry point
+├── public/
+│   └── images/          # Static images
+├── DATA_MANAGEMENT.md   # Detailed content management guide
+└── package.json         # Dependencies and scripts
+```
+
+## 🛠️ Development
+
+### TypeScript
+All files use TypeScript for type safety. The editor will show errors if data format is incorrect.
+
+### Tailwind CSS
+Styling uses Tailwind's utility classes. Customize colors and design in component files.
+
+### Hot Module Replacement
+Changes to code automatically update in the browser during development.
+
+## 📄 License
+
+All rights reserved - Suite 52
+
+## 🆘 Support
+
+For questions or issues, check:
+- [DATA_MANAGEMENT.md](./DATA_MANAGEMENT.md) - Content management guide
+- [public/images/README.md](./public/images/README.md) - Image guidelines
