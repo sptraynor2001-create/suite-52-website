@@ -11,7 +11,7 @@ interface CardProps {
 
 /**
  * Card - Atomic component
- * Futuristic card with midnight gradient background
+ * GRAYSCALE MODE - Sharp technical cards
  */
 function Card({ 
   children, 
@@ -32,9 +32,9 @@ function Card({
       hover: hover ? gradients.card.elevated : gradients.card.elevated,
     },
     neon: {
-      background: gradients.neon.blue,
-      border: colors.border.neon,
-      hover: hover ? gradients.neon.cyan : gradients.neon.blue,
+      background: gradients.neon.blue,  // Using subtle gradient
+      border: colors.border.highlight,  // Changed from colors.border.neon
+      hover: hover ? gradients.neon.purple : gradients.neon.blue,  // Using available gradients
     },
   }
 
@@ -71,4 +71,3 @@ function Card({
 }
 
 export default Card
-

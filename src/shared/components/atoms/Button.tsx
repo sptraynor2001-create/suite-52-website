@@ -11,7 +11,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 /**
  * Button - Atomic component
- * Sharp, technical buttons with neon effects
+ * GRAYSCALE MODE - Sharp, technical buttons
  */
 function Button({
   children,
@@ -38,7 +38,7 @@ function Button({
     },
     ghost: {
       background: gradients.button.ghost,
-      text: colors.neon.cyan,
+      text: colors.text.primary,  // Changed from colors.neon.cyan
       shadow: 'none',
       hoverShadow: tokens.shadows.glow.blue.sm,
     },
@@ -129,4 +129,3 @@ function Button({
 }
 
 export default Button
-
