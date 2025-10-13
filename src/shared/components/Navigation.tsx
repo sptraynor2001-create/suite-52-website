@@ -1,7 +1,9 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
 
 function Navigation() {
   const location = useLocation()
+  const navContainerRef = useRef<HTMLDivElement>(null)
 
   const navLinks = [
     { to: '/', label: 'HOME' },
@@ -12,6 +14,18 @@ function Navigation() {
     { to: '/contact', label: 'CONTACT' },
   ]
 
+  useEffect(() => {
+    if (navContainerRef.current) {
+      const rect = navContainerRef.current.getBoundingClientRect()
+      console.log('Navigation container dimensions:', {
+        width: rect.width,
+        height: rect.height,
+        screenWidth: window.innerWidth,
+        percentageOfScreen: (rect.width / window.innerWidth * 100).toFixed(2) + '%'
+      })
+    }
+  }, [])
+
   const isActive = (path: string) => location.pathname === path
 
   return (
@@ -20,7 +34,11 @@ function Navigation() {
       style={{ backgroundColor: '#000000' }}
     >
       <div className="flex justify-center items-center">
-        <div className="flex justify-between items-center" style={{ width: '70%' }}>
+        <div 
+          ref={navContainerRef}
+          className="flex justify-between items-center" 
+          style={{ width: '70%' }}
+        >
           {navLinks.map((link) => (
             <Link
               key={link.to}
