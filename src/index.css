@@ -24,6 +24,182 @@ html {
   overflow-y: scroll;
 }
 
+/* Subtle grunge texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.08;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.1) 2px,
+      rgba(255, 255, 255, 0.1) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.1) 2px,
+      rgba(255, 255, 255, 0.1) 4px
+    );
+  background-size: 100% 100%, 100% 100%;
+  mix-blend-mode: screen;
+}
+
+/* Noise grain effect - main layer */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9998;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='4' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0;
+  animation: grainMove 40s linear 2.5s infinite, grainFadeIn 1.5s ease-out 2.5s forwards, grainFade 40s ease-in-out 4s infinite;
+}
+
+/* Trail layers - leaving squares behind */
+#root::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9997;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.5' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter2)'/%3E%3C/svg%3E");
+  opacity: 0;
+  animation: grainTrail1 40s linear 4.5s infinite, grainFadeIn 1.5s ease-out 3s forwards, grainFade 40s ease-in-out 5s infinite;
+}
+
+#root::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9996;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter3'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter3)'/%3E%3C/svg%3E");
+  opacity: 0;
+  animation: grainTrail2 40s linear 6.5s infinite, grainFadeIn 1.5s ease-out 3.5s forwards, grainFade 40s ease-in-out 6s infinite;
+}
+
+/* Main movement animation */
+@keyframes grainMove {
+  0% { transform: translate(0, 0); }
+  12.5% { transform: translate(8%, -12%); }
+  25% { transform: translate(-5%, -18%); }
+  37.5% { transform: translate(-15%, -8%); }
+  50% { transform: translate(-20%, 5%); }
+  62.5% { transform: translate(-12%, 15%); }
+  75% { transform: translate(3%, 18%); }
+  87.5% { transform: translate(10%, 8%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Trail 1 - opposite direction from main */
+@keyframes grainTrail1 {
+  0% { transform: translate(0, 0); }
+  12.5% { transform: translate(-8%, 12%); }
+  25% { transform: translate(5%, 18%); }
+  37.5% { transform: translate(15%, 8%); }
+  50% { transform: translate(20%, -5%); }
+  62.5% { transform: translate(12%, -15%); }
+  75% { transform: translate(-3%, -18%); }
+  87.5% { transform: translate(-10%, -8%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Trail 2 - another opposite direction */
+@keyframes grainTrail2 {
+  0% { transform: translate(0, 0); }
+  12.5% { transform: translate(-6%, 9%); }
+  25% { transform: translate(4%, 14%); }
+  37.5% { transform: translate(11%, 6%); }
+  50% { transform: translate(15%, -3%); }
+  62.5% { transform: translate(9%, -11%); }
+  75% { transform: translate(-2%, -13%); }
+  87.5% { transform: translate(-7%, -6%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Fade in animation for initial load */
+@keyframes grainFadeIn {
+  from { opacity: 0; }
+  to { opacity: 0.010; } /* Darker - reduced from 0.018 */
+}
+
+/* Opacity oscillation - darker overall */
+@keyframes grainFade {
+  0% { opacity: 0.010; }
+  8% { opacity: 0.007; }
+  15% { opacity: 0.012; }
+  23% { opacity: 0.009; }
+  31% { opacity: 0.011; }
+  42% { opacity: 0.007; }
+  53% { opacity: 0.011; }
+  64% { opacity: 0.008; }
+  71% { opacity: 0.010; }
+  79% { opacity: 0.009; }
+  88% { opacity: 0.010; }
+  95% { opacity: 0.009; }
+  100% { opacity: 0.010; }
+}
+
+/* Terminal scrolling animations - bidirectional seamless loops */
+@keyframes scrollLeft {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-33.333%);
+  }
+}
+
+@keyframes scrollRight {
+  0% {
+    transform: translateX(-33.333%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+/* Show animations - subtle spring drop */
+@keyframes dropInShow {
+  0% {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+  40% {
+    opacity: 1;
+  }
+  60% {
+    transform: translateY(3px);
+  }
+  80% {
+    transform: translateY(-1px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 a {
   font-weight: 500;
   color: #ffffff;

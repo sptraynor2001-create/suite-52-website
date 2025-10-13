@@ -1,27 +1,60 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { activeFont } from '@/design/fonts'
 
 function Home() {
-  useEffect(() => {
-    console.log('🏠 Home page mounted')
-    console.log('📱 Viewport:', {
-      width: window.innerWidth,
-      height: window.innerHeight
-    })
-    console.log('🔤 Active font:', activeFont.name)
+  const [displayText, setDisplayText] = useState('')
+  const [showCursor, setShowCursor] = useState(true)
+  const fullText = 'Suite 52'
 
+  useEffect(() => {
     // Load Ubuntu Mono font
     const link = document.createElement('link')
     link.href = activeFont.googleFontsUrl
     link.rel = 'stylesheet'
     document.head.appendChild(link)
+
+    // Typing animation with expressive timing
+    const timings = [
+      150, // S
+      80,  // u - faster
+      90,  // i
+      70,  // t - fast
+      110, // e
+      200, // (pause before space)
+      100, // 5
+      85,  // 2
+    ]
+
+    let currentIndex = 0
     
-    link.onload = () => {
-      console.log('✅ Font loaded:', activeFont.name)
+    const typeNextChar = () => {
+      if (currentIndex < fullText.length) {
+        setDisplayText(fullText.substring(0, currentIndex + 1))
+        currentIndex++
+        const delay = timings[currentIndex - 1] || 100
+        setTimeout(typeNextChar, delay)
+      } else {
+        // After typing is done, slow down cursor blink then stop
+        setTimeout(() => {
+          setShowCursor(false)
+        }, 1500)
+      }
     }
+
+    // Start typing after a brief delay
+    const startDelay = setTimeout(() => {
+      typeNextChar()
+    }, 300)
+
+    // Cursor blink
+    const cursorInterval = setInterval(() => {
+      setShowCursor(prev => !prev)
+    }, 530)
 
     return () => {
       document.head.removeChild(link)
+      clearTimeout(startDelay)
+      clearInterval(cursorInterval)
     }
   }, [])
 
@@ -43,12 +76,25 @@ function Home() {
             fontWeight: '700',
             letterSpacing: '-0.02em',
             fontFamily: activeFont.family,
-            marginBottom: '24px',
-            marginTop: 0
+            marginBottom: '8px', // Reduced from 24px for tighter spacing
+            marginTop: 0,
+            minHeight: '120px', // Prevent layout shift
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
-          onMouseEnter={() => console.log('🎵 Hovering Suite 52 title')}
         >
-          Suite 52
+          <span>
+            {displayText}
+            <span 
+              style={{ 
+                opacity: showCursor ? 1 : 0,
+                transition: 'opacity 0.1s',
+              }}
+            >
+              |
+            </span>
+          </span>
         </h1>
         
         <p 
@@ -57,10 +103,12 @@ function Home() {
             fontSize: '20px',
             letterSpacing: '0.05em',
             fontFamily: activeFont.family,
-            margin: 0
+            margin: 0,
+            opacity: displayText.length === fullText.length ? 1 : 0,
+            transition: 'opacity 0.8s ease-in 0.8s',
           }}
         >
-          Producer / DJ / Artist
+          Producer // DJ // Artist
         </p>
       </div>
     </div>

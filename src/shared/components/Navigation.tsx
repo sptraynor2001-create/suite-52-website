@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { activeFont } from '@/design/fonts'
 
 type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'
@@ -9,56 +9,36 @@ interface NavigationProps {
 }
 
 function Navigation({ currentPage, onNavigate }: NavigationProps) {
-  const navContainerRef = useRef<HTMLDivElement>(null)
-  const outerContainerRef = useRef<HTMLElement>(null)
   const [hoveredLink, setHoveredLink] = useState<Page | null>(null)
 
   const navLinks: { page: Page; label: string }[] = [
     { page: 'home', label: 'HOME' },
     { page: 'music', label: 'MUSIC' },
     { page: 'shows', label: 'SHOWS' },
-    { page: 'live-sets', label: 'LIVE SETS' },
+    { page: 'live-sets', label: 'LIVE_SETS' },
     { page: 'about', label: 'ABOUT' },
     { page: 'contact', label: 'CONTACT' },
   ]
 
-  useEffect(() => {
-    if (navContainerRef.current && outerContainerRef.current) {
-      const rect = navContainerRef.current.getBoundingClientRect()
-      const outerRect = outerContainerRef.current.getBoundingClientRect()
-      console.log('📐 Navigation dimensions:', {
-        innerWidth: rect.width,
-        outerWidth: outerRect.width,
-        height: outerRect.height,
-        screenWidth: window.innerWidth,
-        innerPercentage: (rect.width / window.innerWidth * 100).toFixed(2) + '%',
-        outerPercentage: (outerRect.width / window.innerWidth * 100).toFixed(2) + '%',
-        position: window.getComputedStyle(outerContainerRef.current).position,
-        font: activeFont.name
-      })
-    }
-  }, [])
 
   const POKER_RED = '#e63946'
   const WHITE = '#ffffff'
 
   return (
     <nav 
-      ref={outerContainerRef}
       style={{ 
         backgroundColor: '#000000',
         width: '100%',
         padding: '16px 0',
         position: 'sticky',
         top: 0,
-        zIndex: 1000,
+        zIndex: 100,
         boxShadow: '0 2px 4px rgba(0,0,0,0.5)',
         fontFamily: activeFont.family
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <div 
-          ref={navContainerRef}
           style={{ 
             width: '70%',
             maxWidth: '1200px',
@@ -82,7 +62,6 @@ function Navigation({ currentPage, onNavigate }: NavigationProps) {
               >
                 <button
                   onClick={() => {
-                    console.log('🔗 Navigating to:', link.page, link.label)
                     onNavigate(link.page)
                   }}
                   style={{
@@ -103,11 +82,11 @@ function Navigation({ currentPage, onNavigate }: NavigationProps) {
                     padding: '8px 4px',
                     display: 'inline-block',
                     borderBottom: (isHovered && !active) ? `2px solid ${WHITE}` : '2px solid transparent',
+                    transform: (isHovered && !active) ? 'translateY(-2px)' : 'translateY(0)', // Lift up on hover
                   }}
-                  onMouseEnter={() => {
-                    console.log('🖱️ Hover on:', link.label)
-                    setHoveredLink(link.page)
-                  }}
+                      onMouseEnter={() => {
+                        setHoveredLink(link.page)
+                      }}
                   onMouseLeave={() => {
                     setHoveredLink(null)
                   }}

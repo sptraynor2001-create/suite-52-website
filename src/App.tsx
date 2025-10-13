@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useState } from 'react'
 import Navigation from '@/shared/components/Navigation'
+import FallingCode from '@/shared/components/FallingCode'
 import Home from '@/features/home'
 import About from '@/features/about'
 import Contact from '@/features/contact'
@@ -39,13 +40,19 @@ function MainApp() {
         backgroundColor: '#000000',
         minHeight: '100vh',
         width: '100%',
+        position: 'relative',
       }}
     >
+      {/* Falling code background */}
+      <FallingCode />
+      
       {/* Sticky header */}
       <Navigation currentPage={currentPage} onNavigate={setCurrentPage} />
       
       {/* Dynamic content - no URL changes */}
-      {renderPage()}
+      <div style={{ position: 'relative', zIndex: 10 }}>
+        {renderPage()}
+      </div>
     </div>
   )
 }
