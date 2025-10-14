@@ -265,7 +265,7 @@ function Home({ onNavigate }: HomeProps) {
           opacity: backgroundLoaded ? 0.12 : 0,
           zIndex: 0,
           pointerEvents: 'none',
-          transition: 'opacity 3s ease-in, background-size 0.2s ease-out',
+          transition: 'opacity 3s ease-in',
         }}
       />
       
