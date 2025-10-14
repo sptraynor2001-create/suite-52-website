@@ -197,29 +197,40 @@ function FallingCode() {
           overflow: 'hidden',
         }}
       >
-        {codeLines.map((line) => (
-          <div
-            key={line.id}
-            style={{
-              position: 'absolute',
-              top: `${(line.id / (codeLines.length - 1)) * 100}%`, // Fixed vertical position based on ID
-              left: 0,
-              width: '100%',
-              height: '13px', // Consistent line height
-              whiteSpace: 'nowrap',
-              opacity: line.opacity, // Random varied opacity per line
-              animation: line.direction === 'left' 
-                ? `scrollLeft ${line.speed}s linear infinite`
-                : `scrollRight ${line.speed}s linear infinite`,
-              filter: 'blur(0.3px)', // Subtle motion blur
-              textShadow: line.direction === 'left'
-                ? '1px 0 2px rgba(255, 255, 255, 0.1), 2px 0 3px rgba(255, 255, 255, 0.05)' // Horizontal blur left
-                : '-1px 0 2px rgba(255, 255, 255, 0.1), -2px 0 3px rgba(255, 255, 255, 0.05)', // Horizontal blur right
-            }}
-          >
-            {line.content}
-          </div>
-        ))}
+        {codeLines.map((line) => {
+          // Create unique oscillation timing for each line
+          const oscillationDuration = 8 + (line.id % 5) * 2 // 8-16s variation
+          const oscillationDelay = -(line.id % 10) * 0.8 // Stagger start times
+          
+          return (
+            <div
+              key={line.id}
+              style={{
+                position: 'absolute',
+                top: `${(line.id / (codeLines.length - 1)) * 100}%`, // Fixed vertical position based on ID
+                left: 0,
+                width: '100%',
+                height: '13px', // Consistent line height
+                whiteSpace: 'nowrap',
+                animation: [
+                  line.direction === 'left' 
+                    ? `scrollLeft ${line.speed}s linear infinite`
+                    : `scrollRight ${line.speed}s linear infinite`,
+                  `opacityOscillate ${oscillationDuration}s ease-in-out infinite`
+                ].join(', '),
+                animationDelay: `0s, ${oscillationDelay}s`,
+                filter: 'blur(0.3px)', // Subtle motion blur
+                textShadow: line.direction === 'left'
+                  ? '1px 0 2px rgba(255, 255, 255, 0.1), 2px 0 3px rgba(255, 255, 255, 0.05)' // Horizontal blur left
+                  : '-1px 0 2px rgba(255, 255, 255, 0.1), -2px 0 3px rgba(255, 255, 255, 0.05)', // Horizontal blur right
+                // Set CSS custom property for oscillation range based on base opacity
+                ['--base-opacity' as string]: line.opacity,
+              }}
+            >
+              {line.content}
+            </div>
+          )
+        })}
       </div>
     </div>
   )

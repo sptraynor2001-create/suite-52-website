@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { activeFont } from '@/design/fonts'
+import BouncingSquare from '@/shared/components/BouncingSquare'
 
 type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'
 
@@ -11,17 +12,19 @@ function Home({ onNavigate }: HomeProps) {
   const [displayText, setDisplayText] = useState('')
   const [showCursor, setShowCursor] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
   const [hoveredLink, setHoveredLink] = useState<Page | null>(null)
   const [philosophicalText, setPhilosophicalText] = useState('')
   const [showPhilosophicalCursor, setShowPhilosophicalCursor] = useState(false)
   const [isPhilosophicalTyping, setIsPhilosophicalTyping] = useState(false)
   const fullText = 'Suite 52'
-  const fullPhilosophicalText = 'SOUND IS REBELLION AGAINST SILENCE. MUSIC SPEAKS WHAT LOGIC CANNOT DECODE. ALGORITHMS DETECT PATTERNS WHILE HUMAN BEINGS FIND PURPOSE. CULTURE LIVES BETWEEN TRADITION AND TRANSFORMATION. FREEDOM EMERGES WHEN SPIRIT GUIDES THE TRANSMISSION. THE SIGNAL SEARCHES FOR THOSE WILLING TO LISTEN. THE RHYTHMS ARE UNDERSTOOD BY THOSE WILLING TO FEEL.'
+  const fullPhilosophicalText = 'SOUND IS REBELLION AGAINST SILENCE. MUSIC SPEAKS WHAT LOGIC CANNOT DECODE. ALGORITHMS SEARCH FOR PATTERNS WHILE HUMAN BEINGS SEARCH FOR PURPOSE. CULTURE LIVES BETWEEN TRADITION AND TRANSFORMATION. FREEDOM EMERGES WHEN SPIRIT GUIDES TRANSMISSION. THE SIGNAL SEARCHES FOR THOSE WILLING TO LISTEN, THE MELODY FINDS THOSE WILLING TO FEEL, AND THE RHYTHM ONLY UNDERSTOOD BY THOSE WILLING TO MOVE.'
 
   useEffect(() => {
-    // Check if mobile
+    // Check if mobile and track viewport width
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
+      setViewportWidth(window.innerWidth)
     }
     
     checkMobile()
@@ -144,6 +147,53 @@ function Home({ onNavigate }: HomeProps) {
   const POKER_RED = '#e63946'
   const WHITE = '#ffffff'
 
+  // Calculate smooth background size based on viewport width
+  const getBackgroundSize = () => {
+    // Smooth transition from 'cover' at wider widths to 'auto 100%' at narrower widths
+    // Breakpoint around 768px (tablet/mobile threshold)
+    if (viewportWidth >= 768) {
+      return 'cover'
+    } else {
+      return 'auto 100%'
+    }
+  }
+
+  // Generate grid positions and random velocities for squares - memoized so it only runs once
+  const squares = useMemo(() => {
+    const result = []
+    const cols = 3
+    const rows = 1
+    const spacingX = window.innerWidth / (cols + 1)
+    const spacingY = window.innerHeight / (rows + 1)
+    
+    const opacities = [0.015, 0.022, 0.018]
+    
+    let index = 0
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const x = (col + 1) * spacingX
+        const y = (row + 1) * spacingY
+        
+        // Random velocity between 0.15 and 0.35, random direction
+        const velocityX = (Math.random() * 0.2 + 0.15) * (Math.random() > 0.5 ? 1 : -1)
+        const velocityY = (Math.random() * 0.2 + 0.15) * (Math.random() > 0.5 ? 1 : -1)
+        
+        result.push({
+          key: index,
+          x,
+          y,
+          velocityX,
+          velocityY,
+          opacity: opacities[index]
+        })
+        
+        index++
+      }
+    }
+    
+    return result
+  }, [])
+
   return (
     <div 
       style={{ 
@@ -155,6 +205,35 @@ function Home({ onNavigate }: HomeProps) {
         width: '100%',
       }}
     >
+      {/* Background image - beneath everything */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundImage: 'url(/images/backgrounds/main-background.JPEG)',
+          backgroundSize: getBackgroundSize(),
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.15,
+          zIndex: 0,
+          pointerEvents: 'none',
+          transition: 'background-size 0.2s ease-out',
+        }}
+      />
+      
+      {squares.map(square => (
+        <BouncingSquare 
+          key={square.key}
+          initialX={square.x} 
+          initialY={square.y} 
+          velocityX={square.velocityX} 
+          velocityY={square.velocityY} 
+          opacity={square.opacity} 
+        />
+      ))}
       <div style={{ textAlign: 'center', padding: isMobile ? '0 20px' : '0' }}>
         <h1 
           style={{ 
@@ -192,10 +271,11 @@ function Home({ onNavigate }: HomeProps) {
         
         <p 
           style={{ 
-            color: 'rgba(255, 255, 255, 0.7)',
+            color: 'rgba(255, 255, 255, 0.25)',
             fontSize: isMobile ? '14px' : '20px',
             letterSpacing: '0.05em',
             fontFamily: activeFont.family,
+            fontWeight: '700',
             margin: 0,
             marginBottom: isMobile ? '16px' : '20px',
             visibility: displayText.length === fullText.length ? 'visible' : 'hidden',
@@ -203,7 +283,7 @@ function Home({ onNavigate }: HomeProps) {
             transition: 'opacity 0.8s ease-in 0.8s',
           }}
         >
-          Producer // DJ // Artist
+          Music Producer // DJ // Artist
         </p>
 
         {/* Philosophical text - subtle and hidden */}
@@ -213,8 +293,8 @@ function Home({ onNavigate }: HomeProps) {
             bottom: isMobile ? '3px' : '5px',
             left: '50%',
             transform: 'translateX(-50%)',
-            width: '45%',
-            maxWidth: '650px',
+            width: isMobile ? '80%' : '57.5%',
+            maxWidth: '775px',
             height: isMobile ? '55px' : '45px',
             textAlign: 'justify',
             fontSize: isMobile ? '6px' : 'min(8px, 0.75vw)',
