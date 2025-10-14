@@ -185,19 +185,18 @@ function Home({ onNavigate }: HomeProps) {
 
   // Calculate smooth background size based on viewport width
   const getBackgroundSize = () => {
-    // Smooth scaling from desktop to mobile
-    // At 1920px (desktop): cover
-    // At 768px and below: scale by percentage
-    if (viewportWidth >= 1920) {
-      return 'cover'
-    } else if (viewportWidth >= 768) {
-      return 'cover'
-    } else {
-      // Below 768px, scale from 100% down to fit screen width
-      // Calculate percentage that keeps aspect ratio
-      const scale = (viewportWidth / 768) * 100
-      return `auto ${Math.max(scale, 100)}%`
-    }
+    // Continuously scale down from desktop (1920px) to mobile (375px)
+    // At full desktop: 100% height, scales down as width decreases
+    const minWidth = 375
+    const maxWidth = 1920
+    const minHeight = 50 // minimum height percentage for very small screens
+    const maxHeight = 100 // full height at desktop
+    
+    // Calculate scale based on viewport width
+    const ratio = Math.max(0, Math.min(1, (viewportWidth - minWidth) / (maxWidth - minWidth)))
+    const heightPercent = minHeight + (maxHeight - minHeight) * ratio
+    
+    return `auto ${heightPercent}%`
   }
 
   // Calculate nav width based on viewport - scale from 60% (desktop) to 95% (mobile)
