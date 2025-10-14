@@ -51,7 +51,7 @@ function Shows() {
         alignItems: 'center',
         minHeight: 'calc(100vh - 80px)',
         width: '100%',
-        padding: '60px 20px',
+        padding: '60px 0',
       }}
     >
       <h2
@@ -75,6 +75,8 @@ function Shows() {
           width: '100%',
           maxWidth: '900px',
           margin: '0 auto',
+          padding: '0 20px',
+          boxSizing: 'border-box',
         }}
       >
         {shows.slice(0, visibleShows).map((show, index) => (
@@ -91,7 +93,7 @@ function Shows() {
                 display: 'flex',
                 justifyContent: 'space-between',
                 gap: '40px',
-                padding: '0 20px',
+                padding: '0',
                 textDecoration: 'none',
                 cursor: 'pointer',
                 transition: 'color 0.15s ease-out',
