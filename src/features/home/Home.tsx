@@ -69,37 +69,41 @@ function Home({ onNavigate }: HomeProps) {
         const delay = timings[currentIndex - 1] || 100
         setTimeout(typeNextChar, delay)
       } else {
-        // Stop blinking and do quick flashes: on-off-on-off-on-hold-off
+        // Stop blinking and do quick flashes: off-fade on-off-on-off-on-hold-off
         console.log('Typing complete - starting flash sequence')
         typingComplete = true
         clearInterval(cursorInterval)
-        console.log('Setting cursor ON (initial hold)')
-        setShowCursor(true)
-        // Wait longer (800ms) to ensure any pending interval toggle has settled
+        console.log('Starting with OFF')
+        setShowCursor(false)
+        // Wait a moment then fade in
         setTimeout(() => {
-          console.log('Starting flash 1: OFF')
-          setShowCursor(false)
+          console.log('Flash 1: Fade ON')
+          setShowCursor(true)
           setTimeout(() => {
-            console.log('Flash 1: ON')
-            setShowCursor(true)
+            console.log('Flash 2: OFF')
+            setShowCursor(false)
             setTimeout(() => {
-              console.log('Flash 2: OFF')
-              setShowCursor(false)
+              console.log('Flash 2: ON')
+              setShowCursor(true)
               setTimeout(() => {
-                console.log('Flash 2: ON')
-                setShowCursor(true)
+                console.log('Flash 3: OFF')
+                setShowCursor(false)
                 setTimeout(() => {
-                  console.log('Final hold: ON for 530ms')
-                  // Hold for normal duration (530ms)
+                  console.log('Flash 3: ON')
+                  setShowCursor(true)
                   setTimeout(() => {
-                    console.log('Final: OFF - disappearing')
-                    setShowCursor(false)
-                  }, 530)
+                    console.log('Final hold: ON for 530ms')
+                    // Hold for normal duration (530ms)
+                    setTimeout(() => {
+                      console.log('Final: OFF - disappearing')
+                      setShowCursor(false)
+                    }, 530)
+                  }, 265)
                 }, 265)
               }, 265)
             }, 265)
           }, 265)
-        }, 800)
+        }, 600)
       }
     }
 
@@ -315,6 +319,7 @@ function Home({ onNavigate }: HomeProps) {
                 right: '-0.6em',
                 top: '0.22em',
                 opacity: showCursor ? 1 : 0,
+                transition: displayText.length === fullText.length ? 'opacity 0.15s ease-in' : 'none',
                 display: 'inline-block',
                 width: isMobile ? '18px' : '36px',
                 height: isMobile ? '34px' : '68px',
