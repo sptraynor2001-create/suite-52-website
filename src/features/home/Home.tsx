@@ -255,7 +255,7 @@ function Home({ onNavigate }: HomeProps) {
               style={{ 
                 position: 'absolute',
                 right: '-0.6em',
-                top: '0.18em',
+                top: '0.22em',
                 opacity: showCursor ? 1 : 0,
                 transition: 'opacity 0.1s',
                 display: 'inline-block',
