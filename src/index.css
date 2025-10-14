@@ -19,10 +19,9 @@
   font-family: 'Ubuntu Mono', monospace;
 }
 
-/* Force scrollbar to always show to prevent layout shift */
+/* Prevent scrolling */
 html {
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
   width: 100%;
   max-width: 100vw;
 }
@@ -216,19 +215,18 @@ body {
   margin: 0;
   padding: 0;
   min-width: 320px;
-  min-height: 100vh;
+  height: 100vh;
   width: 100%;
   max-width: 100vw;
   background-color: #000000;
-  overflow-y: scroll; /* Force scrollbar */
-  overflow-x: hidden; /* Prevent horizontal scroll */
+  overflow: hidden;
 }
 
 #root {
   width: 100%;
   max-width: 100vw;
-  min-height: 100vh;
-  overflow-x: hidden;
+  height: 100vh;
+  overflow: hidden;
 }
 
 h1 {
