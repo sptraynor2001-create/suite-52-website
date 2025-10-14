@@ -18,6 +18,7 @@ function Home({ onNavigate }: HomeProps) {
   const [showPhilosophicalCursor, setShowPhilosophicalCursor] = useState(false)
   const [isPhilosophicalTyping, setIsPhilosophicalTyping] = useState(false)
   const [backgroundLoaded, setBackgroundLoaded] = useState(false)
+  const [djPhotoLoaded, setDjPhotoLoaded] = useState(false)
   const fullText = 'Suite 52'
   const fullPhilosophicalText = 'SOUND IS REBELLION AGAINST SILENCE. MUSIC SPEAKS WHAT LOGIC CANNOT DECODE. ALGORITHMS SEARCH FOR PATTERNS WHILE HUMAN BEINGS SEARCH FOR PURPOSE. CULTURE LIVES BETWEEN TRADITION AND TRANSFORMATION. FREEDOM EMERGES WHEN SPIRIT GUIDES TRANSMISSION. THE SIGNAL SEARCHES FOR THOSE WILLING TO LISTEN, THE MELODY FINDS THOSE WILLING TO FEEL, AND THE RHYTHM ONLY UNDERSTOOD BY THOSE WILLING TO MOVE.'
 
@@ -146,6 +147,15 @@ function Home({ onNavigate }: HomeProps) {
     }
   }, [])
 
+  // Preload DJ photo
+  useEffect(() => {
+    const img = new Image()
+    img.src = '/images/backgrounds/dj-photo.jpg'
+    img.onload = () => {
+      setDjPhotoLoaded(true)
+    }
+  }, [])
+
   const navLinks: { page: Page; label: string }[] = [
     { page: 'music', label: 'MUSIC' },
     { page: 'shows', label: 'SHOWS' },
@@ -231,6 +241,26 @@ function Home({ onNavigate }: HomeProps) {
           zIndex: 0,
           pointerEvents: 'none',
           transition: 'opacity 3s ease-in, background-size 0.2s ease-out',
+        }}
+      />
+
+      {/* DJ Photo - bottom right corner */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          right: 0,
+          width: isMobile ? '40%' : '25%',
+          height: isMobile ? '30%' : '40%',
+          backgroundImage: 'url(/images/backgrounds/dj-photo.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: djPhotoLoaded ? 0.15 : 0,
+          zIndex: 0,
+          pointerEvents: 'none',
+          transition: 'opacity 3s ease-in',
+          filter: 'grayscale(100%)',
         }}
       />
       
