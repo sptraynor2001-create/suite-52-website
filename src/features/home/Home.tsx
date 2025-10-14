@@ -225,7 +225,27 @@ function Home({ onNavigate }: HomeProps) {
         width: '100%',
       }}
     >
-      {/* Background image - beneath everything */}
+      {/* DJ Photo - bottom right corner, behind main background */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          right: 0,
+          width: isMobile ? '40%' : '25%',
+          height: '100vh',
+          backgroundImage: 'url(/images/backgrounds/dj-photo.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'right center',
+          backgroundRepeat: 'no-repeat',
+          opacity: djPhotoLoaded ? 0.15 : 0,
+          zIndex: -1,
+          pointerEvents: 'none',
+          transition: 'opacity 3s ease-in',
+          filter: 'grayscale(100%)',
+        }}
+      />
+
+      {/* Background image - beneath everything except DJ photo */}
       <div
         style={{
           position: 'fixed',
@@ -241,26 +261,6 @@ function Home({ onNavigate }: HomeProps) {
           zIndex: 0,
           pointerEvents: 'none',
           transition: 'opacity 3s ease-in, background-size 0.2s ease-out',
-        }}
-      />
-
-      {/* DJ Photo - bottom right corner */}
-      <div
-        style={{
-          position: 'fixed',
-          bottom: 0,
-          right: 0,
-          width: isMobile ? '40%' : '25%',
-          height: '100vh',
-          backgroundImage: 'url(/images/backgrounds/dj-photo.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          opacity: djPhotoLoaded ? 0.15 : 0,
-          zIndex: 0,
-          pointerEvents: 'none',
-          transition: 'opacity 3s ease-in',
-          filter: 'grayscale(100%)',
         }}
       />
       
