@@ -12,6 +12,17 @@ interface CodeLine {
 function FallingCode() {
   const [codeLines, setCodeLines] = useState<CodeLine[]>([])
   const [isVisible, setIsVisible] = useState(false)
+  const [viewportHeight, setViewportHeight] = useState(window.innerHeight)
+
+  // Track viewport height changes
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportHeight(window.innerHeight)
+    }
+    
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     // Generate random opacity with normal distribution
@@ -135,7 +146,8 @@ function FallingCode() {
 
     // Initialize with lines at fixed vertical positions (no vertical movement)
     const initialLines: CodeLine[] = []
-    const numLines = 35 // Number of horizontal lines to fill the screen
+    const lineSpacing = 30 // Fixed spacing in pixels between lines
+    const numLines = Math.ceil(viewportHeight / lineSpacing) + 5 // Dynamic based on height, +5 for buffer
     
     for (let i = 0; i < numLines; i++) {
       const speedRoll = Math.random()
@@ -157,8 +169,10 @@ function FallingCode() {
       })
     }
     setCodeLines(initialLines)
+  }, [viewportHeight]) // Regenerate when viewport height changes
 
-    // Fade in starts early while title is typing (500ms after page load)
+  // Separate effect for fade-in (only runs once on mount)
+  useEffect(() => {
     const fadeInTimer = setTimeout(() => {
       setIsVisible(true)
     }, 500)
@@ -166,7 +180,7 @@ function FallingCode() {
     return () => {
       clearTimeout(fadeInTimer)
     }
-  }, []) // Empty dependency array - runs only once on mount
+  }, [])
 
   return (
     <div
@@ -207,7 +221,7 @@ function FallingCode() {
               key={line.id}
               style={{
                 position: 'absolute',
-                top: `${(line.id / (codeLines.length - 1)) * 100}%`, // Fixed vertical position based on ID
+                top: `${line.id * 30}px`, // Fixed pixel spacing (30px apart)
                 left: 0,
                 width: '100%',
                 height: '13px', // Consistent line height
