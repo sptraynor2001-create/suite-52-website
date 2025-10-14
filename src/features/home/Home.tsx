@@ -227,10 +227,10 @@ function Home({ onNavigate }: HomeProps) {
           backgroundSize: getBackgroundSize(),
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          opacity: backgroundLoaded ? 0.15 : 0,
+          opacity: backgroundLoaded ? 0.12 : 0,
           zIndex: 0,
           pointerEvents: 'none',
-          transition: 'opacity 1.5s ease-in, background-size 0.2s ease-out',
+          transition: 'opacity 3s ease-in, background-size 0.2s ease-out',
         }}
       />
       
