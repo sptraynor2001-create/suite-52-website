@@ -342,7 +342,7 @@ function Home({ onNavigate }: HomeProps) {
             textAlign: 'justify',
             fontSize: isMobile ? '6px' : 'min(8px, 0.75vw)',
             lineHeight: '1.4',
-            color: '#00ff41',
+            color: '#e63946',
             opacity: philosophicalText.length > 0 ? 0.25 : 0,
             fontFamily: activeFont.family,
             letterSpacing: '0.20em',
