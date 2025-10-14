@@ -189,6 +189,21 @@ function Home({ onNavigate }: HomeProps) {
     return '100% auto'
   }
 
+  // Calculate smooth background position - transition from center to top
+  const getBackgroundPosition = () => {
+    const minWidth = 375 // Mobile minimum
+    const maxWidth = 1920 // Desktop maximum
+    
+    // Calculate ratio: 0 at mobile, 1 at desktop
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    
+    // Vertical position: 0% (top) at mobile, 50% (center) at desktop
+    const verticalPercent = ratio * 50
+    
+    return `center ${verticalPercent}%`
+  }
+
   // Calculate nav width based on viewport - scale from 60% (desktop) to 95% (mobile)
   const getNavWidth = () => {
     const minWidth = 375 // Mobile minimum
@@ -260,7 +275,7 @@ function Home({ onNavigate }: HomeProps) {
           height: '100vh',
           backgroundImage: 'url(/images/backgrounds/main-background.JPEG)',
           backgroundSize: getBackgroundSize(),
-          backgroundPosition: isMobile ? 'top center' : 'center',
+          backgroundPosition: getBackgroundPosition(),
           backgroundRepeat: 'no-repeat',
           opacity: backgroundLoaded ? 0.12 : 0,
           zIndex: 0,
