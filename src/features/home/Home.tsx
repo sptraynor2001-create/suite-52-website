@@ -75,7 +75,7 @@ function Home({ onNavigate }: HomeProps) {
         clearInterval(cursorInterval)
         console.log('Starting with OFF')
         setShowCursor(false)
-        // Wait a moment then fade in
+        // Wait a moment then fade in (shorter delay for first flash)
         setTimeout(() => {
           console.log('Flash 1: Fade ON')
           setShowCursor(true)
@@ -102,8 +102,8 @@ function Home({ onNavigate }: HomeProps) {
                 }, 265)
               }, 265)
             }, 265)
-          }, 265)
-        }, 600)
+          }, 180)
+        }, 400)
       }
     }
 
