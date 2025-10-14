@@ -168,6 +168,20 @@ function Home({ onNavigate }: HomeProps) {
     }
   }
 
+  // Calculate nav width based on viewport - scale from 70% (desktop) to 90% (mobile)
+  const getNavWidth = () => {
+    const minWidth = 375 // Mobile minimum
+    const maxWidth = 1920 // Desktop maximum
+    const minPercent = 90 // Mobile: 90%
+    const maxPercent = 70 // Desktop: 70%
+    
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    const percent = minPercent + (maxPercent - minPercent) * ratio
+    
+    return `${percent}%`
+  }
+
   // Generate grid positions and random velocities for squares - memoized so it only runs once
   const squares = useMemo(() => {
     const result = []
@@ -340,7 +354,7 @@ function Home({ onNavigate }: HomeProps) {
             gap: isMobile ? '2px' : '24px',
             flexWrap: isMobile ? 'nowrap' : 'wrap',
             padding: isMobile ? '0 10px' : '0',
-            maxWidth: '100%',
+            width: getNavWidth(),
           }}
         >
           {navLinks.map((link, index) => {
