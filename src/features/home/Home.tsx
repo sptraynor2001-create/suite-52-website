@@ -63,20 +63,28 @@ function Home({ onNavigate }: HomeProps) {
         const delay = timings[currentIndex - 1] || 100
         setTimeout(typeNextChar, delay)
       } else {
-        // Stop blinking and do quick flashes before disappearing
+        // Stop blinking and do quick flashes: on-off-on-off-on-hold-off
         clearInterval(cursorInterval)
-        // Ensure cursor is on first
+        // Ensure cursor starts on
         setShowCursor(true)
-        // First quick flash off (265ms)
+        // First flash: off (265ms)
         setTimeout(() => {
           setShowCursor(false)
-          // Second quick flash on (265ms)
+          // First flash: on (265ms)
           setTimeout(() => {
             setShowCursor(true)
-            // Hold for twice as long as normal (1060ms)
+            // Second flash: off (265ms)
             setTimeout(() => {
               setShowCursor(false)
-            }, 1060)
+              // Second flash: on (265ms)
+              setTimeout(() => {
+                setShowCursor(true)
+                // Hold for normal duration (530ms)
+                setTimeout(() => {
+                  setShowCursor(false)
+                }, 530)
+              }, 265)
+            }, 265)
           }, 265)
         }, 265)
       }
