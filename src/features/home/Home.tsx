@@ -73,37 +73,39 @@ function Home({ onNavigate }: HomeProps) {
         console.log('Typing complete - starting flash sequence')
         typingComplete = true
         clearInterval(cursorInterval)
-        // Wait for any pending React state updates to complete
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            console.log('Setting cursor ON (initial hold)')
-            setShowCursor(true)
+        // Force cursor ON immediately to override any pending toggle
+        console.log('Forcing cursor ON (override any pending toggle)')
+        setShowCursor(true)
+        // Force again after a tick to ensure it's ON
+        setTimeout(() => {
+          console.log('Forcing cursor ON again (ensure stable)')
+          setShowCursor(true)
+          // Now wait before starting flash sequence
+          setTimeout(() => {
+            console.log('Starting flash 1: OFF')
+            setShowCursor(false)
             setTimeout(() => {
-              console.log('Starting flash 1: OFF')
-              setShowCursor(false)
+              console.log('Flash 1: ON')
+              setShowCursor(true)
               setTimeout(() => {
-                console.log('Flash 1: ON')
-                setShowCursor(true)
+                console.log('Flash 2: OFF')
+                setShowCursor(false)
                 setTimeout(() => {
-                  console.log('Flash 2: OFF')
-                  setShowCursor(false)
+                  console.log('Flash 2: ON')
+                  setShowCursor(true)
                   setTimeout(() => {
-                    console.log('Flash 2: ON')
-                    setShowCursor(true)
+                    console.log('Final hold: ON for 530ms')
+                    // Hold for normal duration (530ms)
                     setTimeout(() => {
-                      console.log('Final hold: ON for 530ms')
-                      // Hold for normal duration (530ms)
-                      setTimeout(() => {
-                        console.log('Final: OFF - disappearing')
-                        setShowCursor(false)
-                      }, 530)
-                    }, 265)
+                      console.log('Final: OFF - disappearing')
+                      setShowCursor(false)
+                    }, 530)
                   }, 265)
                 }, 265)
               }, 265)
-            }, 600)
-          })
-        })
+            }, 265)
+          }, 600)
+        }, 50)
       }
     }
 
