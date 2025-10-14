@@ -109,7 +109,7 @@ function Shows() {
                 animation: 'dropInShow 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
                 backgroundColor: 'rgba(255, 255, 255, 0.05)',
                 borderRadius: '8px',
-                transform: hoveredIndex === index ? 'scale(1.02)' : 'scale(1)',
+                transform: hoveredIndex === index ? 'scale(1.05)' : 'scale(1)',
               }}
               onMouseEnter={() => {
                 setHoveredIndex(index)
