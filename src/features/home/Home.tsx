@@ -346,7 +346,7 @@ function Home({ onNavigate }: HomeProps) {
             opacity: philosophicalText.length > 0 ? 0.25 : 0,
             fontFamily: activeFont.family,
             letterSpacing: '0.20em',
-            fontWeight: '700',
+            fontWeight: '900',
             pointerEvents: 'none',
             transition: 'none',
             overflow: 'hidden',
