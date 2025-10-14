@@ -48,6 +48,12 @@ function Contact() {
                 href={socialLinks.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  window.getSelection()?.removeAllRanges()
+                  if (document.activeElement instanceof HTMLElement) {
+                    document.activeElement.blur()
+                  }
+                }}
                 className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition font-medium"
               >
                 Instagram
@@ -58,6 +64,12 @@ function Contact() {
                 href={socialLinks.tiktok}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  window.getSelection()?.removeAllRanges()
+                  if (document.activeElement instanceof HTMLElement) {
+                    document.activeElement.blur()
+                  }
+                }}
                 className="inline-flex items-center px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition font-medium"
               >
                 TikTok
@@ -68,6 +80,12 @@ function Contact() {
                 href={socialLinks.spotify}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  window.getSelection()?.removeAllRanges()
+                  if (document.activeElement instanceof HTMLElement) {
+                    document.activeElement.blur()
+                  }
+                }}
                 className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium"
               >
                 Spotify
@@ -78,6 +96,12 @@ function Contact() {
                 href={socialLinks.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  window.getSelection()?.removeAllRanges()
+                  if (document.activeElement instanceof HTMLElement) {
+                    document.activeElement.blur()
+                  }
+                }}
                 className="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium"
               >
                 YouTube

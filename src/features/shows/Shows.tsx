@@ -94,6 +94,13 @@ function Shows() {
               href="https://bubbl.so"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => {
+                // Clear any text selection and blur active element
+                window.getSelection()?.removeAllRanges()
+                if (document.activeElement instanceof HTMLElement) {
+                  document.activeElement.blur()
+                }
+              }}
               style={{
                 color: hoveredIndex === index ? POKER_RED : 'rgba(255, 255, 255, 0.85)',
                 fontSize: isMobile ? '11px' : '16px',

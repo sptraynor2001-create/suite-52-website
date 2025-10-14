@@ -87,6 +87,12 @@ function LiveSets() {
                     href={set.youtubeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => {
+                      window.getSelection()?.removeAllRanges()
+                      if (document.activeElement instanceof HTMLElement) {
+                        document.activeElement.blur()
+                      }
+                    }}
                     className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition"
                   >
                     <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
@@ -100,6 +106,12 @@ function LiveSets() {
                     href={set.soundcloudUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => {
+                      window.getSelection()?.removeAllRanges()
+                      if (document.activeElement instanceof HTMLElement) {
+                        document.activeElement.blur()
+                      }
+                    }}
                     className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-orange-600 rounded-md hover:bg-orange-700 transition"
                   >
                     SoundCloud
@@ -110,6 +122,12 @@ function LiveSets() {
                     href={set.mixcloudUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => {
+                      window.getSelection()?.removeAllRanges()
+                      if (document.activeElement instanceof HTMLElement) {
+                        document.activeElement.blur()
+                      }
+                    }}
                     className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 transition"
                   >
                     Mixcloud
@@ -120,6 +138,12 @@ function LiveSets() {
                     href={set.spotifyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => {
+                      window.getSelection()?.removeAllRanges()
+                      if (document.activeElement instanceof HTMLElement) {
+                        document.activeElement.blur()
+                      }
+                    }}
                     className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 transition"
                   >
                     Spotify
