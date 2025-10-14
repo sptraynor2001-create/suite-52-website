@@ -298,7 +298,7 @@ function Home({ onNavigate }: HomeProps) {
         <h1 
           style={{ 
             color: '#ffffff',
-            fontSize: isMobile ? '48px' : '96px',
+            fontSize: isMobile ? '64px' : '96px',
             fontWeight: '700',
             letterSpacing: '-0.02em',
             fontFamily: activeFont.family,
@@ -319,8 +319,8 @@ function Home({ onNavigate }: HomeProps) {
                 opacity: showCursor ? 1 : 0,
                 transition: displayText.length === fullText.length ? 'opacity 0.15s ease-in' : 'none',
                 display: 'inline-block',
-                width: isMobile ? '18px' : '36px',
-                height: isMobile ? '34px' : '68px',
+                width: isMobile ? '24px' : '36px',
+                height: isMobile ? '45px' : '68px',
                 backgroundColor: '#ffffff',
               }}
             />
