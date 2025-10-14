@@ -17,6 +17,7 @@ function Home({ onNavigate }: HomeProps) {
   const [philosophicalText, setPhilosophicalText] = useState('')
   const [showPhilosophicalCursor, setShowPhilosophicalCursor] = useState(false)
   const [isPhilosophicalTyping, setIsPhilosophicalTyping] = useState(false)
+  const [backgroundLoaded, setBackgroundLoaded] = useState(false)
   const fullText = 'Suite 52'
   const fullPhilosophicalText = 'SOUND IS REBELLION AGAINST SILENCE. MUSIC SPEAKS WHAT LOGIC CANNOT DECODE. ALGORITHMS SEARCH FOR PATTERNS WHILE HUMAN BEINGS SEARCH FOR PURPOSE. CULTURE LIVES BETWEEN TRADITION AND TRANSFORMATION. FREEDOM EMERGES WHEN SPIRIT GUIDES TRANSMISSION. THE SIGNAL SEARCHES FOR THOSE WILLING TO LISTEN, THE MELODY FINDS THOSE WILLING TO FEEL, AND THE RHYTHM ONLY UNDERSTOOD BY THOSE WILLING TO MOVE.'
 
@@ -136,6 +137,15 @@ function Home({ onNavigate }: HomeProps) {
     }
   }, [isPhilosophicalTyping, philosophicalText])
 
+  // Preload background image
+  useEffect(() => {
+    const img = new Image()
+    img.src = '/images/backgrounds/main-background.JPEG'
+    img.onload = () => {
+      setBackgroundLoaded(true)
+    }
+  }, [])
+
   const navLinks: { page: Page; label: string }[] = [
     { page: 'music', label: 'MUSIC' },
     { page: 'shows', label: 'SHOWS' },
@@ -217,10 +227,10 @@ function Home({ onNavigate }: HomeProps) {
           backgroundSize: getBackgroundSize(),
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          opacity: 0.15,
+          opacity: backgroundLoaded ? 0.15 : 0,
           zIndex: 0,
           pointerEvents: 'none',
-          transition: 'background-size 0.2s ease-out',
+          transition: 'opacity 1.5s ease-in, background-size 0.2s ease-out',
         }}
       />
       
