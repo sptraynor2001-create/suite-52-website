@@ -302,7 +302,7 @@ function Home({ onNavigate }: HomeProps) {
             marginBottom: isMobile ? '16px' : '20px',
             visibility: displayText.length === fullText.length ? 'visible' : 'hidden',
             opacity: displayText.length === fullText.length ? 1 : 0,
-            transition: 'opacity 0.8s ease-in 0.8s',
+            transition: 'opacity 2s ease-in 0.8s',
           }}
         >
           Music Producer // DJ // Artist
