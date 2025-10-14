@@ -18,7 +18,6 @@ function Home({ onNavigate }: HomeProps) {
   const [showPhilosophicalCursor, setShowPhilosophicalCursor] = useState(false)
   const [isPhilosophicalTyping, setIsPhilosophicalTyping] = useState(false)
   const [backgroundLoaded, setBackgroundLoaded] = useState(false)
-  const [djPhotoLoaded, setDjPhotoLoaded] = useState(false)
   const fullText = 'Suite 52'
   const fullPhilosophicalText = 'SOUND IS REBELLION AGAINST SILENCE. MUSIC SPEAKS WHAT LOGIC CANNOT DECODE. ALGORITHMS SEARCH FOR PATTERNS WHILE HUMAN BEINGS SEARCH FOR PURPOSE. CULTURE LIVES BETWEEN TRADITION AND TRANSFORMATION. FREEDOM EMERGES WHEN SPIRIT GUIDES TRANSMISSION. THE SIGNAL SEARCHES FOR THOSE WILLING TO LISTEN, THE MELODY FINDS THOSE WILLING TO FEEL, AND THE RHYTHM ONLY UNDERSTOOD BY THOSE WILLING TO MOVE.'
 
@@ -147,15 +146,6 @@ function Home({ onNavigate }: HomeProps) {
     }
   }, [])
 
-  // Preload DJ photo
-  useEffect(() => {
-    const img = new Image()
-    img.src = '/images/backgrounds/dj-photo.jpg'
-    img.onload = () => {
-      setDjPhotoLoaded(true)
-    }
-  }, [])
-
   const navLinks: { page: Page; label: string }[] = [
     { page: 'music', label: 'MUSIC' },
     { page: 'shows', label: 'SHOWS' },
@@ -225,27 +215,7 @@ function Home({ onNavigate }: HomeProps) {
         width: '100%',
       }}
     >
-      {/* DJ Photo - bottom right corner, behind main background */}
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          right: 0,
-          width: isMobile ? '40%' : '25%',
-          height: '100vh',
-          backgroundImage: 'url(/images/backgrounds/dj-photo.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'right center',
-          backgroundRepeat: 'no-repeat',
-          opacity: djPhotoLoaded ? 0.15 : 0,
-          zIndex: -1,
-          pointerEvents: 'none',
-          transition: 'opacity 3s ease-in',
-          filter: 'grayscale(100%)',
-        }}
-      />
-
-      {/* Background image - beneath everything except DJ photo */}
+      {/* Background image - beneath everything */}
       <div
         style={{
           position: 'fixed',
