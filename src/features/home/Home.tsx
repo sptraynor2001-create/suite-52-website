@@ -74,26 +74,22 @@ function Home({ onNavigate }: HomeProps) {
         typingComplete = true
         clearInterval(cursorInterval)
         // Ensure cursor stays on for a moment before starting flashes
+        // Wait longer (600ms) to let any pending interval updates settle
         console.log('Setting cursor ON (initial hold)')
         setShowCursor(true)
-        // Wait a bit before starting flash sequence (400ms)
         setTimeout(() => {
           console.log('Starting flash 1: OFF')
-          // First flash: off (265ms)
+          setShowCursor(false)
           setTimeout(() => {
-            setShowCursor(false)
             console.log('Flash 1: ON')
-            // First flash: on (265ms)
+            setShowCursor(true)
             setTimeout(() => {
-              setShowCursor(true)
               console.log('Flash 2: OFF')
-              // Second flash: off (265ms)
+              setShowCursor(false)
               setTimeout(() => {
-                setShowCursor(false)
                 console.log('Flash 2: ON')
-                // Second flash: on (265ms)
+                setShowCursor(true)
                 setTimeout(() => {
-                  setShowCursor(true)
                   console.log('Final hold: ON for 530ms')
                   // Hold for normal duration (530ms)
                   setTimeout(() => {
@@ -104,7 +100,7 @@ function Home({ onNavigate }: HomeProps) {
               }, 265)
             }, 265)
           }, 265)
-        }, 400)
+        }, 600)
       }
     }
 
