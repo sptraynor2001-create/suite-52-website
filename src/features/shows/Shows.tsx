@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 function Shows() {
   const [visibleShows, setVisibleShows] = useState<number>(0)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   const shows = [
     { date: '10-18-25', location: 'New York, US 🇺🇸', event: 'Muzika' },
@@ -22,6 +23,13 @@ function Shows() {
   ]
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
     let currentIndex = 0
     
     const showNext = () => {
@@ -37,6 +45,7 @@ function Shows() {
     }, 300)
 
     return () => {
+      window.removeEventListener('resize', checkMobile)
       clearTimeout(startDelay)
     }
   }, [])
@@ -87,17 +96,19 @@ function Shows() {
               rel="noopener noreferrer"
               style={{
                 color: hoveredIndex === index ? POKER_RED : 'rgba(255, 255, 255, 0.85)',
-                fontSize: '16px',
+                fontSize: isMobile ? '11px' : '16px',
                 fontFamily: activeFont.family,
                 letterSpacing: '0.08em',
                 display: 'flex',
                 justifyContent: 'space-between',
-                gap: '40px',
-                padding: '0',
+                gap: isMobile ? '10px' : '40px',
+                padding: isMobile ? '12px 16px' : '16px 20px',
                 textDecoration: 'none',
                 cursor: 'pointer',
                 transition: 'color 0.15s ease-out',
                 animation: 'dropInShow 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                borderRadius: '8px',
               }}
               onMouseEnter={() => {
                 setHoveredIndex(index)
