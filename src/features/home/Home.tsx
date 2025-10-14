@@ -357,7 +357,6 @@ function Home({ onNavigate }: HomeProps) {
             width: getNavWidth(),
             maxWidth: getNavWidth(),
             margin: '0 auto',
-            backgroundColor: 'rgba(255, 0, 0, 0.3)',
           }}
         >
           {navLinks.map((link, index) => {
@@ -373,7 +372,7 @@ function Home({ onNavigate }: HomeProps) {
                 onMouseEnter={() => setHoveredLink(link.page)}
                 onMouseLeave={() => setHoveredLink(null)}
                 style={{
-                  background: 'rgba(0, 255, 0, 0.2)',
+                  background: 'transparent',
                   border: 'none',
                   outline: 'none',
                   cursor: 'pointer',
