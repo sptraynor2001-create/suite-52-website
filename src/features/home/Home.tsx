@@ -73,39 +73,33 @@ function Home({ onNavigate }: HomeProps) {
         console.log('Typing complete - starting flash sequence')
         typingComplete = true
         clearInterval(cursorInterval)
-        // Force cursor ON immediately to override any pending toggle
-        console.log('Forcing cursor ON (override any pending toggle)')
+        console.log('Setting cursor ON (initial hold)')
         setShowCursor(true)
-        // Force again after a tick to ensure it's ON
+        // Wait longer (800ms) to ensure any pending interval toggle has settled
         setTimeout(() => {
-          console.log('Forcing cursor ON again (ensure stable)')
-          setShowCursor(true)
-          // Now wait before starting flash sequence
+          console.log('Starting flash 1: OFF')
+          setShowCursor(false)
           setTimeout(() => {
-            console.log('Starting flash 1: OFF')
-            setShowCursor(false)
+            console.log('Flash 1: ON')
+            setShowCursor(true)
             setTimeout(() => {
-              console.log('Flash 1: ON')
-              setShowCursor(true)
+              console.log('Flash 2: OFF')
+              setShowCursor(false)
               setTimeout(() => {
-                console.log('Flash 2: OFF')
-                setShowCursor(false)
+                console.log('Flash 2: ON')
+                setShowCursor(true)
                 setTimeout(() => {
-                  console.log('Flash 2: ON')
-                  setShowCursor(true)
+                  console.log('Final hold: ON for 530ms')
+                  // Hold for normal duration (530ms)
                   setTimeout(() => {
-                    console.log('Final hold: ON for 530ms')
-                    // Hold for normal duration (530ms)
-                    setTimeout(() => {
-                      console.log('Final: OFF - disappearing')
-                      setShowCursor(false)
-                    }, 530)
-                  }, 265)
+                    console.log('Final: OFF - disappearing')
+                    setShowCursor(false)
+                  }, 530)
                 }, 265)
               }, 265)
             }, 265)
-          }, 600)
-        }, 50)
+          }, 265)
+        }, 800)
       }
     }
 
