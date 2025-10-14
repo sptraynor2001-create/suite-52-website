@@ -118,8 +118,8 @@ function Shows() {
               }}
             >
               <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'left' }}>{show.date}</span>
-              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'center' }}>{show.location}</span>
-              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'right' }}>{show.event}</span>
+              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'center' }}>{show.event}</span>
+              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'right' }}>{show.location}</span>
             </a>
         ))}
       </div>
