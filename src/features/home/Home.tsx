@@ -255,12 +255,12 @@ function Home({ onNavigate }: HomeProps) {
               style={{ 
                 position: 'absolute',
                 right: '-0.6em',
-                top: '0',
+                top: '0.1em',
                 opacity: showCursor ? 1 : 0,
                 transition: 'opacity 0.1s',
                 display: 'inline-block',
-                width: isMobile ? '20px' : '40px',
-                height: isMobile ? '48px' : '96px',
+                width: isMobile ? '18px' : '36px',
+                height: isMobile ? '36px' : '72px',
                 backgroundColor: '#ffffff',
               }}
             />
