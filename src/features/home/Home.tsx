@@ -255,17 +255,15 @@ function Home({ onNavigate }: HomeProps) {
               style={{ 
                 position: 'absolute',
                 right: '-0.6em',
-                top: '0',
+                top: '0.3em',
                 opacity: showCursor ? 1 : 0,
                 transition: 'opacity 0.1s',
-                lineHeight: 1,
-                fontSize: '0.85em',
-                transform: 'scaleX(0.7)',
-                transformOrigin: 'left center',
+                display: 'inline-block',
+                width: isMobile ? '12px' : '24px',
+                height: isMobile ? '24px' : '48px',
+                backgroundColor: '#ffffff',
               }}
-            >
-              █
-            </span>
+            />
           </span>
         </h1>
         
