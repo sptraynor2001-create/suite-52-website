@@ -55,10 +55,7 @@ function Home({ onNavigate }: HomeProps) {
     // Cursor blink - declare first so it can be cleared in typeNextChar
     const cursorInterval = setInterval(() => {
       if (!typingComplete) {
-        console.log('Interval blink toggle')
         setShowCursor(prev => !prev)
-      } else {
-        console.log('Interval blocked (typing complete)')
       }
     }, 530)
     
@@ -70,32 +67,23 @@ function Home({ onNavigate }: HomeProps) {
         setTimeout(typeNextChar, delay)
       } else {
         // Stop blinking and do quick flashes: off-fade on-off-on-off-on-hold-off
-        console.log('Typing complete - starting flash sequence')
         typingComplete = true
         clearInterval(cursorInterval)
-        console.log('Starting with OFF')
         setShowCursor(false)
         // Wait a moment then fade in (shorter delay for first flash)
         setTimeout(() => {
-          console.log('Flash 1: Fade ON')
           setShowCursor(true)
           setTimeout(() => {
-            console.log('Flash 2: OFF')
             setShowCursor(false)
             setTimeout(() => {
-              console.log('Flash 2: ON')
               setShowCursor(true)
               setTimeout(() => {
-                console.log('Flash 3: OFF')
                 setShowCursor(false)
                 setTimeout(() => {
-                  console.log('Flash 3: ON')
                   setShowCursor(true)
                   setTimeout(() => {
-                    console.log('Final hold: ON for 530ms')
                     // Hold for normal duration (530ms)
                     setTimeout(() => {
-                      console.log('Final: OFF - disappearing')
                       setShowCursor(false)
                     }, 530)
                   }, 265)
@@ -197,12 +185,18 @@ function Home({ onNavigate }: HomeProps) {
 
   // Calculate smooth background size based on viewport width
   const getBackgroundSize = () => {
-    // Smooth transition from 'cover' at wider widths to 'auto 100%' at narrower widths
-    // Breakpoint around 768px (tablet/mobile threshold)
-    if (viewportWidth >= 768) {
+    // Smooth scaling from desktop to mobile
+    // At 1920px (desktop): cover
+    // At 768px and below: scale by percentage
+    if (viewportWidth >= 1920) {
+      return 'cover'
+    } else if (viewportWidth >= 768) {
       return 'cover'
     } else {
-      return 'auto 100%'
+      // Below 768px, scale from 100% down to fit screen width
+      // Calculate percentage that keeps aspect ratio
+      const scale = (viewportWidth / 768) * 100
+      return `auto ${Math.max(scale, 100)}%`
     }
   }
 
