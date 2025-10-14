@@ -251,7 +251,7 @@ function Home({ onNavigate }: HomeProps) {
           bottom: 0,
           right: 0,
           width: isMobile ? '40%' : '25%',
-          height: isMobile ? '30%' : '40%',
+          height: '100vh',
           backgroundImage: 'url(/images/backgrounds/dj-photo.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
