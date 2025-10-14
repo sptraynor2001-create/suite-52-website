@@ -74,6 +74,7 @@ function Shows() {
           gap: '20px',
           width: '100%',
           maxWidth: '900px',
+          margin: '0 auto',
         }}
       >
         {shows.slice(0, visibleShows).map((show, index) => (
