@@ -337,17 +337,16 @@ function Home({ onNavigate }: HomeProps) {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            gap: isMobile ? '4px' : '24px',
-            rowGap: isMobile ? '6px' : '24px',
-            flexWrap: 'wrap',
+            gap: isMobile ? '2px' : '24px',
+            flexWrap: isMobile ? 'nowrap' : 'wrap',
             padding: isMobile ? '0 10px' : '0',
-            maxWidth: isMobile ? '320px' : '100%',
+            maxWidth: '100%',
           }}
         >
           {navLinks.map((link, index) => {
             const isHovered = hoveredLink === link.page
             const baseDelay = 1.2 // Base delay after typing animation
-            const staggerDelay = index * 0.15 // 150ms delay between each button (slower)
+            const staggerDelay = index * 0.25 // 250ms delay between each button (slower)
             const isVisible = displayText.length === fullText.length
             
             return (
@@ -362,16 +361,16 @@ function Home({ onNavigate }: HomeProps) {
                   outline: 'none',
                   cursor: 'pointer',
                   color: isHovered ? POKER_RED : WHITE,
-                  fontSize: isMobile ? '12px' : '16px',
+                  fontSize: isMobile ? `clamp(9px, ${viewportWidth * 0.028}px, 12px)` : '16px',
                   fontWeight: '700',
                   letterSpacing: '0.1em',
                   fontFamily: activeFont.family,
                   textTransform: 'uppercase',
                   transition: `opacity 0.8s ease-out ${baseDelay + staggerDelay}s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) ${isVisible ? '0s' : baseDelay + staggerDelay + 's'}, color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), margin 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)`,
-                  padding: isMobile ? '8px 8px' : '10px 16px',
+                  padding: isMobile ? '6px 4px' : '10px 16px',
                   margin: (isHovered && !isMobile) ? '0 10px' : '0',
-                  flexBasis: isMobile ? 'calc(33.333% - 6px)' : 'auto',
-                  minWidth: isMobile ? 'fit-content' : 'auto',
+                  flexShrink: isMobile ? 1 : 0,
+                  whiteSpace: isMobile ? 'nowrap' : 'normal',
                   visibility: isVisible ? 'visible' : 'hidden',
                   opacity: isVisible ? 1 : 0,
                   transform: (isHovered && !isMobile)
