@@ -260,7 +260,7 @@ function Home({ onNavigate }: HomeProps) {
           height: '100vh',
           backgroundImage: 'url(/images/backgrounds/main-background.JPEG)',
           backgroundSize: getBackgroundSize(),
-          backgroundPosition: 'center',
+          backgroundPosition: isMobile ? 'top center' : 'center',
           backgroundRepeat: 'no-repeat',
           opacity: backgroundLoaded ? 0.12 : 0,
           zIndex: 0,
