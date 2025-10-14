@@ -63,9 +63,22 @@ function Home({ onNavigate }: HomeProps) {
         const delay = timings[currentIndex - 1] || 100
         setTimeout(typeNextChar, delay)
       } else {
-        // Stop blinking and hide cursor when typing completes
+        // Stop blinking and do quick flashes before disappearing
         clearInterval(cursorInterval)
-        setShowCursor(false)
+        // Ensure cursor is on first
+        setShowCursor(true)
+        // First quick flash off (265ms)
+        setTimeout(() => {
+          setShowCursor(false)
+          // Second quick flash on (265ms)
+          setTimeout(() => {
+            setShowCursor(true)
+            // Hold for twice as long as normal (1060ms)
+            setTimeout(() => {
+              setShowCursor(false)
+            }, 1060)
+          }, 265)
+        }, 265)
       }
     }
 
