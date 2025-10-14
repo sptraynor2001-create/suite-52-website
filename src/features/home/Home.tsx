@@ -352,9 +352,10 @@ function Home({ onNavigate }: HomeProps) {
             justifyContent: 'center',
             alignItems: 'center',
             gap: isMobile ? '2px' : '24px',
-            flexWrap: isMobile ? 'nowrap' : 'wrap',
-            padding: isMobile ? '0 10px' : '0',
+            flexWrap: 'nowrap',
+            padding: '0 10px',
             width: getNavWidth(),
+            margin: '0 auto',
           }}
         >
           {navLinks.map((link, index) => {
