@@ -24,7 +24,7 @@ function Home({ onNavigate }: HomeProps) {
   useEffect(() => {
     // Check if mobile and track viewport width
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
+      setIsMobile(window.innerWidth < 768 || window.innerHeight < 768)
       setViewportWidth(window.innerWidth)
     }
     
