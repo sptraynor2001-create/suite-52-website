@@ -258,7 +258,7 @@ function Home({ onNavigate }: HomeProps) {
           opacity={square.opacity} 
         />
       ))}
-      <div style={{ textAlign: 'center', padding: isMobile ? '0 20px' : '0' }}>
+      <div style={{ textAlign: 'center', padding: '0', width: '100%', maxWidth: '100vw' }}>
         <h1 
           style={{ 
             color: '#ffffff',
@@ -355,6 +355,7 @@ function Home({ onNavigate }: HomeProps) {
             flexWrap: 'nowrap',
             padding: '0 10px',
             width: getNavWidth(),
+            maxWidth: getNavWidth(),
             margin: '0 auto',
             backgroundColor: 'rgba(255, 0, 0, 0.3)',
           }}
