@@ -105,10 +105,11 @@ function Shows() {
                 padding: isMobile ? '12px 16px' : '16px 20px',
                 textDecoration: 'none',
                 cursor: 'pointer',
-                transition: 'color 0.15s ease-out',
+                transition: 'color 0.15s ease-out, transform 0.2s ease-out',
                 animation: 'dropInShow 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
                 backgroundColor: 'rgba(255, 255, 255, 0.05)',
                 borderRadius: '8px',
+                transform: hoveredIndex === index ? 'scale(1.02)' : 'scale(1)',
               }}
               onMouseEnter={() => {
                 setHoveredIndex(index)
