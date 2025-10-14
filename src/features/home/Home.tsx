@@ -50,10 +50,13 @@ function Home({ onNavigate }: HomeProps) {
     ]
 
     let currentIndex = 0
+    let typingComplete = false
     
     // Cursor blink - declare first so it can be cleared in typeNextChar
     const cursorInterval = setInterval(() => {
-      setShowCursor(prev => !prev)
+      if (!typingComplete) {
+        setShowCursor(prev => !prev)
+      }
     }, 530)
     
     const typeNextChar = () => {
@@ -64,6 +67,7 @@ function Home({ onNavigate }: HomeProps) {
         setTimeout(typeNextChar, delay)
       } else {
         // Stop blinking and do quick flashes: on-off-on-off-on-hold-off
+        typingComplete = true
         clearInterval(cursorInterval)
         // Ensure cursor stays on for a moment before starting flashes
         setShowCursor(true)
