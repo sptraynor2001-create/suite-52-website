@@ -9,10 +9,14 @@ interface HomeProps {
 
 function Home({ onNavigate }: HomeProps) {
   const [displayText, setDisplayText] = useState('')
-  const [showCursor, setShowCursor] = useState(true)
+  const [showCursor, setShowCursor] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [hoveredLink, setHoveredLink] = useState<Page | null>(null)
+  const [philosophicalText, setPhilosophicalText] = useState('')
+  const [showPhilosophicalCursor, setShowPhilosophicalCursor] = useState(false)
+  const [isPhilosophicalTyping, setIsPhilosophicalTyping] = useState(false)
   const fullText = 'Suite 52'
+  const fullPhilosophicalText = 'SOUND IS REBELLION AGAINST SILENCE. MUSIC SPEAKS WHAT LOGIC CANNOT DECODE. ALGORITHMS DETECT PATTERNS WHILE HUMAN BEINGS FIND PURPOSE. CULTURE LIVES BETWEEN TRADITION AND TRANSFORMATION. FREEDOM EMERGES WHEN SPIRIT GUIDES THE TRANSMISSION. THE SIGNAL SEARCHES FOR THOSE WILLING TO LISTEN. THE RHYTHMS ARE UNDERSTOOD BY THOSE WILLING TO FEEL.'
 
   useEffect(() => {
     // Check if mobile
@@ -29,19 +33,24 @@ function Home({ onNavigate }: HomeProps) {
     link.rel = 'stylesheet'
     document.head.appendChild(link)
 
-    // Typing animation with expressive timing
+    // Typing animation with expressive timing (slower)
     const timings = [
-      150, // S
-      80,  // u - faster
-      90,  // i
-      70,  // t - fast
-      110, // e
-      200, // (pause before space)
-      100, // 5
-      85,  // 2
+      220, // S
+      120,  // u - faster
+      130,  // i
+      100,  // t - fast
+      160, // e
+      300, // (pause before space)
+      150, // 5
+      125,  // 2
     ]
 
     let currentIndex = 0
+    
+    // Cursor blink - declare first so it can be cleared in typeNextChar
+    const cursorInterval = setInterval(() => {
+      setShowCursor(prev => !prev)
+    }, 530)
     
     const typeNextChar = () => {
       if (currentIndex < fullText.length) {
@@ -50,22 +59,17 @@ function Home({ onNavigate }: HomeProps) {
         const delay = timings[currentIndex - 1] || 100
         setTimeout(typeNextChar, delay)
       } else {
-        // After typing is done, slow down cursor blink then stop
-        setTimeout(() => {
-          setShowCursor(false)
-        }, 1500)
+        // Stop blinking and hide cursor when typing completes
+        clearInterval(cursorInterval)
+        setShowCursor(false)
       }
     }
 
     // Start typing after a brief delay
     const startDelay = setTimeout(() => {
+      setShowCursor(true) // Show cursor when typing starts
       typeNextChar()
     }, 300)
-
-    // Cursor blink
-    const cursorInterval = setInterval(() => {
-      setShowCursor(prev => !prev)
-    }, 530)
 
     return () => {
       window.removeEventListener('resize', checkMobile)
@@ -74,6 +78,60 @@ function Home({ onNavigate }: HomeProps) {
       clearInterval(cursorInterval)
     }
   }, [])
+
+  // Typing animation for philosophical text
+  useEffect(() => {
+    // Start after main title animation completes and buttons appear (adjusted for slower typing: ~3.5s total)
+    const startDelay = setTimeout(() => {
+      setIsPhilosophicalTyping(true)
+      setShowPhilosophicalCursor(true)
+      let currentIndex = 0
+      
+      const typeNextChar = () => {
+        if (currentIndex < fullPhilosophicalText.length) {
+          setPhilosophicalText(fullPhilosophicalText.substring(0, currentIndex + 1))
+          currentIndex++
+          
+          // Variable typing speed: 40-120ms per keystroke
+          const delay = 40 + Math.random() * 80
+          
+          setTimeout(typeNextChar, delay)
+        } else {
+          setIsPhilosophicalTyping(false)
+          // Hide cursor after typing is done
+          setTimeout(() => {
+            setShowPhilosophicalCursor(false)
+          }, 1000)
+        }
+      }
+      
+      typeNextChar()
+    }, 3500)
+
+    return () => {
+      clearTimeout(startDelay)
+    }
+  }, [])
+
+  // Cursor management for philosophical text - solid while typing, blink after
+  useEffect(() => {
+    if (isPhilosophicalTyping) {
+      // Keep cursor solid while typing
+      setShowPhilosophicalCursor(true)
+      return
+    }
+    
+    // After typing is done, blink for a bit then hide
+    if (philosophicalText.length === fullPhilosophicalText.length && philosophicalText.length > 0) {
+      const cursorInterval = setInterval(() => {
+        setShowPhilosophicalCursor(prev => !prev)
+      }, 530)
+
+      return () => {
+        clearInterval(cursorInterval)
+      }
+    }
+  }, [isPhilosophicalTyping, philosophicalText])
 
   const navLinks: { page: Page; label: string }[] = [
     { page: 'music', label: 'MUSIC' },
@@ -105,23 +163,29 @@ function Home({ onNavigate }: HomeProps) {
             fontWeight: '700',
             letterSpacing: '-0.02em',
             fontFamily: activeFont.family,
-            marginBottom: isMobile ? '4px' : '8px',
+            marginBottom: isMobile ? '2px' : '4px',
             marginTop: 0,
-            minHeight: isMobile ? '60px' : '120px', // Prevent layout shift
-            display: 'flex',
-            alignItems: 'center',
+            display: 'inline-flex',
+            alignItems: 'flex-start',
             justifyContent: 'center',
           }}
         >
-          <span>
+          <span style={{ display: 'inline-block', position: 'relative' }}>
             {displayText}
             <span 
               style={{ 
+                position: 'absolute',
+                right: '-0.6em',
+                top: '0',
                 opacity: showCursor ? 1 : 0,
                 transition: 'opacity 0.1s',
+                lineHeight: 1,
+                fontSize: '0.85em',
+                transform: 'scaleX(0.7)',
+                transformOrigin: 'left center',
               }}
             >
-              |
+              █
             </span>
           </span>
         </h1>
@@ -134,12 +198,50 @@ function Home({ onNavigate }: HomeProps) {
             fontFamily: activeFont.family,
             margin: 0,
             marginBottom: isMobile ? '16px' : '20px',
+            visibility: displayText.length === fullText.length ? 'visible' : 'hidden',
             opacity: displayText.length === fullText.length ? 1 : 0,
             transition: 'opacity 0.8s ease-in 0.8s',
           }}
         >
           Producer // DJ // Artist
         </p>
+
+        {/* Philosophical text - subtle and hidden */}
+        <div
+          style={{
+            position: 'fixed',
+            bottom: isMobile ? '3px' : '5px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '45%',
+            maxWidth: '650px',
+            height: isMobile ? '55px' : '45px',
+            textAlign: 'justify',
+            fontSize: isMobile ? '6px' : 'min(8px, 0.75vw)',
+            lineHeight: '1.4',
+            color: '#00ff41',
+            opacity: philosophicalText.length > 0 ? 0.25 : 0,
+            fontFamily: activeFont.family,
+            letterSpacing: '0.20em',
+            fontWeight: '700',
+            pointerEvents: 'none',
+            transition: 'none',
+            overflow: 'hidden',
+            visibility: 'visible',
+          }}
+        >
+          {philosophicalText}
+          {showPhilosophicalCursor && (
+            <span 
+              style={{ 
+                opacity: showPhilosophicalCursor ? 1 : 0,
+                transition: 'opacity 0.1s',
+              }}
+            >
+              █
+            </span>
+          )}
+        </div>
 
         {/* Floating navigation links */}
         <nav
@@ -178,16 +280,17 @@ function Home({ onNavigate }: HomeProps) {
                   textTransform: 'uppercase',
                   transition: `opacity 0.8s ease-out ${baseDelay + staggerDelay}s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) ${isVisible ? '0s' : baseDelay + staggerDelay + 's'}, color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), margin 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)`,
                   padding: isMobile ? '8px 8px' : '10px 16px',
-                  margin: isHovered ? '0 10px' : '0',
+                  margin: (isHovered && !isMobile) ? '0 10px' : '0',
                   flexBasis: isMobile ? 'calc(33.333% - 6px)' : 'auto',
                   minWidth: isMobile ? 'fit-content' : 'auto',
+                  visibility: isVisible ? 'visible' : 'hidden',
                   opacity: isVisible ? 1 : 0,
-                  transform: isHovered 
+                  transform: (isHovered && !isMobile)
                     ? 'scale(1.3)' 
                     : isVisible 
                       ? 'translateY(0) scale(1)' 
-                      : 'translateY(16px) scale(1)',
-                  filter: isHovered ? 'brightness(1.2)' : 'brightness(1)',
+                      : 'translateY(0) scale(1)',
+                  filter: (isHovered && !isMobile) ? 'brightness(1.2)' : 'brightness(1)',
                 }}
               >
                 {link.label}

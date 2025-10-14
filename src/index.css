@@ -22,6 +22,9 @@
 /* Force scrollbar to always show to prevent layout shift */
 html {
   overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 /* Subtle grunge texture overlay */
@@ -215,13 +218,17 @@ body {
   min-width: 320px;
   min-height: 100vh;
   width: 100%;
+  max-width: 100vw;
   background-color: #000000;
   overflow-y: scroll; /* Force scrollbar */
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 #root {
   width: 100%;
+  max-width: 100vw;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 h1 {

@@ -6,6 +6,7 @@ interface CodeLine {
   content: string
   speed: number
   direction: 'left' | 'right'
+  opacity: number
 }
 
 function FallingCode() {
@@ -13,6 +14,25 @@ function FallingCode() {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
+    // Generate random opacity with normal distribution
+    // Using Box-Muller transform for gaussian distribution
+    const generateRandomOpacity = () => {
+      const mean = 0.045
+      const stdDev = 0.015
+      
+      // Box-Muller transform for normal distribution
+      const u1 = Math.random()
+      const u2 = Math.random()
+      const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2)
+      
+      // Apply mean and standard deviation
+      let opacity = mean + z0 * stdDev
+      
+      // Clamp to reasonable range (0.02 to 0.08)
+      opacity = Math.max(0.02, Math.min(0.08, opacity))
+      
+      return opacity
+    }
 
     const terms = [
       'MIDI', 'OSC', 'LFO', 'ADSR', 'VCA', 'VCF', 'VCO', 'FM', 'AM', 'PM',
@@ -132,7 +152,8 @@ function FallingCode() {
         id: i, // Use index as ID for fixed positions
         content: generateChaos() + ' ' + generateChaos() + ' ' + generateChaos(),
         speed: speed,
-        direction: Math.random() > 0.5 ? 'left' : 'right' as 'left' | 'right'
+        direction: Math.random() > 0.5 ? 'left' : 'right' as 'left' | 'right',
+        opacity: generateRandomOpacity()
       })
     }
     setCodeLines(initialLines)
@@ -153,8 +174,8 @@ function FallingCode() {
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
+        width: '100vw',
+        height: '100vh',
         pointerEvents: 'none',
         zIndex: 1,
         overflow: 'hidden',
@@ -173,6 +194,7 @@ function FallingCode() {
           color: '#ffffff',
           letterSpacing: '0.05em',
           lineHeight: '1.5',
+          overflow: 'hidden',
         }}
       >
         {codeLines.map((line) => (
@@ -185,7 +207,7 @@ function FallingCode() {
               width: '100%',
               height: '13px', // Consistent line height
               whiteSpace: 'nowrap',
-              opacity: 0.045, // Consistent opacity for all lines
+              opacity: line.opacity, // Random varied opacity per line
               animation: line.direction === 'left' 
                 ? `scrollLeft ${line.speed}s linear infinite`
                 : `scrollRight ${line.speed}s linear infinite`,
