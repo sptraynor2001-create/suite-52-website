@@ -168,12 +168,12 @@ function Home({ onNavigate }: HomeProps) {
     }
   }
 
-  // Calculate nav width based on viewport - scale from 75% (desktop) to 95% (mobile)
+  // Calculate nav width based on viewport - scale from 60% (desktop) to 95% (mobile)
   const getNavWidth = () => {
     const minWidth = 375 // Mobile minimum
     const maxWidth = 1920 // Desktop maximum
     const minPercent = 95 // Mobile: 95%
-    const maxPercent = 75 // Desktop: 75%
+    const maxPercent = 60 // Desktop: 60%
     
     const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
