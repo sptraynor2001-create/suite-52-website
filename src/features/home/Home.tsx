@@ -55,7 +55,10 @@ function Home({ onNavigate }: HomeProps) {
     // Cursor blink - declare first so it can be cleared in typeNextChar
     const cursorInterval = setInterval(() => {
       if (!typingComplete) {
+        console.log('Interval blink toggle')
         setShowCursor(prev => !prev)
+      } else {
+        console.log('Interval blocked (typing complete)')
       }
     }, 530)
     
@@ -67,26 +70,34 @@ function Home({ onNavigate }: HomeProps) {
         setTimeout(typeNextChar, delay)
       } else {
         // Stop blinking and do quick flashes: on-off-on-off-on-hold-off
+        console.log('Typing complete - starting flash sequence')
         typingComplete = true
         clearInterval(cursorInterval)
         // Ensure cursor stays on for a moment before starting flashes
+        console.log('Setting cursor ON (initial hold)')
         setShowCursor(true)
         // Wait a bit before starting flash sequence (400ms)
         setTimeout(() => {
+          console.log('Starting flash 1: OFF')
           // First flash: off (265ms)
           setTimeout(() => {
             setShowCursor(false)
+            console.log('Flash 1: ON')
             // First flash: on (265ms)
             setTimeout(() => {
               setShowCursor(true)
+              console.log('Flash 2: OFF')
               // Second flash: off (265ms)
               setTimeout(() => {
                 setShowCursor(false)
+                console.log('Flash 2: ON')
                 // Second flash: on (265ms)
                 setTimeout(() => {
                   setShowCursor(true)
+                  console.log('Final hold: ON for 530ms')
                   // Hold for normal duration (530ms)
                   setTimeout(() => {
+                    console.log('Final: OFF - disappearing')
                     setShowCursor(false)
                   }, 530)
                 }, 265)
