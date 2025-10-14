@@ -73,34 +73,37 @@ function Home({ onNavigate }: HomeProps) {
         console.log('Typing complete - starting flash sequence')
         typingComplete = true
         clearInterval(cursorInterval)
-        // Ensure cursor stays on for a moment before starting flashes
-        // Wait longer (600ms) to let any pending interval updates settle
-        console.log('Setting cursor ON (initial hold)')
-        setShowCursor(true)
-        setTimeout(() => {
-          console.log('Starting flash 1: OFF')
-          setShowCursor(false)
-          setTimeout(() => {
-            console.log('Flash 1: ON')
+        // Wait for any pending React state updates to complete
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            console.log('Setting cursor ON (initial hold)')
             setShowCursor(true)
             setTimeout(() => {
-              console.log('Flash 2: OFF')
+              console.log('Starting flash 1: OFF')
               setShowCursor(false)
               setTimeout(() => {
-                console.log('Flash 2: ON')
+                console.log('Flash 1: ON')
                 setShowCursor(true)
                 setTimeout(() => {
-                  console.log('Final hold: ON for 530ms')
-                  // Hold for normal duration (530ms)
+                  console.log('Flash 2: OFF')
+                  setShowCursor(false)
                   setTimeout(() => {
-                    console.log('Final: OFF - disappearing')
-                    setShowCursor(false)
-                  }, 530)
+                    console.log('Flash 2: ON')
+                    setShowCursor(true)
+                    setTimeout(() => {
+                      console.log('Final hold: ON for 530ms')
+                      // Hold for normal duration (530ms)
+                      setTimeout(() => {
+                        console.log('Final: OFF - disappearing')
+                        setShowCursor(false)
+                      }, 530)
+                    }, 265)
+                  }, 265)
                 }, 265)
               }, 265)
-            }, 265)
-          }, 265)
-        }, 600)
+            }, 600)
+          })
+        })
       }
     }
 
