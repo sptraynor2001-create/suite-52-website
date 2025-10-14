@@ -343,7 +343,7 @@ function Home({ onNavigate }: HomeProps) {
             fontSize: isMobile ? '6px' : 'min(8px, 0.75vw)',
             lineHeight: '1.4',
             color: '#e63946',
-            opacity: philosophicalText.length > 0 ? 0.25 : 0,
+            opacity: philosophicalText.length > 0 ? 0.35 : 0,
             fontFamily: activeFont.family,
             letterSpacing: '0.20em',
             fontWeight: '900',
