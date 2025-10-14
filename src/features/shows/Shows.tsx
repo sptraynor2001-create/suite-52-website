@@ -11,7 +11,7 @@ function Shows() {
     { date: '11_01_25', location: 'BROOKLYN_US', event: 'PRIVATE' },
     { date: '11_21_25', location: 'BROOKLYN_US', event: 'UNVEILED' },
     { date: '12_06_25', location: 'BOSTON_US', event: '5ESS1ONS' },
-    { date: '12_11_25', location: 'CDMX_MX', event: 'DINSMOOR' },
+    { date: '12_11_25', location: 'CDMX', event: 'DINSMOOR' },
     { date: '12_13_25', location: 'MADRID_ES', event: 'HOUDINNI' },
     { date: '12_14_25', location: 'MARBELLA_ES', event: 'LA_SIESTA' },
     { date: '12_15_25', location: 'MARBELLA_ES', event: 'MOMENTO' },
