@@ -210,9 +210,9 @@ function Home({ onNavigate }: HomeProps) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '100%',
-        minHeight: '100vh',
+        height: '100vh',
         width: '100%',
+        overflow: 'hidden',
       }}
     >
       {/* Background image - beneath everything */}
