@@ -7,19 +7,19 @@ function Shows() {
   const [isMobile, setIsMobile] = useState(false)
 
   const shows = [
-    { date: '10-18-25', location: 'New York, US 🇺🇸', event: 'Muzika' },
-    { date: '11-01-25', location: 'Brooklyn, US 🇺🇸', event: 'Private' },
-    { date: '11-21-25', location: 'Brooklyn, US 🇺🇸', event: 'Unveiled' },
-    { date: '12-06-25', location: 'Boston, US 🇺🇸', event: '5ess1ons' },
-    { date: '12-11-25', location: 'CDMX, MX 🇲🇽', event: 'Dinsmoor' },
-    { date: '12-13-25', location: 'Madrid, ES 🇪🇸', event: 'Houdinni' },
-    { date: '12-14-25', location: 'Marbella, ES 🇪🇸', event: 'La Siesta' },
-    { date: '12-15-25', location: 'Marbella, ES 🇪🇸', event: 'Momento' },
-    { date: '01-12-26', location: 'Barcelona, ES 🇪🇸', event: 'UMANO Barcelona' },
-    { date: '01-19-26', location: 'Casablanca, MA 🇲🇦', event: 'Solena' },
-    { date: '01-21-26', location: 'Lisbon, PT 🇵🇹', event: 'UMANO x KAYO' },
-    { date: '01-30-26', location: 'Dubai, AE 🇦🇪', event: 'Be Beach' },
-    { date: '01-31-26', location: 'Beirut, LB 🇱🇧', event: 'Grand Factory' },
+    { date: '10_18_25', location: 'NEW_YORK_US', event: 'MUZIKA' },
+    { date: '11_01_25', location: 'BROOKLYN_US', event: 'PRIVATE' },
+    { date: '11_21_25', location: 'BROOKLYN_US', event: 'UNVEILED' },
+    { date: '12_06_25', location: 'BOSTON_US', event: '5ESS1ONS' },
+    { date: '12_11_25', location: 'CDMX_MX', event: 'DINSMOOR' },
+    { date: '12_13_25', location: 'MADRID_ES', event: 'HOUDINNI' },
+    { date: '12_14_25', location: 'MARBELLA_ES', event: 'LA_SIESTA' },
+    { date: '12_15_25', location: 'MARBELLA_ES', event: 'MOMENTO' },
+    { date: '01_12_26', location: 'BARCELONA_ES', event: 'UMANO_BARCELONA' },
+    { date: '01_19_26', location: 'CASABLANCA_MA', event: 'SOLENA' },
+    { date: '01_21_26', location: 'LISBON_PT', event: 'UMANO_X_KAYO' },
+    { date: '01_30_26', location: 'DUBAI_AE', event: 'BE_BEACH' },
+    { date: '01_31_26', location: 'BEIRUT_LB', event: 'GRAND_FACTORY' },
   ]
 
   useEffect(() => {
