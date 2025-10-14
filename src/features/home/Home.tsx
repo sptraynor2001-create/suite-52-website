@@ -309,7 +309,6 @@ function Home({ onNavigate }: HomeProps) {
                 right: '-0.6em',
                 top: '0.22em',
                 opacity: showCursor ? 1 : 0,
-                transition: 'opacity 0.1s',
                 display: 'inline-block',
                 width: isMobile ? '18px' : '36px',
                 height: isMobile ? '34px' : '68px',
