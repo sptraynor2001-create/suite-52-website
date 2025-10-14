@@ -65,28 +65,31 @@ function Home({ onNavigate }: HomeProps) {
       } else {
         // Stop blinking and do quick flashes: on-off-on-off-on-hold-off
         clearInterval(cursorInterval)
-        // Ensure cursor starts on
+        // Ensure cursor stays on for a moment before starting flashes
         setShowCursor(true)
-        // First flash: off (265ms)
+        // Wait a bit before starting flash sequence (400ms)
         setTimeout(() => {
-          setShowCursor(false)
-          // First flash: on (265ms)
+          // First flash: off (265ms)
           setTimeout(() => {
-            setShowCursor(true)
-            // Second flash: off (265ms)
+            setShowCursor(false)
+            // First flash: on (265ms)
             setTimeout(() => {
-              setShowCursor(false)
-              // Second flash: on (265ms)
+              setShowCursor(true)
+              // Second flash: off (265ms)
               setTimeout(() => {
-                setShowCursor(true)
-                // Hold for normal duration (530ms)
+                setShowCursor(false)
+                // Second flash: on (265ms)
                 setTimeout(() => {
-                  setShowCursor(false)
-                }, 530)
+                  setShowCursor(true)
+                  // Hold for normal duration (530ms)
+                  setTimeout(() => {
+                    setShowCursor(false)
+                  }, 530)
+                }, 265)
               }, 265)
             }, 265)
           }, 265)
-        }, 265)
+        }, 400)
       }
     }
 
