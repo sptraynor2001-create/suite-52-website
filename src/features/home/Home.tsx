@@ -272,7 +272,7 @@ function Home({ onNavigate }: HomeProps) {
   const titleMarginBottom = '3px' // Fixed spacing
   const subtitleMarginBottom = '15px' // Fixed spacing
   const cursorWidth = '30px' // Fixed width
-  const cursorHeight = '56px' // Fixed height
+  const cursorHeight = '60px' // Fixed height (slightly taller)
 
   // Memoize philosophical text properties - smooth transitions
   const philosophicalFontSize = useMemo(() => {
@@ -432,7 +432,7 @@ function Home({ onNavigate }: HomeProps) {
               style={{ 
                 position: 'absolute',
                 right: '-0.6em',
-                top: '0.26em',
+                top: '0.25em',
                 opacity: showCursor ? 1 : 0,
                 transition: displayText.length === fullText.length ? 'opacity 0.15s ease-in' : 'none',
                 display: 'inline-block',
