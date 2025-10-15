@@ -5,6 +5,7 @@ function Shows() {
   const [visibleShows, setVisibleShows] = useState<number>(0)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [isMobile, setIsMobile] = useState(false)
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
 
   const shows = [
     { date: '10_18_25', location: 'NEW_YORK_US', event: 'MUZIKA' },
@@ -25,6 +26,7 @@ function Shows() {
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768 || window.innerHeight < 768)
+      setViewportWidth(window.innerWidth)
     }
     
     checkMobile()
@@ -52,6 +54,20 @@ function Shows() {
 
   const POKER_RED = '#e63946'
 
+  // Calculate top padding based on viewport width - closer to top on mobile, scales up for desktop
+  const getTopPadding = () => {
+    const minWidth = 375 // Mobile minimum
+    const maxWidth = 1920 // Desktop maximum
+    const minPadding = 20 // Mobile: 20px (very close to top)
+    const maxPadding = 40 // Desktop: 40px (closer than before)
+    
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    const padding = minPadding + (maxPadding - minPadding) * ratio
+    
+    return `${padding}px`
+  }
+
   return (
     <div
       style={{
@@ -60,7 +76,7 @@ function Shows() {
         alignItems: 'center',
         minHeight: 'calc(100vh - 80px)',
         width: '100%',
-        padding: '60px 0',
+        padding: `${getTopPadding()} 0 60px 0`,
       }}
     >
       <h2
