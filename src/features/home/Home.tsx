@@ -432,7 +432,7 @@ function Home({ onNavigate }: HomeProps) {
               style={{ 
                 position: 'absolute',
                 right: '-0.6em',
-                top: '0.25em',
+                top: '0.23em',
                 opacity: showCursor ? 1 : 0,
                 transition: displayText.length === fullText.length ? 'opacity 0.15s ease-in' : 'none',
                 display: 'inline-block',
