@@ -220,37 +220,34 @@ function Home({ onNavigate }: HomeProps) {
     return `${percent}%`
   }
 
-  // Generate grid positions and random velocities for squares - memoized so it only runs once
+  // Generate random positions and velocities for squares - memoized so it only runs once
   const squares = useMemo(() => {
     const result = []
-    const cols = 3
-    const rows = 1
-    const spacingX = window.innerWidth / (cols + 1)
-    const spacingY = window.innerHeight / (rows + 1)
+    const numSquares = 2
+    const sizePercent = 0.9 // 90% of smaller viewport dimension for both
     
-    const opacities = [0.015, 0.022, 0.018]
-    
-    let index = 0
-    for (let row = 0; row < rows; row++) {
-      for (let col = 0; col < cols; col++) {
-        const x = (col + 1) * spacingX
-        const y = (row + 1) * spacingY
-        
-        // Random velocity between 0.15 and 0.35, random direction
-        const velocityX = (Math.random() * 0.2 + 0.15) * (Math.random() > 0.5 ? 1 : -1)
-        const velocityY = (Math.random() * 0.2 + 0.15) * (Math.random() > 0.5 ? 1 : -1)
-        
-        result.push({
-          key: index,
-          x,
-          y,
-          velocityX,
-          velocityY,
-          opacity: opacities[index]
-        })
-        
-        index++
-      }
+    for (let index = 0; index < numSquares; index++) {
+      const smallerDimension = Math.min(window.innerWidth, window.innerHeight)
+      const squareSize = smallerDimension * sizePercent
+      
+      // Random position within valid bounds
+      const maxX = Math.max(0, window.innerWidth - squareSize)
+      const maxY = Math.max(0, window.innerHeight - squareSize)
+      const x = Math.random() * maxX
+      const y = Math.random() * maxY
+      
+      // Random velocity between 0.15 and 0.35, random direction
+      const velocityX = (Math.random() * 0.2 + 0.15) * (Math.random() > 0.5 ? 1 : -1)
+      const velocityY = (Math.random() * 0.2 + 0.15) * (Math.random() > 0.5 ? 1 : -1)
+      
+      result.push({
+        key: index,
+        x,
+        y,
+        velocityX,
+        velocityY,
+        sizePercent
+      })
     }
     
     return result
@@ -267,6 +264,16 @@ function Home({ onNavigate }: HomeProps) {
         overflow: 'hidden',
       }}
     >
+      {/* SVG filter for horizontal motion blur and contrast */}
+      <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+        <defs>
+          <filter id="horizontalMotionBlur">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="6,0" result="blur" />
+            <feColorMatrix in="blur" type="matrix" values="1.3 0 0 0 0  0 1.3 0 0 0  0 0 1.3 0 0  0 0 0 1 0" />
+          </filter>
+        </defs>
+      </svg>
+      
       {/* Background image - beneath everything */}
       <div
         style={{
@@ -279,10 +286,11 @@ function Home({ onNavigate }: HomeProps) {
           backgroundSize: getBackgroundSize(),
           backgroundPosition: getBackgroundPosition(),
           backgroundRepeat: 'no-repeat',
-          opacity: backgroundLoaded ? 0.12 : 0,
+          opacity: backgroundLoaded ? 0.20 : 0,
           zIndex: 0,
           pointerEvents: 'none',
           transition: 'opacity 3s ease-in',
+          filter: 'url(#horizontalMotionBlur)',
         }}
       />
       
@@ -293,7 +301,7 @@ function Home({ onNavigate }: HomeProps) {
           initialY={square.y} 
           velocityX={square.velocityX} 
           velocityY={square.velocityY} 
-          opacity={square.opacity} 
+          sizePercent={square.sizePercent}
         />
       ))}
       <div style={{ textAlign: 'center', padding: '0', width: '100%', maxWidth: '100vw' }}>

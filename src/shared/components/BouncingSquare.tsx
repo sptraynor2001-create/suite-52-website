@@ -5,7 +5,7 @@ interface BouncingSquareProps {
   initialY?: number
   velocityX?: number
   velocityY?: number
-  opacity?: number
+  sizePercent?: number // Percentage of smaller viewport dimension (0.7 = 70%)
 }
 
 function BouncingSquare({ 
@@ -13,29 +13,33 @@ function BouncingSquare({
   initialY = 100, 
   velocityX = 0.25, 
   velocityY = 0.2,
-  opacity = 0.015
+  sizePercent = 0.8
 }: BouncingSquareProps) {
-  const [position, setPosition] = useState({ x: initialX, y: initialY })
   const [squareSize, setSquareSize] = useState(120)
+  const [opacity, setOpacity] = useState(0) // Start at 0%, slowly increment to 1%
+  const [position, setPosition] = useState(() => {
+    // Calculate initial valid bounds
+    const maxX = Math.max(0, window.innerWidth - squareSize)
+    const maxY = Math.max(0, window.innerHeight - squareSize)
+    return {
+      x: Math.max(0, Math.min(maxX, initialX)),
+      y: Math.max(0, Math.min(maxY, initialY))
+    }
+  })
   const velocityRef = useRef({ x: velocityX, y: velocityY }) // Constant velocity (pixels per frame)
   const animationRef = useRef<number | undefined>(undefined)
 
   useEffect(() => {
-    // Update square size based on viewport width - scale continuously
+    // Update square size based on smaller viewport dimension
     const updateSize = () => {
       const width = window.innerWidth
-      // Scale from 120px at 1920px width down to 40px at 375px (mobile)
-      // Using linear interpolation
-      const minSize = 40
-      const maxSize = 120
-      const minWidth = 375
-      const maxWidth = 1920
+      const height = window.innerHeight
       
-      const clampedWidth = Math.max(minWidth, Math.min(maxWidth, width))
-      const scale = (clampedWidth - minWidth) / (maxWidth - minWidth)
-      const size = minSize + (maxSize - minSize) * scale
+      // Use specified percentage of the smaller dimension
+      const smallerDimension = Math.min(width, height)
+      const size = Math.round(smallerDimension * sizePercent)
       
-      setSquareSize(Math.round(size))
+      setSquareSize(size)
     }
 
     updateSize()
@@ -43,6 +47,52 @@ function BouncingSquare({
 
     return () => {
       window.removeEventListener('resize', updateSize)
+    }
+  }, [sizePercent])
+
+  // Clamp position when square size changes
+  useEffect(() => {
+    setPosition(prev => {
+      const maxX = Math.max(0, window.innerWidth - squareSize)
+      const maxY = Math.max(0, window.innerHeight - squareSize)
+      return {
+        x: Math.max(0, Math.min(maxX, prev.x)),
+        y: Math.max(0, Math.min(maxY, prev.y))
+      }
+    })
+  }, [squareSize])
+
+  // Wait for background to load (3s), then EXTREMELY slowly increment opacity by 0.0000001 each frame until it reaches 1%
+  useEffect(() => {
+    let animationId: number | undefined
+    let timeoutId: NodeJS.Timeout
+    
+    const animateOpacity = () => {
+      setOpacity(prev => {
+        const newOpacity = prev + 0.0000001
+        const capped = Math.min(newOpacity, 0.01)
+        
+        // Only continue animation if we haven't reached the target
+        if (capped < 0.01) {
+          animationId = requestAnimationFrame(animateOpacity)
+        }
+        
+        return capped
+      })
+    }
+    
+    // Delay start until after background image loads (3 seconds)
+    timeoutId = setTimeout(() => {
+      animationId = requestAnimationFrame(animateOpacity)
+    }, 3000)
+    
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId)
+      }
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
     }
   }, [])
 
@@ -81,7 +131,7 @@ function BouncingSquare({
         cancelAnimationFrame(animationRef.current)
       }
     }
-  }, [])
+  }, [squareSize])
 
   return (
     <div
@@ -91,11 +141,11 @@ function BouncingSquare({
         top: `${position.y}px`,
         width: `${squareSize}px`,
         height: `${squareSize}px`,
-        backgroundColor: '#000000',
+        backgroundColor: '#ffffff',
         opacity: opacity,
         pointerEvents: 'none',
         zIndex: 2,
-        transition: 'none',
+        transition: 'width 0.3s ease-out, height 0.3s ease-out',
       }}
     />
   )
