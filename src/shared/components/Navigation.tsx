@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { activeFont } from '@/design/fonts'
 
 type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'
@@ -11,10 +11,12 @@ interface NavigationProps {
 function Navigation({ currentPage, onNavigate }: NavigationProps) {
   const [hoveredLink, setHoveredLink] = useState<Page | null>(null)
   const [isMobile, setIsMobile] = useState(false)
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
 
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768 || window.innerHeight < 768)
+      setViewportWidth(window.innerWidth)
     }
     
     checkMobile()
@@ -31,6 +33,77 @@ function Navigation({ currentPage, onNavigate }: NavigationProps) {
     { page: 'contact', label: 'CONTACT' },
   ]
 
+  // Responsive font size - minimal variation, larger on mobile
+  const navFontSize = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    const minSize = 15 // Much larger minimum for mobile
+    const maxSize = 16 // Less variation
+    
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    const size = minSize + (maxSize - minSize) * ratio
+    
+    return `${size}px`
+  }, [viewportWidth, isMobile])
+
+  // Responsive gap - very tight on mobile
+  const navGap = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    const minGap = 2 // Very tight spacing on mobile
+    const maxGap = 8
+    
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    const gap = minGap + (maxGap - minGap) * ratio
+    
+    return `${gap}px`
+  }, [viewportWidth, isMobile])
+
+  // Responsive container width
+  const navWidth = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    const minPercent = 95
+    const maxPercent = 70
+    
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    const percent = minPercent + (maxPercent - minPercent) * ratio
+    
+    return `${percent}%`
+  }, [viewportWidth])
+
+  // Responsive container padding
+  const containerPadding = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    
+    // Interpolate padding
+    const vertPadding = 4 + (8 - 4) * ratio
+    const horizPadding = 8 // Keep consistent
+    
+    return `${vertPadding}px ${horizPadding}px`
+  }, [viewportWidth])
+
+  // Responsive button padding
+  const buttonPadding = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    
+    // Interpolate padding
+    const vertPadding = 6 + (8 - 6) * ratio
+    const horizPadding = 2 + (4 - 2) * ratio
+    
+    return `${vertPadding}px ${horizPadding}px`
+  }, [viewportWidth])
 
   const POKER_RED = '#e63946'
   const WHITE = '#ffffff'
@@ -51,13 +124,13 @@ function Navigation({ currentPage, onNavigate }: NavigationProps) {
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
         <div 
           style={{ 
-            width: isMobile ? '95%' : '70%',
+            width: navWidth,
             maxWidth: '1200px',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            padding: isMobile ? '4px 8px' : '8px',
-            gap: isMobile ? '4px' : '8px',
+            padding: containerPadding,
+            gap: navGap,
           }}
         >
           {navLinks.map((link) => {
@@ -82,16 +155,16 @@ function Navigation({ currentPage, onNavigate }: NavigationProps) {
                     outline: 'none',
                     cursor: 'pointer',
                     color: active ? POKER_RED : WHITE,
-                    fontSize: isMobile ? '9px' : '14px',
+                    fontSize: navFontSize,
                     fontWeight: '700',
                     fontStyle: active ? 'italic' : 'normal',
-                    letterSpacing: isMobile ? '0.05em' : '0.1em',
+                    letterSpacing: '0.1em',
                     textDecoration: 'none',
                     transition: 'all 0.15s ease-out',
                     fontFamily: activeFont.family,
                     textTransform: 'uppercase',
                     position: 'relative',
-                    padding: isMobile ? '6px 2px' : '8px 4px',
+                    padding: buttonPadding,
                     display: 'inline-block',
                     borderBottom: (isHovered && !active) ? `2px solid ${WHITE}` : '2px solid transparent',
                     transform: (isHovered && !active) ? 'translateY(-2px)' : 'translateY(0)', // Lift up on hover

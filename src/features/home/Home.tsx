@@ -220,6 +220,62 @@ function Home({ onNavigate }: HomeProps) {
     return `${percent}%`
   }
 
+  // Calculate title font size - scale linearly from 80px (narrow) to 96px (wide)
+  const getTitleFontSize = () => {
+    const minWidth = 375 // Mobile minimum
+    const maxWidth = 1920 // Desktop maximum
+    const minSize = 80 // Larger minimum for mobile
+    const maxSize = 96 // Desktop size
+    
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    const size = minSize + (maxSize - minSize) * ratio
+    
+    return `${size}px`
+  }
+
+  // Calculate subtitle font size - scale linearly
+  const getSubtitleFontSize = () => {
+    const minWidth = 375
+    const maxWidth = 1920
+    const minSize = 16 // Larger minimum for mobile
+    const maxSize = 20
+    
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    const size = minSize + (maxSize - minSize) * ratio
+    
+    return `${size}px`
+  }
+
+  // Memoize nav button font size - minimal variation, larger on mobile
+  const navFontSize = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    const minSize = 15 // Much larger minimum for mobile
+    const maxSize = 16 // Less variation
+    
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    const size = minSize + (maxSize - minSize) * ratio
+    
+    return `${size}px`
+  }, [viewportWidth, isMobile])
+
+  // Memoize nav button gap - very tight on mobile
+  const navGap = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    const minGap = 2 // Very tight spacing on mobile
+    const maxGap = 24
+    
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    const gap = minGap + (maxGap - minGap) * ratio
+    
+    return `${gap}px`
+  }, [viewportWidth, isMobile])
+
   // Generate random positions and velocities for squares - memoized so it only runs once
   const squares = useMemo(() => {
     const result = []
@@ -308,7 +364,7 @@ function Home({ onNavigate }: HomeProps) {
         <h1 
           style={{ 
             color: '#ffffff',
-            fontSize: isMobile ? '64px' : '96px',
+            fontSize: getTitleFontSize(),
             fontWeight: '700',
             letterSpacing: '-0.02em',
             fontFamily: activeFont.family,
@@ -340,7 +396,7 @@ function Home({ onNavigate }: HomeProps) {
         <p 
           style={{ 
             color: 'rgba(255, 255, 255, 0.25)',
-            fontSize: isMobile ? '14px' : '20px',
+            fontSize: getSubtitleFontSize(),
             letterSpacing: '0.05em',
             fontFamily: activeFont.family,
             fontWeight: '700',
@@ -397,7 +453,7 @@ function Home({ onNavigate }: HomeProps) {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            gap: isMobile ? '4px' : '24px',
+            gap: navGap,
             flexWrap: 'nowrap',
             padding: '0 10px',
             width: getNavWidth(),
@@ -423,7 +479,7 @@ function Home({ onNavigate }: HomeProps) {
                   outline: 'none',
                   cursor: 'pointer',
                   color: isHovered ? POKER_RED : WHITE,
-                  fontSize: isMobile ? `clamp(10px, ${viewportWidth * 0.033}px, 14px)` : '16px',
+                  fontSize: navFontSize,
                   fontWeight: '700',
                   letterSpacing: '0.1em',
                   fontFamily: activeFont.family,

@@ -62,7 +62,7 @@ function BouncingSquare({
     })
   }, [squareSize])
 
-  // Wait for background to load (3s), then EXTREMELY slowly increment opacity by 0.0000001 each frame until it reaches 1%
+  // Wait for background to load (3s), then EXTREMELY slowly increment opacity by 0.0000001 each frame until it reaches 0.5%
   useEffect(() => {
     let animationId: number | undefined
     let timeoutId: NodeJS.Timeout
@@ -70,10 +70,10 @@ function BouncingSquare({
     const animateOpacity = () => {
       setOpacity(prev => {
         const newOpacity = prev + 0.0000001
-        const capped = Math.min(newOpacity, 0.01)
+        const capped = Math.min(newOpacity, 0.005)
         
         // Only continue animation if we haven't reached the target
-        if (capped < 0.01) {
+        if (capped < 0.005) {
           animationId = requestAnimationFrame(animateOpacity)
         }
         

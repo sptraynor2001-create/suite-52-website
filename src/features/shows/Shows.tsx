@@ -1,10 +1,9 @@
 import { activeFont } from '@/design/fonts'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 
 function Shows() {
   const [visibleShows, setVisibleShows] = useState<number>(0)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const [isMobile, setIsMobile] = useState(false)
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
 
   const shows = [
@@ -24,13 +23,12 @@ function Shows() {
   ]
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768 || window.innerHeight < 768)
+    const updateViewport = () => {
       setViewportWidth(window.innerWidth)
     }
     
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
+    updateViewport()
+    window.addEventListener('resize', updateViewport)
 
     let currentIndex = 0
     
@@ -47,12 +45,54 @@ function Shows() {
     }, 300)
 
     return () => {
-      window.removeEventListener('resize', checkMobile)
+      window.removeEventListener('resize', updateViewport)
       clearTimeout(startDelay)
     }
   }, [])
 
   const POKER_RED = '#e63946'
+
+  // Responsive font size for show rows - larger minimum for mobile
+  const showFontSize = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    const minSize = 13 // Larger minimum for mobile (was 11px)
+    const maxSize = 16
+    
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    const size = minSize + (maxSize - minSize) * ratio
+    
+    return `${size}px`
+  }, [viewportWidth])
+
+  // Responsive gap for show rows
+  const showGap = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    const minGap = 10
+    const maxGap = 40
+    
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    const gap = minGap + (maxGap - minGap) * ratio
+    
+    return `${gap}px`
+  }, [viewportWidth])
+
+  // Responsive padding for show rows
+  const showPadding = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    
+    const vertPadding = 12 + (16 - 12) * ratio
+    const horizPadding = 16 + (20 - 16) * ratio
+    
+    return `${vertPadding}px ${horizPadding}px`
+  }, [viewportWidth])
 
   // Calculate top padding based on viewport width - closer to top on mobile, scales up for desktop
   const getTopPadding = () => {
@@ -119,13 +159,13 @@ function Shows() {
               }}
               style={{
                 color: hoveredIndex === index ? POKER_RED : 'rgba(255, 255, 255, 0.85)',
-                fontSize: isMobile ? '11px' : '16px',
+                fontSize: showFontSize,
                 fontFamily: activeFont.family,
                 letterSpacing: '0.08em',
                 display: 'flex',
                 justifyContent: 'space-between',
-                gap: isMobile ? '10px' : '40px',
-                padding: isMobile ? '12px 16px' : '16px 20px',
+                gap: showGap,
+                padding: showPadding,
                 textDecoration: 'none',
                 cursor: 'pointer',
                 transition: 'color 0.15s ease-out, transform 0.2s ease-out, background-color 0.2s ease-out',
