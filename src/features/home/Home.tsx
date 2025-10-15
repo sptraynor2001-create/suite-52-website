@@ -189,7 +189,7 @@ function Home({ onNavigate }: HomeProps) {
     return '100% auto'
   }
 
-  // Calculate smooth background position - transition from top to slightly below top
+  // Calculate smooth background position - transition from top on mobile to centered on desktop
   const getBackgroundPosition = () => {
     const minWidth = 375 // Mobile minimum
     const maxWidth = 1920 // Desktop maximum
@@ -198,8 +198,10 @@ function Home({ onNavigate }: HomeProps) {
     const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
     
-    // Vertical position: 0% (top) at mobile, 30% at desktop (higher up to avoid dead space)
-    const verticalPercent = ratio * 30
+    // Use cubic easing out to keep background near top throughout most of the transition
+    // Vertical position: stays near 0% (top) for most widths, moves to center only at very wide desktop
+    const easedRatio = 1 - Math.pow(1 - ratio, 3)
+    const verticalPercent = easedRatio * 50
     
     return `center ${verticalPercent}%`
   }
