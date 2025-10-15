@@ -274,6 +274,20 @@ function Home({ onNavigate }: HomeProps) {
   const cursorWidth = '30px' // Fixed width
   const cursorHeight = '60px' // Fixed height (slightly taller)
 
+  // Memoize horizontal blur amount - more on desktop, less on mobile
+  const horizontalBlur = useMemo(() => {
+    const minWidth = 375 // Mobile minimum
+    const maxWidth = 1920 // Desktop maximum
+    const minBlur = 12 // Mobile: current blur (threshold)
+    const maxBlur = 24 // Desktop: more blurry
+    
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    const blur = minBlur + (maxBlur - minBlur) * ratio
+    
+    return blur
+  }, [viewportWidth])
+
   // Memoize philosophical text properties - smooth transitions
   const philosophicalFontSize = useMemo(() => {
     const minWidth = 375
@@ -360,7 +374,7 @@ function Home({ onNavigate }: HomeProps) {
       <svg style={{ position: 'absolute', width: 0, height: 0 }}>
         <defs>
           <filter id="horizontalMotionBlur">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="12,0" result="blur" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation={`${horizontalBlur},0`} result="blur" />
             {/* Convert to grayscale */}
             <feColorMatrix in="blur" type="matrix" values="0.299 0.587 0.114 0 0  0.299 0.587 0.114 0 0  0.299 0.587 0.114 0 0  0 0 0 1 0" />
           </filter>
@@ -424,6 +438,7 @@ function Home({ onNavigate }: HomeProps) {
             display: 'inline-flex',
             alignItems: 'flex-start',
             justifyContent: 'center',
+            textShadow: '0 0 8px rgba(255, 255, 255, 0.6), 0 0 12px rgba(255, 255, 255, 0.4)',
           }}
         >
           <span style={{ display: 'inline-block', position: 'relative' }}>
@@ -439,6 +454,7 @@ function Home({ onNavigate }: HomeProps) {
                 width: cursorWidth,
                 height: cursorHeight,
                 backgroundColor: '#ffffff',
+                boxShadow: '0 0 8px rgba(255, 255, 255, 0.6), 0 0 12px rgba(255, 255, 255, 0.4)',
               }}
             />
           </span>
