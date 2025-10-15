@@ -257,9 +257,9 @@ button:focus-visible {
 /* Opacity oscillation for falling code */
 @keyframes opacityOscillate {
   0%, 100% {
-    opacity: 0.02;
+    opacity: 0.01;
   }
   50% {
-    opacity: 0.05;
+    opacity: 0.03;
   }
 }
