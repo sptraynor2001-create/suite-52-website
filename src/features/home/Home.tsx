@@ -428,7 +428,7 @@ function Home({ onNavigate }: HomeProps) {
       <div style={{ textAlign: 'center', padding: '0', width: '100%', maxWidth: '100vw' }}>
         <h1 
           style={{ 
-            color: '#ffffff',
+            color: 'rgba(255, 255, 255, 0.9)',
             fontSize: titleFontSize,
             fontWeight: '700',
             letterSpacing: '-0.02em',
@@ -438,7 +438,7 @@ function Home({ onNavigate }: HomeProps) {
             display: 'inline-flex',
             alignItems: 'flex-start',
             justifyContent: 'center',
-            textShadow: '0 0 8px rgba(255, 255, 255, 0.6), 0 0 12px rgba(255, 255, 255, 0.4)',
+            textShadow: '0 0 6px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2)',
           }}
         >
           <span style={{ display: 'inline-block', position: 'relative' }}>
@@ -448,13 +448,13 @@ function Home({ onNavigate }: HomeProps) {
                 position: 'absolute',
                 right: '-0.6em',
                 top: '0.23em',
-                opacity: showCursor ? 1 : 0,
+                opacity: showCursor ? 0.9 : 0,
                 transition: displayText.length === fullText.length ? 'opacity 0.15s ease-in' : 'none',
                 display: 'inline-block',
                 width: cursorWidth,
                 height: cursorHeight,
                 backgroundColor: '#ffffff',
-                boxShadow: '0 0 8px rgba(255, 255, 255, 0.6), 0 0 12px rgba(255, 255, 255, 0.4)',
+                boxShadow: '0 0 6px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2)',
               }}
             />
           </span>
