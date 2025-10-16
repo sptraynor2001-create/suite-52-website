@@ -474,7 +474,7 @@ function Home({ onNavigate }: HomeProps) {
             transition: 'opacity 2s ease-in 0.8s',
           }}
         >
-          Music Producer // DJ // Artist
+          Producer // DJ // Artist
         </p>
 
         {/* Philosophical text - subtle and hidden */}
