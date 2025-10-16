@@ -521,7 +521,7 @@ function Home({ onNavigate }: HomeProps) {
         <nav
           style={{
             display: 'flex',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             alignItems: 'center',
             gap: navGap,
             flexWrap: 'nowrap',
