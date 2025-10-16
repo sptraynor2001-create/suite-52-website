@@ -231,7 +231,7 @@ function Home({ onNavigate }: HomeProps) {
   }
 
   // Fixed text sizes for all screen sizes
-  const titleFontSize = '88px' // Fixed size
+  const titleFontSize = '70px' // Fixed size
   const subtitleFontSize = '18px' // Fixed size
   const navFontSize = '16px' // Fixed size
 
@@ -271,8 +271,8 @@ function Home({ onNavigate }: HomeProps) {
   // Fixed vertical spacing for all screen sizes
   const titleMarginBottom = '3px' // Fixed spacing
   const subtitleMarginBottom = '15px' // Fixed spacing
-  const cursorWidth = '30px' // Fixed width
-  const cursorHeight = '60px' // Fixed height (slightly taller)
+  const cursorWidth = '24px' // Fixed width
+  const cursorHeight = '48px' // Fixed height (slightly taller)
 
   // Memoize horizontal blur amount - more on desktop, less on mobile
   const horizontalBlur = useMemo(() => {
