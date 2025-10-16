@@ -1,11 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <!-- Simple Code + Music Icon -->
-  <g stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <!-- Code brackets -->
-    <path d="M 25 30 L 15 50 L 25 70"/>
-    <path d="M 75 30 L 85 50 L 75 70"/>
-    
-    <!-- Audio waveform in the middle -->
-    <path d="M 35 50 L 40 40 L 45 60 L 50 35 L 55 65 L 60 45 L 65 50" stroke-width="3"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="2" y1="12" x2="22" y2="12"/>
+  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
 </svg>
