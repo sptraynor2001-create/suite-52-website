@@ -80,7 +80,7 @@ function Shows() {
     return `${gap}px`
   }, [viewportWidth])
 
-  // Responsive padding for show rows - tighter on mobile
+  // Responsive padding for show rows - taller on mobile
   const showPadding = useMemo(() => {
     const minWidth = 375
     const maxWidth = 1920
@@ -88,7 +88,7 @@ function Shows() {
     const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
 
-    const vertPadding = 8 + (16 - 8) * ratio
+    const vertPadding = 16 - (16 - 12) * ratio // Taller on mobile (16px) to smaller on desktop (12px)
     const horizPadding = 12 + (20 - 12) * ratio
 
     return `${vertPadding}px ${horizPadding}px`
@@ -135,8 +135,8 @@ function Shows() {
                 animation: 'dropInShow 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
                 backgroundColor: hoveredIndex === index ? cardStyles.hover.backgroundColor : cardStyles.base.backgroundColor,
                 borderColor: hoveredIndex === index ? cardStyles.hover.borderColor : cardStyles.base.border,
-                marginLeft: hoveredIndex === index ? '0' : '4px',
-                width: hoveredIndex === index ? 'calc(100% + 4px)' : 'calc(100% - 4px)',
+                marginLeft: hoveredIndex === index ? '0' : `${Math.max(1, 4 * (viewportWidth / 1920))}px`,
+                width: hoveredIndex === index ? `calc(100% + ${Math.max(1, 4 * (viewportWidth / 1920))}px)` : `calc(100% - ${Math.max(1, 4 * (viewportWidth / 1920))}px)`,
               }}
               onMouseEnter={() => {
                 setHoveredIndex(index)
