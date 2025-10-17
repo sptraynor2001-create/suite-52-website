@@ -52,8 +52,6 @@ function Shows() {
     }
   }, [])
 
-  const POKER_RED = '#e63946'
-
   // Responsive font size for show rows - larger minimum for mobile
   const showFontSize = useMemo(() => {
     const minWidth = 375
@@ -123,7 +121,7 @@ function Shows() {
               }}
               style={{
                 ...cardStyles.base,
-                color: hoveredIndex === index ? POKER_RED : 'rgba(255, 255, 255, 0.85)',
+                color: 'rgba(255, 255, 255, 0.85)',
                 fontSize: showFontSize,
                 fontFamily: activeFont.family,
                 letterSpacing: '0.08em',
