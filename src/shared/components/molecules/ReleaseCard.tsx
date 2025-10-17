@@ -88,7 +88,7 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
           {/* Row 2: Song title */}
           <div style={{ 
             color: 'rgba(255, 255, 255, 0.95)',
-            fontSize: '18px',
+            fontSize: '19px',
             fontWeight: '700',
             letterSpacing: '0.01em',
             lineHeight: '1.2',
