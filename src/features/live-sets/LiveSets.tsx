@@ -16,7 +16,7 @@ function LiveSets() {
   }
 
   return (
-    <PageLayout title="Live Sets">
+    <PageLayout title="LIVE_SETS">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {sortedSets.map((set) => (
           <div 

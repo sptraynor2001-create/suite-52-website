@@ -2,7 +2,7 @@ import PageLayout from '@/shared/components/layouts/PageLayout'
 
 function EPK() {
   return (
-    <PageLayout title="Electronic Press Kit">
+    <PageLayout title="ELECTRONIC_PRESS_KIT">
       <div className="bg-white rounded-lg shadow-md p-6 sm:p-8">
         <div className="prose prose-lg max-w-none">
           <p className="text-gray-700 mb-6 text-base sm:text-lg">

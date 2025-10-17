@@ -96,7 +96,7 @@ function Shows() {
   }, [viewportWidth])
 
   return (
-    <PageLayout title="Upcoming Shows">
+    <PageLayout title="UPCOMING_SHOWS">
       <div
         style={{
           display: 'flex',

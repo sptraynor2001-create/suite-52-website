@@ -6,7 +6,7 @@ import { activeFont } from '@/design/fonts'
 function Music() {
   return (
     <PageLayout 
-      title="Releases"
+      title="RELEASES"
       subtitle="// LATEST_TRACKS.sort((a, b) => new Date(b.date) - new Date(a.date))"
     >
       {releases.map((release) => (
