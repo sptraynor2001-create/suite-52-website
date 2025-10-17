@@ -72,14 +72,15 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
       {/* Track Info Section */}
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px' }}>
         {/* Left section - Main info */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px', justifyContent: 'center' }}>
           {/* Row 1: Artists */}
           <div style={{ 
             color: 'rgba(255, 255, 255, 0.35)',
-            fontSize: '15px',
+            fontSize: '18px',
             fontWeight: '500',
             letterSpacing: '0.02em',
             fontFamily: 'monospace',
+            lineHeight: '1.2',
           }}>
             // {release.artists}
           </div>
@@ -87,9 +88,10 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
           {/* Row 2: Song title */}
           <div style={{ 
             color: 'rgba(255, 255, 255, 0.95)',
-            fontSize: '15px',
+            fontSize: '18px',
             fontWeight: '700',
             letterSpacing: '0.01em',
+            lineHeight: '1.2',
           }}>
             {release.title}
           </div>
