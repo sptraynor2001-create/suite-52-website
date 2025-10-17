@@ -1,12 +1,13 @@
-export interface Song {
+export interface Release {
   id: string
+  artists: string
   title: string
-  artist?: string
+  label?: string
   releaseDate: string
   coverImage?: string
   spotifyUrl?: string
   appleMusicUrl?: string
-  youtubeUrl?: string
-  description?: string
+  soundcloudUrl?: string
+  beatportUrl?: string
 }
 
