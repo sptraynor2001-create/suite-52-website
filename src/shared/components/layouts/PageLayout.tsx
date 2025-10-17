@@ -80,7 +80,7 @@ function PageLayout({ title, subtitle, children }: PageLayoutProps) {
             <p 
               ref={subtitleRef}
               style={{
-                background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.35) 20%, rgba(255, 255, 255, 0.5) 40%, rgba(255, 255, 255, 0.35) 60%, rgba(255, 255, 255, 0.15) 100%)',
+                background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.28) 20%, rgba(255, 255, 255, 0.38) 40%, rgba(255, 255, 255, 0.28) 60%, rgba(255, 255, 255, 0.2) 100%)',
                 backgroundSize: '200% auto',
                 color: 'transparent',
                 WebkitBackgroundClip: 'text',
@@ -89,8 +89,8 @@ function PageLayout({ title, subtitle, children }: PageLayoutProps) {
                 fontFamily: 'monospace',
                 letterSpacing: '0.05em',
                 margin: '8px 0 0 0',
-                animation: 'shimmer 3s linear infinite',
-                filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.15))',
+                animation: 'shimmer 5s linear infinite',
+                filter: 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.1))',
               }}
             >
               {subtitle}
