@@ -109,12 +109,12 @@ function Navigation({ currentPage, onNavigate }: NavigationProps) {
   const WHITE = '#ffffff'
 
   return (
-    <nav 
-      style={{ 
+    <nav
+      style={{
         backgroundColor: '#000000',
         width: '100%',
         padding: '16px 0',
-        position: 'sticky',
+        position: 'fixed',
         top: 0,
         zIndex: 100,
         boxShadow: '0 2px 4px rgba(0,0,0,0.5)',

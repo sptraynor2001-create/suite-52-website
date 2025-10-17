@@ -1,13 +1,69 @@
 import { Release } from '@/features/music/types'
 import { activeFont } from '@/design/fonts'
 import { cardStyles, cardColors } from '@/design/cardStyles'
+import { useState, useEffect, useMemo } from 'react'
 
 interface ReleaseCardProps {
   release: Release
+  index?: number
   onClick?: () => void
 }
 
-function ReleaseCard({ release, onClick }: ReleaseCardProps) {
+function ReleaseCard({ release, index = 0, onClick }: ReleaseCardProps) {
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // Responsive font sizes - scale down as screen gets smaller
+  const labelFontSize = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    const minSize = 11 // Smaller on mobile
+    const maxSize = 14
+
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    const size = minSize + (maxSize - minSize) * ratio
+
+    return `${size}px`
+  }, [viewportWidth])
+
+  const titleFontSize = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    const minSize = 12 // Even more scaling on mobile
+    const maxSize = 18
+
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    const size = minSize + (maxSize - minSize) * ratio
+
+    return `${size}px`
+  }, [viewportWidth])
+
+  const commentFontSize = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    const minSize = 12 // 12px on mobile as requested
+    const maxSize = 18
+
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    const size = minSize + (maxSize - minSize) * ratio
+
+    return `${size}px`
+  }, [viewportWidth])
+
+  // Hide arrow on mobile
+  const showArrow = viewportWidth >= 768
+
   return (
     <div
       onClick={onClick}
@@ -20,6 +76,7 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
         cursor: onClick ? 'pointer' : 'default',
         fontFamily: activeFont.family,
         marginBottom: cardStyles.margin.bottom,
+        animation: 'dropInShow 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.backgroundColor = cardStyles.hover.backgroundColor
@@ -74,9 +131,9 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
         {/* Left section - Main info */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px', justifyContent: 'center' }}>
           {/* Row 1: Artists */}
-          <div style={{ 
+          <div style={{
             color: 'rgba(255, 255, 255, 0.35)',
-            fontSize: '18px',
+            fontSize: commentFontSize,
             fontWeight: '500',
             letterSpacing: '0.02em',
             fontFamily: 'monospace',
@@ -88,7 +145,7 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
           {/* Row 2: Song title */}
           <div style={{
             color: 'rgba(255, 255, 255, 0.95)',
-            fontSize: '18px',
+            fontSize: titleFontSize,
             fontWeight: '700',
             letterSpacing: '0.02em',
             fontFamily: 'monospace',
@@ -101,7 +158,7 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
           {release.label ? (
             <div style={{
               color: 'rgba(255, 255, 255, 0.5)',
-              fontSize: '14px',
+              fontSize: labelFontSize,
               fontWeight: '400',
               letterSpacing: '0.02em',
               fontFamily: 'monospace',
@@ -112,7 +169,7 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
           ) : release.title === "Fallin' (Gabe Rich & Suite 52 Remix)" && (
             <div style={{
               color: 'rgba(255, 255, 255, 0.5)',
-              fontSize: '14px',
+              fontSize: labelFontSize,
               fontWeight: '400',
               letterSpacing: '0.02em',
               fontFamily: 'monospace',
@@ -123,19 +180,21 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
           )}
         </div>
 
-        {/* Arrow indicator */}
-        <div style={{ 
-          display: 'flex',
-          alignItems: 'center',
-        }}>
-          <span style={{ 
-            color: 'rgba(255, 255, 255, 0.3)',
-            fontSize: '24px',
-            transition: 'transform 0.2s ease',
+        {/* Arrow indicator - hidden on mobile */}
+        {showArrow && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
           }}>
-            →
-          </span>
-        </div>
+            <span style={{
+              color: 'rgba(255, 255, 255, 0.3)',
+              fontSize: '24px',
+              transition: 'transform 0.2s ease',
+            }}>
+              →
+            </span>
+          </div>
+        )}
       </div>
     </div>
   )

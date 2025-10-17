@@ -2,17 +2,41 @@ import { releases } from './data'
 import ReleaseCard from '@/shared/components/molecules/ReleaseCard'
 import PageLayout from '@/shared/components/layouts/PageLayout'
 import { activeFont } from '@/design/fonts'
+import { useState, useEffect } from 'react'
 
 function Music() {
+  const [visibleReleases, setVisibleReleases] = useState<number>(0)
+
+  useEffect(() => {
+    let currentIndex = 0
+
+    const showNext = () => {
+      if (currentIndex < releases.length) {
+        setVisibleReleases(currentIndex + 1)
+        currentIndex++
+        setTimeout(showNext, 80) // Fast domino effect
+      }
+    }
+
+    const startDelay = setTimeout(() => {
+      showNext()
+    }, 300)
+
+    return () => {
+      clearTimeout(startDelay)
+    }
+  }, [])
+
   return (
     <PageLayout 
       title="RELEASES"
       subtitle="// MUSIC.sort((a, b) => new Date(b.date) - new Date(a.date))"
     >
-      {releases.map((release) => (
-        <ReleaseCard 
-          key={release.id} 
+      {releases.slice(0, visibleReleases).map((release, index) => (
+        <ReleaseCard
+          key={release.id}
           release={release}
+          index={index}
           onClick={() => {
             // Add click handler for future functionality (streaming links, etc.)
             console.log('Clicked release:', release.title)

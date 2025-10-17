@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef } from 'react'
+import { ReactNode, useEffect, useRef, useState, useMemo } from 'react'
 import { activeFont } from '@/design/fonts'
 
 interface PageLayoutProps {
@@ -8,8 +8,32 @@ interface PageLayoutProps {
   stickyHeader?: boolean
 }
 
-function PageLayout({ title, subtitle, children, stickyHeader = true }: PageLayoutProps) {
+function PageLayout({ title, subtitle, children, stickyHeader = false }: PageLayoutProps) {
   const subtitleRef = useRef<HTMLParagraphElement>(null)
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // Responsive subtitle font size
+  const subtitleFontSize = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    const minSize = 10 // Smaller on mobile
+    const maxSize = 13
+
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    const size = minSize + (maxSize - minSize) * ratio
+
+    return `${size}px`
+  }, [viewportWidth])
 
   useEffect(() => {
     if (!subtitleRef.current) return
@@ -51,9 +75,8 @@ function PageLayout({ title, subtitle, children, stickyHeader = true }: PageLayo
 
   return (
     <div style={{
-      minHeight: '100vh',
       backgroundColor: '#000000',
-      paddingTop: stickyHeader ? '0' : '60px',
+      paddingTop: stickyHeader ? '0' : '100px', // Increased for fixed nav
       paddingBottom: '60px',
       paddingLeft: '20px',
       paddingRight: '20px',
@@ -67,7 +90,7 @@ function PageLayout({ title, subtitle, children, stickyHeader = true }: PageLayo
           marginBottom: '40px',
           borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
           paddingBottom: '20px',
-          paddingTop: stickyHeader ? '60px' : '0',
+          paddingTop: stickyHeader ? '100px' : '0',
           ...(stickyHeader && {
             position: 'sticky',
             top: 0,
@@ -100,12 +123,15 @@ function PageLayout({ title, subtitle, children, stickyHeader = true }: PageLayo
                 color: 'transparent',
                 WebkitBackgroundClip: 'text',
                 backgroundClip: 'text',
-                fontSize: '13px',
+                fontSize: subtitleFontSize,
                 fontFamily: 'monospace',
                 letterSpacing: '0.05em',
                 margin: '8px 0 0 0',
                 animation: 'shimmer 12s linear infinite',
                 filter: 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.1))',
+                whiteSpace: 'nowrap', // Always stay on one line
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
               }}
             >
               {subtitle}
