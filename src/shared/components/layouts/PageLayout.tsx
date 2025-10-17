@@ -80,7 +80,7 @@ function PageLayout({ title, subtitle, children }: PageLayoutProps) {
             <p 
               ref={subtitleRef}
               style={{
-                background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.28) 20%, rgba(255, 255, 255, 0.38) 40%, rgba(255, 255, 255, 0.28) 60%, rgba(255, 255, 255, 0.2) 100%)',
+                background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.25) 25%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.25) 75%, rgba(255, 255, 255, 0.15) 100%)',
                 backgroundSize: '200% auto',
                 color: 'transparent',
                 WebkitBackgroundClip: 'text',
