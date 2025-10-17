@@ -9,11 +9,10 @@ interface ReleaseCardProps {
 function ReleaseCard({ release, onClick }: ReleaseCardProps) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
-    return date.toLocaleDateString('en-US', { 
-      month: 'numeric', 
-      day: 'numeric', 
-      year: '2-digit' 
-    })
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    const year = String(date.getFullYear()).slice(-2)
+    return `${month}_${day}_${year}`
   }
 
   return (
@@ -84,15 +83,24 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px' }}>
         {/* Left section - Main info */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
-        {/* Artist comment */}
+        {/* Artist comment with date */}
         <div style={{ 
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
           color: 'rgba(255, 255, 255, 0.35)',
           fontSize: '12px',
           fontWeight: '500',
           letterSpacing: '0.02em',
           fontFamily: 'monospace',
         }}>
-          // {release.artists}
+          <span>// {release.artists}</span>
+          <span style={{ 
+            color: 'rgba(255, 255, 255, 0.25)',
+            fontSize: '11px',
+          }}>
+            {formatDate(release.releaseDate)}
+          </span>
         </div>
         
         {/* Song title */}
@@ -128,23 +136,11 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
         )}
       </div>
 
-        {/* Right section - Date */}
+        {/* Arrow indicator */}
         <div style={{ 
           display: 'flex',
           alignItems: 'center',
-          gap: '8px',
         }}>
-          <span style={{ 
-            color: 'rgba(255, 255, 255, 0.35)',
-            fontSize: '13px',
-            fontWeight: '500',
-            fontFamily: 'monospace',
-            letterSpacing: '0.02em',
-          }}>
-            ({formatDate(release.releaseDate)})
-          </span>
-          
-          {/* Arrow indicator */}
           <span style={{ 
             color: 'rgba(255, 255, 255, 0.3)',
             fontSize: '16px',
