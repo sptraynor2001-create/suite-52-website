@@ -92,37 +92,15 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
             // {release.artists}
           </div>
           
-          {/* Row 2: Song title and label */}
+          {/* Row 2: Song title */}
           <div style={{ 
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
+            color: 'rgba(255, 255, 255, 0.95)',
+            fontSize: '13px',
+            fontWeight: '700',
+            letterSpacing: '0.01em',
             marginTop: '2px',
           }}>
-            <span style={{ 
-              color: 'rgba(255, 255, 255, 0.95)',
-              fontSize: '13px',
-              fontWeight: '700',
-              letterSpacing: '0.01em',
-            }}>
-              {release.title}
-            </span>
-            
-            {release.label && (
-              <span style={{ 
-                color: 'rgba(255, 255, 255, 0.3)',
-                fontSize: '13px',
-                fontWeight: '500',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                padding: '2px 6px',
-                backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '2px',
-              }}>
-                [{release.label}]
-              </span>
-            )}
+            {release.title}
           </div>
           
           {/* Row 3: Release Date */}
@@ -137,14 +115,31 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
           </div>
         </div>
 
-        {/* Arrow indicator */}
+        {/* Right section - Label badge and arrow */}
         <div style={{ 
           display: 'flex',
           alignItems: 'center',
+          gap: '12px',
         }}>
+          {release.label && (
+            <span style={{ 
+              color: 'rgba(255, 255, 255, 0.3)',
+              fontSize: '13px',
+              fontWeight: '500',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              padding: '2px 6px',
+              backgroundColor: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '2px',
+            }}>
+              [{release.label}]
+            </span>
+          )}
+          
           <span style={{ 
             color: 'rgba(255, 255, 255, 0.3)',
-            fontSize: '16px',
+            fontSize: '24px',
             transition: 'transform 0.2s ease',
           }}>
             →
