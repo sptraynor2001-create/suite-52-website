@@ -82,59 +82,62 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
       {/* Track Info Section */}
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px' }}>
         {/* Left section - Main info */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
-        {/* Artist comment with date */}
-        <div style={{ 
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          color: 'rgba(255, 255, 255, 0.35)',
-          fontSize: '12px',
-          fontWeight: '500',
-          letterSpacing: '0.02em',
-          fontFamily: 'monospace',
-        }}>
-          <span>// {release.artists}</span>
-          <span style={{ 
-            color: 'rgba(255, 255, 255, 0.25)',
-            fontSize: '11px',
-          }}>
-            {formatDate(release.releaseDate)}
-          </span>
-        </div>
-        
-        {/* Song title */}
-        <div style={{ 
-          color: 'rgba(255, 255, 255, 0.95)',
-          fontSize: '17px',
-          fontWeight: '700',
-          letterSpacing: '0.01em',
-        }}>
-          {release.title}
-        </div>
-        
-        {release.label && (
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '3px' }}>
+          {/* Row 1: Artists */}
           <div style={{ 
-            display: 'flex', 
+            color: 'rgba(255, 255, 255, 0.35)',
+            fontSize: '11px',
+            fontWeight: '500',
+            letterSpacing: '0.02em',
+            fontFamily: 'monospace',
+          }}>
+            // ARTISTS={release.artists}
+          </div>
+          
+          {/* Row 2: Release Date */}
+          <div style={{ 
+            color: 'rgba(255, 255, 255, 0.35)',
+            fontSize: '11px',
+            fontWeight: '500',
+            letterSpacing: '0.02em',
+            fontFamily: 'monospace',
+          }}>
+            // RELEASE_DATE={formatDate(release.releaseDate)}
+          </div>
+          
+          {/* Row 3: Song title and label */}
+          <div style={{ 
+            display: 'flex',
             alignItems: 'center',
             gap: '8px',
+            marginTop: '2px',
           }}>
             <span style={{ 
-              color: 'rgba(255, 255, 255, 0.3)',
-              fontSize: '10px',
-              fontWeight: '500',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              padding: '2px 6px',
-              backgroundColor: 'rgba(255, 255, 255, 0.03)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '2px',
+              color: 'rgba(255, 255, 255, 0.95)',
+              fontSize: '17px',
+              fontWeight: '700',
+              letterSpacing: '0.01em',
             }}>
-              [{release.label}]
+              {release.title}
             </span>
+            
+            {release.label && (
+              <span style={{ 
+                color: 'rgba(255, 255, 255, 0.3)',
+                fontSize: '10px',
+                fontWeight: '500',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                padding: '2px 6px',
+                backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '2px',
+              }}>
+                [{release.label}]
+              </span>
+            )}
           </div>
-        )}
-      </div>
+        </div>
 
         {/* Arrow indicator */}
         <div style={{ 
