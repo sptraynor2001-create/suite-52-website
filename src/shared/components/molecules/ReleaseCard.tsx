@@ -22,8 +22,8 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
       style={{
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '20px 24px',
+        gap: '20px',
+        padding: '16px 20px',
         backgroundColor: 'rgba(255, 255, 255, 0.02)',
         border: '1px solid rgba(255, 255, 255, 0.1)',
         borderRadius: '4px',
@@ -43,8 +43,47 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
         e.currentTarget.style.transform = 'translateX(0)'
       }}
     >
-      {/* Left section - Main info */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
+      {/* Cover Art */}
+      <div style={{
+        width: '64px',
+        height: '64px',
+        minWidth: '64px',
+        backgroundColor: 'rgba(255, 255, 255, 0.05)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        borderRadius: '2px',
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        {release.coverArt ? (
+          <img 
+            src={release.coverArt} 
+            alt={release.title}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+            onError={(e) => {
+              e.currentTarget.style.display = 'none'
+            }}
+          />
+        ) : (
+          <span style={{
+            color: 'rgba(255, 255, 255, 0.2)',
+            fontSize: '24px',
+            fontWeight: '300',
+          }}>
+            ♪
+          </span>
+        )}
+      </div>
+
+      {/* Track Info Section */}
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px' }}>
+        {/* Left section - Main info */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
         {/* Artist comment */}
         <div style={{ 
           color: 'rgba(255, 255, 255, 0.35)',
@@ -89,30 +128,31 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
         )}
       </div>
 
-      {/* Right section - Date */}
-      <div style={{ 
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-      }}>
-        <span style={{ 
-          color: 'rgba(255, 255, 255, 0.35)',
-          fontSize: '13px',
-          fontWeight: '500',
-          fontFamily: 'monospace',
-          letterSpacing: '0.02em',
+        {/* Right section - Date */}
+        <div style={{ 
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
         }}>
-          ({formatDate(release.releaseDate)})
-        </span>
-        
-        {/* Arrow indicator */}
-        <span style={{ 
-          color: 'rgba(255, 255, 255, 0.3)',
-          fontSize: '16px',
-          transition: 'transform 0.2s ease',
-        }}>
-          →
-        </span>
+          <span style={{ 
+            color: 'rgba(255, 255, 255, 0.35)',
+            fontSize: '13px',
+            fontWeight: '500',
+            fontFamily: 'monospace',
+            letterSpacing: '0.02em',
+          }}>
+            ({formatDate(release.releaseDate)})
+          </span>
+          
+          {/* Arrow indicator */}
+          <span style={{ 
+            color: 'rgba(255, 255, 255, 0.3)',
+            fontSize: '16px',
+            transition: 'transform 0.2s ease',
+          }}>
+            →
+          </span>
+        </div>
       </div>
     </div>
   )

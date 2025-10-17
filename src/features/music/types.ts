@@ -4,7 +4,7 @@ export interface Release {
   title: string
   label?: string
   releaseDate: string
-  coverImage?: string
+  coverArt?: string
   spotifyUrl?: string
   appleMusicUrl?: string
   soundcloudUrl?: string
