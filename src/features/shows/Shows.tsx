@@ -1,6 +1,7 @@
 import { activeFont } from '@/design/fonts'
 import { useState, useEffect, useMemo } from 'react'
 import PageLayout from '@/shared/components/layouts/PageLayout'
+import { cardStyles } from '@/design/cardStyles'
 
 function Shows() {
   const [visibleShows, setVisibleShows] = useState<number>(0)
@@ -121,6 +122,7 @@ function Shows() {
                 }
               }}
               style={{
+                ...cardStyles.base,
                 color: hoveredIndex === index ? POKER_RED : 'rgba(255, 255, 255, 0.85)',
                 fontSize: showFontSize,
                 fontFamily: activeFont.family,
@@ -131,11 +133,10 @@ function Shows() {
                 padding: showPadding,
                 textDecoration: 'none',
                 cursor: 'pointer',
-                transition: 'color 0.15s ease-out, transform 0.2s ease-out, background-color 0.2s ease-out',
+                transition: 'all 0.2s ease',
                 animation: 'dropInShow 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
-                backgroundColor: hoveredIndex === index ? 'rgba(230, 57, 70, 0.05)' : 'rgba(255, 255, 255, 0.05)',
-                borderRadius: '8px',
-                transform: hoveredIndex === index ? 'scale(1.05)' : 'scale(1)',
+                backgroundColor: hoveredIndex === index ? 'rgba(230, 57, 70, 0.05)' : cardStyles.base.backgroundColor,
+                transform: hoveredIndex === index ? 'translateX(4px)' : 'translateX(0)',
               }}
               onMouseEnter={() => {
                 setHoveredIndex(index)

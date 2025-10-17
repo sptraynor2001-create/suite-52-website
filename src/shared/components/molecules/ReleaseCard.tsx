@@ -1,5 +1,6 @@
 import { Release } from '@/features/music/types'
 import { activeFont } from '@/design/fonts'
+import { cardStyles, cardColors } from '@/design/cardStyles'
 
 interface ReleaseCardProps {
   release: Release
@@ -21,24 +22,21 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '20px',
-        padding: '16px 20px',
-        backgroundColor: 'rgba(255, 255, 255, 0.02)',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        borderRadius: '4px',
+        gap: cardStyles.margin.gap,
+        padding: cardStyles.padding.default,
+        ...cardStyles.base,
         cursor: onClick ? 'pointer' : 'default',
-        transition: 'all 0.2s ease',
         fontFamily: activeFont.family,
-        marginBottom: '12px',
+        marginBottom: cardStyles.margin.bottom,
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)'
-        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)'
-        e.currentTarget.style.transform = 'translateX(4px)'
+        e.currentTarget.style.backgroundColor = cardStyles.hover.backgroundColor
+        e.currentTarget.style.borderColor = cardStyles.hover.borderColor
+        e.currentTarget.style.transform = cardStyles.hover.transform
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.02)'
-        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'
+        e.currentTarget.style.backgroundColor = cardStyles.base.backgroundColor
+        e.currentTarget.style.borderColor = cardColors.border.default
         e.currentTarget.style.transform = 'translateX(0)'
       }}
     >
