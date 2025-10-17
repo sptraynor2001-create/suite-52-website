@@ -7,7 +7,7 @@ function Music() {
   return (
     <PageLayout 
       title="RELEASES"
-      subtitle="// LATEST_TRACKS.sort((a, b) => new Date(b.date) - new Date(a.date))"
+      subtitle="// MUSIC.sort((a, b) => new Date(b.date) - new Date(a.date))"
     >
       {releases.map((release) => (
         <ReleaseCard 
