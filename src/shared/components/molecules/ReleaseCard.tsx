@@ -112,14 +112,14 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
             gap: '8px',
           }}>
             <span style={{ 
-              color: 'rgba(230, 57, 70, 0.8)',
-              fontSize: '11px',
-              fontWeight: '600',
+              color: 'rgba(255, 255, 255, 0.3)',
+              fontSize: '10px',
+              fontWeight: '500',
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
-              padding: '2px 8px',
-              backgroundColor: 'rgba(230, 57, 70, 0.1)',
-              border: '1px solid rgba(230, 57, 70, 0.3)',
+              padding: '2px 6px',
+              backgroundColor: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
               borderRadius: '2px',
             }}>
               [{release.label}]
