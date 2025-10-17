@@ -52,27 +52,26 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
           flexWrap: 'wrap',
         }}>
           <span style={{ 
-            color: 'rgba(255, 255, 255, 0.9)',
-            fontSize: '16px',
-            fontWeight: '600',
+            color: 'rgba(255, 255, 255, 0.95)',
+            fontSize: '17px',
+            fontWeight: '700',
             letterSpacing: '0.01em',
           }}>
-            {release.artists}
+            {release.title}
           </span>
           <span style={{ 
-            color: 'rgba(255, 255, 255, 0.4)',
+            color: 'rgba(255, 255, 255, 0.3)',
             fontSize: '14px',
             fontWeight: '400',
           }}>
             //
           </span>
           <span style={{ 
-            color: 'rgba(255, 255, 255, 0.7)',
-            fontSize: '15px',
+            color: 'rgba(255, 255, 255, 0.5)',
+            fontSize: '14px',
             fontWeight: '500',
-            fontStyle: 'italic',
           }}>
-            {release.title}
+            {release.artists}
           </span>
         </div>
         
