@@ -91,7 +91,7 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
             letterSpacing: '0.02em',
             fontFamily: 'monospace',
           }}>
-            // ARTISTS={release.artists}
+            // {release.artists}
           </div>
           
           {/* Row 2: Release Date */}
@@ -102,7 +102,7 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
             letterSpacing: '0.02em',
             fontFamily: 'monospace',
           }}>
-            // RELEASE_DATE={formatDate(release.releaseDate)}
+            // {formatDate(release.releaseDate)}
           </div>
           
           {/* Row 3: Song title and label */}
