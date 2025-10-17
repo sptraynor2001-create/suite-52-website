@@ -52,45 +52,45 @@ function Shows() {
     }
   }, [])
 
-  // Responsive font size for show rows - larger minimum for mobile
+  // Responsive font size for show rows - scale down more aggressively for mobile
   const showFontSize = useMemo(() => {
     const minWidth = 375
     const maxWidth = 1920
-    const minSize = 13 // Larger minimum for mobile (was 11px)
+    const minSize = 10 // Much smaller on mobile to fit long text
     const maxSize = 16
-    
+
     const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
     const size = minSize + (maxSize - minSize) * ratio
-    
+
     return `${size}px`
   }, [viewportWidth])
 
-  // Responsive gap for show rows
+  // Responsive gap for show rows - tighter on mobile
   const showGap = useMemo(() => {
     const minWidth = 375
     const maxWidth = 1920
-    const minGap = 10
-    const maxGap = 40
-    
+    const minGap = 5 // Much tighter on mobile
+    const maxGap = 30
+
     const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
     const gap = minGap + (maxGap - minGap) * ratio
-    
+
     return `${gap}px`
   }, [viewportWidth])
 
-  // Responsive padding for show rows
+  // Responsive padding for show rows - tighter on mobile
   const showPadding = useMemo(() => {
     const minWidth = 375
     const maxWidth = 1920
-    
+
     const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-    
-    const vertPadding = 12 + (16 - 12) * ratio
-    const horizPadding = 16 + (20 - 16) * ratio
-    
+
+    const vertPadding = 8 + (16 - 8) * ratio
+    const horizPadding = 12 + (20 - 12) * ratio
+
     return `${vertPadding}px ${horizPadding}px`
   }, [viewportWidth])
 
@@ -145,9 +145,9 @@ function Shows() {
                 setHoveredIndex(null)
               }}
             >
-              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{show.date}</span>
-              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{show.event}</span>
-              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'right', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{show.location}</span>
+              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'left' }}>{show.date}</span>
+              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'center' }}>{show.event}</span>
+              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'right' }}>{show.location}</span>
             </a>
         ))}
       </div>
