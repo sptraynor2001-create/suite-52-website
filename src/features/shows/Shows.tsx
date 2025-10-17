@@ -1,5 +1,6 @@
 import { activeFont } from '@/design/fonts'
 import { useState, useEffect, useMemo } from 'react'
+import PageLayout from '@/shared/components/layouts/PageLayout'
 
 function Shows() {
   const [visibleShows, setVisibleShows] = useState<number>(0)
@@ -94,54 +95,13 @@ function Shows() {
     return `${vertPadding}px ${horizPadding}px`
   }, [viewportWidth])
 
-  // Calculate top padding based on viewport width - closer to top on mobile, scales up for desktop
-  const getTopPadding = () => {
-    const minWidth = 375 // Mobile minimum
-    const maxWidth = 1920 // Desktop maximum
-    const minPadding = 20 // Mobile: 20px (very close to top)
-    const maxPadding = 40 // Desktop: 40px (closer than before)
-    
-    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
-    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-    const padding = minPadding + (maxPadding - minPadding) * ratio
-    
-    return `${padding}px`
-  }
-
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        minHeight: 'calc(100vh - 80px)',
-        width: '100%',
-        padding: `${getTopPadding()} 0 60px 0`,
-      }}
-    >
-      <h2
-        style={{
-          color: '#ffffff',
-          fontSize: '28px',
-          fontWeight: '700',
-          fontFamily: activeFont.family,
-          marginBottom: '50px',
-          letterSpacing: '0.1em',
-        }}
-      >
-        UPCOMING_DATES
-      </h2>
-
+    <PageLayout title="Upcoming Shows">
       <div
         style={{
           display: 'flex',
           flexDirection: 'column',
           gap: '20px',
-          width: '100%',
-          maxWidth: '900px',
-          margin: '0 auto',
-          padding: '0 20px',
-          boxSizing: 'border-box',
         }}
       >
         {shows.slice(0, visibleShows).map((show, index) => (
@@ -187,7 +147,7 @@ function Shows() {
             </a>
         ))}
       </div>
-    </div>
+    </PageLayout>
   )
 }
 

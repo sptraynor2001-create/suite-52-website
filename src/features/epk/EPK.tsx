@@ -1,10 +1,8 @@
+import PageLayout from '@/shared/components/layouts/PageLayout'
+
 function EPK() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 sm:mb-8">
-        Electronic Press Kit
-      </h1>
-      
+    <PageLayout title="Electronic Press Kit">
       <div className="bg-white rounded-lg shadow-md p-6 sm:p-8">
         <div className="prose prose-lg max-w-none">
           <p className="text-gray-700 mb-6 text-base sm:text-lg">
@@ -67,7 +65,7 @@ function EPK() {
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   )
 }
 

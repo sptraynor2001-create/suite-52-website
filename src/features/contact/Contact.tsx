@@ -1,12 +1,9 @@
 import { socialLinks } from './data'
+import PageLayout from '@/shared/components/layouts/PageLayout'
 
 function Contact() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 sm:mb-8">
-        Contact
-      </h1>
-      
+    <PageLayout title="Contact">
       <div className="bg-white rounded-lg shadow-md p-6 sm:p-8">
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -120,7 +117,7 @@ function Contact() {
           </p>
         </div>
       </div>
-    </div>
+    </PageLayout>
   )
 }
 

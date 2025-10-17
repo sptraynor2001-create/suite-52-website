@@ -1,4 +1,5 @@
 import { liveSets } from './data'
+import PageLayout from '@/shared/components/layouts/PageLayout'
 
 function LiveSets() {
   // Sort live sets by date (most recent first)
@@ -15,11 +16,7 @@ function LiveSets() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 sm:mb-8">
-        Live Sets
-      </h1>
-      
+    <PageLayout title="Live Sets">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {sortedSets.map((set) => (
           <div 
@@ -162,7 +159,7 @@ function LiveSets() {
           </p>
         </div>
       )}
-    </div>
+    </PageLayout>
   )
 }
 
