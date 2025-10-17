@@ -145,9 +145,9 @@ function Shows() {
                 setHoveredIndex(null)
               }}
             >
-              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'left' }}>{show.date}</span>
-              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'center' }}>{show.event}</span>
-              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'right' }}>{show.location}</span>
+              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{show.date}</span>
+              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{show.event}</span>
+              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'right', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{show.location}</span>
             </a>
         ))}
       </div>
