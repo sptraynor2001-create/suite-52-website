@@ -94,18 +94,7 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
             // {release.artists}
           </div>
           
-          {/* Row 2: Release Date */}
-          <div style={{ 
-            color: 'rgba(255, 255, 255, 0.35)',
-            fontSize: '11px',
-            fontWeight: '500',
-            letterSpacing: '0.02em',
-            fontFamily: 'monospace',
-          }}>
-            // {formatDate(release.releaseDate)}
-          </div>
-          
-          {/* Row 3: Song title and label */}
+          {/* Row 2: Song title and label */}
           <div style={{ 
             display: 'flex',
             alignItems: 'center',
@@ -136,6 +125,17 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
                 [{release.label}]
               </span>
             )}
+          </div>
+          
+          {/* Row 3: Release Date */}
+          <div style={{ 
+            color: 'rgba(255, 255, 255, 0.35)',
+            fontSize: '11px',
+            fontWeight: '500',
+            letterSpacing: '0.02em',
+            fontFamily: 'monospace',
+          }}>
+            // {formatDate(release.releaseDate)}
           </div>
         </div>
 
