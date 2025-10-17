@@ -84,7 +84,7 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
           {/* Row 1: Artists */}
           <div style={{ 
             color: 'rgba(255, 255, 255, 0.35)',
-            fontSize: '11px',
+            fontSize: '13px',
             fontWeight: '500',
             letterSpacing: '0.02em',
             fontFamily: 'monospace',
@@ -101,7 +101,7 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
           }}>
             <span style={{ 
               color: 'rgba(255, 255, 255, 0.95)',
-              fontSize: '17px',
+              fontSize: '13px',
               fontWeight: '700',
               letterSpacing: '0.01em',
             }}>
@@ -111,7 +111,7 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
             {release.label && (
               <span style={{ 
                 color: 'rgba(255, 255, 255, 0.3)',
-                fontSize: '10px',
+                fontSize: '13px',
                 fontWeight: '500',
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
@@ -128,7 +128,7 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
           {/* Row 3: Release Date */}
           <div style={{ 
             color: 'rgba(255, 255, 255, 0.35)',
-            fontSize: '11px',
+            fontSize: '13px',
             fontWeight: '500',
             letterSpacing: '0.02em',
             fontFamily: 'monospace',
