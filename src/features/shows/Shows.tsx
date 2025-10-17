@@ -135,8 +135,6 @@ function Shows() {
                 animation: 'dropInShow 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
                 backgroundColor: hoveredIndex === index ? cardStyles.hover.backgroundColor : cardStyles.base.backgroundColor,
                 borderColor: hoveredIndex === index ? cardStyles.hover.borderColor : cardStyles.base.border,
-                marginLeft: hoveredIndex === index ? '0' : `${Math.max(1, 4 * (viewportWidth / 1920))}px`,
-                width: hoveredIndex === index ? `calc(100% + ${Math.max(1, 4 * (viewportWidth / 1920))}px)` : `calc(100% - ${Math.max(1, 4 * (viewportWidth / 1920))}px)`,
               }}
               onMouseEnter={() => {
                 setHoveredIndex(index)
