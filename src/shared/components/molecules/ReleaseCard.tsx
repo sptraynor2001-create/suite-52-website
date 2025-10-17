@@ -86,7 +86,7 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
           </div>
           
           {/* Row 2: Song title */}
-          <div style={{ 
+          <div style={{
             color: 'rgba(255, 255, 255, 0.95)',
             fontSize: '18px',
             fontWeight: '700',
@@ -96,6 +96,31 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
           }}>
             {release.title}
           </div>
+
+          {/* Row 3: Label or Free Download */}
+          {release.label ? (
+            <div style={{
+              color: 'rgba(255, 255, 255, 0.5)',
+              fontSize: '14px',
+              fontWeight: '400',
+              letterSpacing: '0.02em',
+              fontFamily: 'monospace',
+              lineHeight: '1.2',
+            }}>
+              {release.label}
+            </div>
+          ) : release.title === "Fallin' (Gabe Rich & Suite 52 Remix)" && (
+            <div style={{
+              color: 'rgba(255, 255, 255, 0.5)',
+              fontSize: '14px',
+              fontWeight: '400',
+              letterSpacing: '0.02em',
+              fontFamily: 'monospace',
+              lineHeight: '1.2',
+            }}>
+              Free Download
+            </div>
+          )}
         </div>
 
         {/* Arrow indicator */}
