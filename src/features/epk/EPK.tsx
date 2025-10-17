@@ -5,6 +5,7 @@ function EPK() {
     <PageLayout 
       title="ELECTRONIC_PRESS_KIT"
       subtitle="// export { bio, photos, stats, achievements } from './press-materials'"
+      stickyHeader={false}
     >
       <div className="bg-white rounded-lg shadow-md p-6 sm:p-8">
         <div className="prose prose-lg max-w-none">

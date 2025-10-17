@@ -5,9 +5,10 @@ interface PageLayoutProps {
   title: string
   subtitle?: string
   children: ReactNode
+  stickyHeader?: boolean
 }
 
-function PageLayout({ title, subtitle, children }: PageLayoutProps) {
+function PageLayout({ title, subtitle, children, stickyHeader = true }: PageLayoutProps) {
   const subtitleRef = useRef<HTMLParagraphElement>(null)
 
   useEffect(() => {
@@ -52,7 +53,10 @@ function PageLayout({ title, subtitle, children }: PageLayoutProps) {
     <div style={{
       minHeight: '100vh',
       backgroundColor: '#000000',
-      padding: '60px 20px',
+      paddingTop: stickyHeader ? '0' : '60px',
+      paddingBottom: '60px',
+      paddingLeft: '20px',
+      paddingRight: '20px',
     }}>
       <div style={{
         maxWidth: '900px',
@@ -63,6 +67,17 @@ function PageLayout({ title, subtitle, children }: PageLayoutProps) {
           marginBottom: '40px',
           borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
           paddingBottom: '20px',
+          paddingTop: stickyHeader ? '60px' : '0',
+          ...(stickyHeader && {
+            position: 'sticky',
+            top: 0,
+            backgroundColor: '#000000',
+            zIndex: 10,
+            marginLeft: '-20px',
+            marginRight: '-20px',
+            paddingLeft: '20px',
+            paddingRight: '20px',
+          }),
         }}>
           <h1 style={{
             color: 'rgba(255, 255, 255, 0.95)',
