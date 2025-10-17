@@ -8,14 +8,6 @@ interface ReleaseCardProps {
 }
 
 function ReleaseCard({ release, onClick }: ReleaseCardProps) {
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    const year = String(date.getFullYear()).slice(-2)
-    return `${month}_${day}_${year}`
-  }
-
   return (
     <div
       onClick={onClick}
@@ -80,11 +72,11 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
       {/* Track Info Section */}
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px' }}>
         {/* Left section - Main info */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '3px' }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
           {/* Row 1: Artists */}
           <div style={{ 
             color: 'rgba(255, 255, 255, 0.35)',
-            fontSize: '13px',
+            fontSize: '15px',
             fontWeight: '500',
             letterSpacing: '0.02em',
             fontFamily: 'monospace',
@@ -95,48 +87,19 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
           {/* Row 2: Song title */}
           <div style={{ 
             color: 'rgba(255, 255, 255, 0.95)',
-            fontSize: '13px',
+            fontSize: '15px',
             fontWeight: '700',
             letterSpacing: '0.01em',
-            marginTop: '2px',
           }}>
             {release.title}
           </div>
-          
-          {/* Row 3: Release Date */}
-          <div style={{ 
-            color: 'rgba(255, 255, 255, 0.35)',
-            fontSize: '13px',
-            fontWeight: '500',
-            letterSpacing: '0.02em',
-            fontFamily: 'monospace',
-          }}>
-            // {formatDate(release.releaseDate)}
-          </div>
         </div>
 
-        {/* Right section - Label badge and arrow */}
+        {/* Arrow indicator */}
         <div style={{ 
           display: 'flex',
           alignItems: 'center',
-          gap: '12px',
         }}>
-          {release.label && (
-            <span style={{ 
-              color: 'rgba(255, 255, 255, 0.3)',
-              fontSize: '13px',
-              fontWeight: '500',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              padding: '2px 6px',
-              backgroundColor: 'rgba(255, 255, 255, 0.03)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '2px',
-            }}>
-              [{release.label}]
-            </span>
-          )}
-          
           <span style={{ 
             color: 'rgba(255, 255, 255, 0.3)',
             fontSize: '24px',
