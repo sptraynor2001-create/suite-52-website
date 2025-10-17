@@ -135,7 +135,8 @@ function Shows() {
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
                 animation: 'dropInShow 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
-                backgroundColor: hoveredIndex === index ? 'rgba(230, 57, 70, 0.05)' : cardStyles.base.backgroundColor,
+                backgroundColor: hoveredIndex === index ? cardStyles.hover.backgroundColor : cardStyles.base.backgroundColor,
+                borderColor: hoveredIndex === index ? cardStyles.hover.borderColor : cardStyles.base.border,
                 transform: hoveredIndex === index ? 'translateX(4px)' : 'translateX(0)',
               }}
               onMouseEnter={() => {
