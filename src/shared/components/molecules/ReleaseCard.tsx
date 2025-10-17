@@ -44,35 +44,26 @@ function ReleaseCard({ release, onClick }: ReleaseCardProps) {
       }}
     >
       {/* Left section - Main info */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
+        {/* Artist comment */}
         <div style={{ 
-          display: 'flex', 
-          alignItems: 'baseline',
-          gap: '12px',
-          flexWrap: 'wrap',
+          color: 'rgba(255, 255, 255, 0.35)',
+          fontSize: '12px',
+          fontWeight: '500',
+          letterSpacing: '0.02em',
+          fontFamily: 'monospace',
         }}>
-          <span style={{ 
-            color: 'rgba(255, 255, 255, 0.95)',
-            fontSize: '17px',
-            fontWeight: '700',
-            letterSpacing: '0.01em',
-          }}>
-            {release.title}
-          </span>
-          <span style={{ 
-            color: 'rgba(255, 255, 255, 0.3)',
-            fontSize: '14px',
-            fontWeight: '400',
-          }}>
-            //
-          </span>
-          <span style={{ 
-            color: 'rgba(255, 255, 255, 0.5)',
-            fontSize: '14px',
-            fontWeight: '500',
-          }}>
-            {release.artists}
-          </span>
+          // {release.artists}
+        </div>
+        
+        {/* Song title */}
+        <div style={{ 
+          color: 'rgba(255, 255, 255, 0.95)',
+          fontSize: '17px',
+          fontWeight: '700',
+          letterSpacing: '0.01em',
+        }}>
+          {release.title}
         </div>
         
         {release.label && (
