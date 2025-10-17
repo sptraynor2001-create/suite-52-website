@@ -16,7 +16,10 @@ function LiveSets() {
   }
 
   return (
-    <PageLayout title="LIVE_SETS">
+    <PageLayout 
+      title="LIVE_SETS"
+      subtitle="// RECORDINGS.sort((a, b) => b.timestamp - a.timestamp).slice(0, 10)"
+    >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {sortedSets.map((set) => (
           <div 

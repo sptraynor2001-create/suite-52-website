@@ -2,7 +2,10 @@ import PageLayout from '@/shared/components/layouts/PageLayout'
 
 function About() {
   return (
-    <PageLayout title="ABOUT">
+    <PageLayout 
+      title="ABOUT"
+      subtitle="// const ARTIST = { name: 'Suite 52', genre: 'Electronic', vibe: 'Immersive' }"
+    >
       <div className="bg-white rounded-lg shadow-md p-6 sm:p-8">
         <div className="prose prose-lg max-w-none">
           <p className="text-gray-700 mb-4 text-base sm:text-lg leading-relaxed">

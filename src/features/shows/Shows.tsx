@@ -96,7 +96,10 @@ function Shows() {
   }, [viewportWidth])
 
   return (
-    <PageLayout title="UPCOMING_SHOWS">
+    <PageLayout 
+      title="UPCOMING_SHOWS"
+      subtitle="// EVENTS.filter(e => new Date(e.date) >= Date.now()).map(show => show)"
+    >
       <div
         style={{
           display: 'flex',
