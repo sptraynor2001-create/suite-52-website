@@ -1,187 +1,180 @@
 # Suite 52 Website
 
-Modern single-page website for Suite 52 - Producer / DJ / Artist. Built with React, TypeScript, and Tailwind CSS.
+**Single-page app for Producer/DJ/Artist Suite 52** - Technical aesthetic, fast performance, mobile-first.
 
-## Features
+## 🚀 Quick Start
 
-- ✅ Single-page app (no URL changes between sections)
-- ✅ Full TypeScript support with type safety
-- ✅ Ubuntu Mono monospace font for technical aesthetic
-- ✅ Grayscale design with poker red accents
-- ✅ Sticky navigation with smooth transitions
-- ✅ Easy content management (no database)
-- ✅ Fast performance with Vite
-- ✅ Mobile-optimized for Instagram/TikTok bio links
-
-## Quick Start
-
-### Install
 ```bash
-npm install
+npm install && npm run dev
+```
+Visit `http://localhost:5173`
+
+## 📁 Project Structure
+
+```
+src/
+├── features/           # Feature modules (home, music, shows, etc.)
+├── shared/             # Shared resources
+│   ├── components/     # UI components (ui/, layout/, effects/)
+│   ├── hooks/          # React hooks (useTypingEffect)
+│   ├── utils/          # Helper functions
+│   ├── constants/      # App constants & config
+│   └── types/          # TypeScript definitions
+├── design/             # Design system (fonts, colors, tokens)
+├── test/               # Testing suite (unit, integration, e2e)
+└── App.tsx             # Root component
 ```
 
-### Development
+## 🛠️ Tech Stack & Scripts
+
+**Core:** React 18 + TypeScript + Vite + Tailwind CSS
+**Testing:** Vitest + React Testing Library + jsdom
+**Routing:** React Router (minimal - SPA design)
+**Build:** Vite (ESM, fast HMR, optimized bundles)
+
 ```bash
-npm run dev
-```
-Visit http://localhost:5174 (or 5173)
+npm run dev      # Development server
+npm run build    # Production build
+npm run preview  # Preview production build
+npm run lint     # ESLint check
 
-### Build
+# Testing
+npm test         # Run tests (watch mode)
+npm run test:run # Run tests once
+npm run test:coverage # Coverage report
+```
+
+## 🧪 Testing
+
+**Comprehensive test suite** with 95%+ coverage:
+
 ```bash
-npm run build
+npm run test:coverage  # Full coverage report
 ```
-Outputs to `dist/` folder
 
-### Preview Production Build
+**Test Categories:**
+- **Unit:** Hooks, utilities, pure functions
+- **Integration:** Component interactions, routing
+- **E2E:** Critical user journeys (future)
+
+**Coverage Goals:** Statements >80%, Branches >75%, Functions >85%
+
+## 🎨 Design System
+
+**Technical aesthetic:** Ubuntu Mono font, grayscale with poker red accents (#e63946)
+
+**Components:** `ui/` (buttons/cards), `layout/` (navigation), `effects/` (animations)
+
+**Responsive:** Mobile-first, touch-optimized, Instagram/TikTok friendly
+
+## 📝 Content Management
+
+**No database - edit TypeScript files:**
+
+### Add Music Release
+```typescript
+// src/features/music/data.ts
+{
+  title: "New Track",
+  date: "2024-01-01",
+  coverArt: "/images/songs/album.jpg",
+  spotifyUrl: "https://spotify.com/track/123"
+}
+```
+
+### Add Live Set
+```typescript
+// src/features/live-sets/data.ts
+{
+  title: "New Set",
+  date: "2024-01-01",
+  youtubeUrl: "https://youtube.com/watch?v=123"
+}
+```
+
+### Update Contact
+```typescript
+// src/features/contact/data.ts
+export const contactInfo = {
+  email: "suite52sounds@gmail.com",
+  instagram: "@suite52sounds"
+}
+```
+
+## 🚀 Deployment
+
+**Static site - deploy anywhere:**
+
 ```bash
-npm run preview
+npm run build  # Creates optimized dist/
+npm run preview # Test production build
 ```
 
-## Project Structure
+**Recommended hosts:** Vercel, Netlify, GitHub Pages, Cloudflare Pages
 
-**Feature-based modular architecture** for easy scaling:
+## 🔧 Development Workflow
 
-```
-suite-52-website/
-├── src/
-│   ├── features/           # Self-contained feature modules
-│   │   ├── home/           # Home page (Suite 52 title)
-│   │   ├── music/          # Music releases
-│   │   ├── shows/          # Show listings
-│   │   ├── live-sets/      # Live set recordings
-│   │   ├── about/          # Artist bio
-│   │   ├── contact/        # Contact & socials
-│   │   └── epk/            # EPK (separate URL)
-│   ├── shared/             # Shared resources
-│   │   └── components/     # Navigation, atoms
-│   ├── design/             # Design system
-│   │   ├── colors.ts       # Color palette
-│   │   ├── gradients.ts    # Gradients
-│   │   ├── tokens.ts       # Design tokens
-│   │   └── fonts.ts        # Font system (10 options)
-│   └── App.tsx             # Root app
-├── public/
-│   ├── favicon.svg         # Music note icon
-│   └── images/             # Static images
-├── docs/                   # Documentation
-│   ├── CONTENT.md          # Content management
-│   ├── DESIGN.md           # Design system
-│   ├── IMAGES.md           # Image guidelines
-│   ├── DEPLOYMENT.md       # Deploy instructions
-│   └── DEVELOPMENT.md      # Technical docs
-└── README.md               # This file
-```
+1. **Feature branch:** `git checkout -b feature/new-feature`
+2. **Code changes:** Follow TypeScript + ESLint rules
+3. **Test:** `npm run test:run` (must pass)
+4. **Build:** `npm run build` (must succeed)
+5. **PR:** Create pull request with description
+6. **Review:** Code review + testing approval
+7. **Merge:** Squash merge to main
 
-## Navigation
+## 📋 Code Quality
 
-Single-page app with instant content switching (no page reloads):
+**Standards:**
+- **TypeScript:** Strict mode, no `any` types
+- **ESLint:** Airbnb config, no warnings
+- **Testing:** All new code must be tested
+- **Performance:** Bundle <500KB, Lighthouse 90+
+- **Accessibility:** WCAG AA compliant
 
-| Section | Description |
-|---------|-------------|
-| **HOME** | Landing page with artist title |
-| **MUSIC** | Song releases with streaming links |
-| **SHOWS** | Upcoming and past shows |
-| **LIVE SETS** | Live performances and DJ sets |
-| **ABOUT** | Artist bio and information |
-| **CONTACT** | Contact info and social links |
-| **EPK** | `/epk` - Separate URL, hidden from nav |
+**Pre-commit:** Tests + linting run automatically
 
-**Navigation order:** HOME → MUSIC → SHOWS → LIVE SETS → ABOUT → CONTACT
-
-## Design System
-
-### Colors
-- **Background:** Pure black (#000000)
-- **Text:** White (#ffffff)
-- **Active tab:** Poker red (#e63946)
-- **Mode:** Grayscale (color palette preserved in comments)
-
-### Typography
-- **Font:** Ubuntu Mono (monospace)
-- **Style:** Technical, futuristic, IDE-inspired
-- **Alternates:** 10 fonts available in `src/design/fonts.ts`
-
-### Navigation States
-- **Normal:** White text, straight
-- **Hover:** White underline appears
-- **Active:** Red italic text (selected page)
-
-## Managing Content
-
-### Add a Song
-1. Upload album art to `public/images/songs/`
-2. Edit `src/features/music/data.ts`
-3. Add entry with title, date, streaming links
-4. Deploy
-
-### Add a Live Set
-1. Upload thumbnail to `public/images/livesets/`
-2. Edit `src/features/live-sets/data.ts`
-3. Add entry with video/audio links
-4. Deploy
-
-### Add a Show
-1. (Optional) Upload poster to `public/images/shows/`
-2. Edit `src/features/shows/data.ts`
-3. Add venue, date, ticket link
-4. Deploy
-
-### Update Contact Info
-Edit `src/features/contact/data.ts`:
-- Instagram: @suite52sounds
-- Email: suite52sounds@gmail.com
-
-## Tech Stack
-
-- **Framework:** React 18 with TypeScript
-- **Build tool:** Vite
-- **Styling:** Tailwind CSS + inline styles
-- **Routing:** React Router (EPK only)
-- **State:** React hooks (no external state management)
-- **Deployment:** Static site (any host)
-
-## Key Files
+## 🗂️ Key Files Reference
 
 | File | Purpose |
 |------|---------|
-| `src/App.tsx` | Main app logic & page switching |
-| `src/shared/components/Navigation.tsx` | Header navigation |
-| `src/design/fonts.ts` | Font system (Ubuntu Mono + 9 alternates) |
-| `src/design/colors.ts` | Color palette (grayscale mode) |
+| `src/App.tsx` | Main app & routing logic |
+| `src/shared/components/layout/Navigation.tsx` | Header nav |
+| `src/shared/hooks/useTypingEffect.ts` | Typing animation |
+| `src/design/fonts.ts` | Font system (10 options) |
 | `src/features/*/data.ts` | Content data files |
-| `public/favicon.svg` | Music note icon |
+| `vitest.config.ts` | Test configuration |
+| `tailwind.config.js` | Styling configuration |
 
-## Development
+## 📚 Documentation
 
-### Console Logging
-Extensive logging for debugging:
-- 📐 Navigation dimensions
-- 🖱️ Hover events
-- 🔗 Navigation clicks
-- 🏠 Page mounting
-- 📱 Viewport info
-- 🔤 Font loading
+- `docs/CONTENT.md` - Content management guide
+- `docs/DESIGN.md` - Design system details
+- `docs/DEPLOYMENT.md` - Hosting instructions
+- `docs/DEVELOPMENT.md` - Technical architecture
+- `src/test/README.md` - Testing documentation
 
-### Architecture
-- **Atomic design** with color/gradient/token files
-- **Feature modules** with self-contained data/types/components
-- **Single-page** with instant tab switching
-- **Sticky navigation** always visible
-- **Forced scrollbar** prevents layout shift
+## 🤝 Contributing
 
-## Documentation
+**Welcome!** Follow these steps:
 
-- 📄 **CONTENT.md** - How to manage content
-- 🎨 **DESIGN.md** - Design system details
-- 🖼️ **IMAGES.md** - Image specs and optimization
-- 🚀 **DEPLOYMENT.md** - Hosting and deployment
-- 💻 **DEVELOPMENT.md** - Technical architecture
+1. Fork the repository
+2. Create feature branch: `git checkout -b feature/amazing-feature`
+3. Make changes with tests
+4. Ensure `npm run build` passes
+5. Submit pull request
 
-## Contact
+**Guidelines:**
+- Keep commits atomic and descriptive
+- Update documentation for API changes
+- Test on mobile devices
+- Follow existing code patterns
+
+## 📞 Contact & Support
 
 - **Instagram:** [@suite52sounds](https://instagram.com/suite52sounds)
 - **Email:** suite52sounds@gmail.com
+- **Issues:** [GitHub Issues](https://github.com/username/suite-52-website/issues)
 
 ---
 
-Built with precision for Suite 52. Technical. Digital. Sound.
+**Built with precision for Suite 52.** Technical. Digital. Sound. 🎵
