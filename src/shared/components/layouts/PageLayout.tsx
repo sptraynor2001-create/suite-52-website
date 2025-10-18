@@ -16,18 +16,23 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
 
-  // Calculate smooth background size based on viewport aspect ratio - same as home page
+  // Calculate smooth background size based on viewport aspect ratio - smooth transitions
   const getBackgroundSize = () => {
-    // On mobile/portrait: make image BIGGER than viewport so positioning works
-    // On desktop/landscape: constrain by width
     const aspectRatio = viewportWidth / window.innerHeight
 
-    if (aspectRatio < 0.8) {
-      // Portrait/mobile: make image 150% of viewport height so we can crop/position it
-      return 'auto 150%'
+    // Smooth transition: gradually change from portrait (150% height) to landscape (100% width)
+    // Use a smooth curve instead of hard breakpoint at 0.8
+    const normalizedRatio = Math.max(0, Math.min(1, (aspectRatio - 0.5) / 1.0)) // 0 at portrait, 1 at landscape
+    const easedRatio = 1 - Math.pow(1 - normalizedRatio, 2) // Smooth easing
+
+    if (easedRatio < 0.5) {
+      // Portrait: use height scaling (150% down to 125%)
+      const heightScale = 150 - (25 * easedRatio * 2)
+      return `auto ${Math.round(heightScale)}%`
     } else {
-      // Landscape/desktop: constrain by width
-      return '100% auto'
+      // Landscape: use width scaling (0% up to 100%)
+      const widthScale = (easedRatio - 0.5) * 2 * 100
+      return `${Math.round(widthScale)}% auto`
     }
   }
 
@@ -146,7 +151,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
             zIndex: -1,
             pointerEvents: 'none',
             filter: 'url(#pageMotionBlur)',
-            transition: 'background-position 0.5s ease-in-out',
+            transition: 'background-size 0.3s ease-out, background-position 0.3s ease-out',
           }}
         />
       )}
