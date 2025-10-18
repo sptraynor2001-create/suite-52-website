@@ -7,8 +7,6 @@ function LiveSets() {
     "// RECORDINGS.sort((a, b) => b.timestamp - a.timestamp).slice(0, 10)"
   )
 
-  // Lower background positioning for Live Sets - center the image lower on the page
-  const liveSetsBackgroundPosition = 'center 70%'
   // Sort live sets by date (most recent first)
   const sortedSets = [...liveSets].sort((a, b) => 
     new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -28,7 +26,6 @@ function LiveSets() {
       displayText={subtitleText}
       showCursor={showSubtitleCursor}
       backgroundImage="/images/backgrounds/live-sets-background.jpg"
-      backgroundPositionOverride={liveSetsBackgroundPosition}
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {sortedSets.map((set) => (
