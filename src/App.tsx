@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import Navigation from '@/shared/components/Navigation'
 import FallingCode from '@/shared/components/FallingCode'
@@ -13,41 +13,31 @@ import EPK from '@/features/epk'
 type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'
 
 function MainApp() {
-  const [currentPage, setCurrentPage] = useState<Page>('home')
-  const [isMobile, setIsMobile] = useState(false)
+  const location = useLocation()
+  const navigate = useNavigate()
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768 || window.innerHeight < 768)
+  const getCurrentPage = (): Page => {
+    const path = location.pathname.slice(1) // Remove leading slash
+    switch (path) {
+      case 'about':
+        return 'about'
+      case 'music':
+        return 'music'
+      case 'live-sets':
+        return 'live-sets'
+      case 'shows':
+        return 'shows'
+      case 'contact':
+        return 'contact'
+      default:
+        return 'about'
     }
-    
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+  }
 
-  // Prevent body scroll on mobile home page
-  useEffect(() => {
-    const isHomeMobile = currentPage === 'home' && isMobile
-    if (isHomeMobile) {
-      document.body.style.overflow = 'hidden'
-      document.body.style.height = '100vh'
-    } else {
-      document.body.style.overflow = ''
-      document.body.style.height = ''
-    }
-    
-    return () => {
-      document.body.style.overflow = ''
-      document.body.style.height = ''
-    }
-  }, [currentPage, isMobile])
+  const currentPage = getCurrentPage()
 
   const renderPage = () => {
     switch (currentPage) {
-      case 'home':
-        return <Home onNavigate={setCurrentPage} />
       case 'about':
         return <About />
       case 'music':
@@ -59,34 +49,94 @@ function MainApp() {
       case 'contact':
         return <Contact />
       default:
-        return <Home onNavigate={setCurrentPage} />
+        return <About />
     }
   }
 
-  const isHomeMobile = currentPage === 'home' && isMobile
+  const handleNavigate = (page: Page) => {
+    if (page === 'home') {
+      navigate('/')
+    } else {
+      navigate(`/${page}`)
+    }
+  }
 
   return (
-    <div 
-      style={{ 
+    <div
+      style={{
         backgroundColor: '#000000',
-        height: isHomeMobile ? '100vh' : 'auto',
-        minHeight: isHomeMobile ? 'auto' : '100vh',
+        height: 'auto',
+        minHeight: '100vh',
         width: '100%',
         position: 'relative',
-        overflow: isHomeMobile ? 'hidden' : 'visible',
+        overflow: 'visible',
       }}
     >
       {/* Falling code background */}
       <FallingCode />
-      
-      {/* Sticky header - only show on non-home pages */}
-      {currentPage !== 'home' && (
-        <Navigation currentPage={currentPage} onNavigate={setCurrentPage} />
-      )}
-      
-      {/* Dynamic content - no URL changes */}
+
+      {/* Sticky header */}
+      <Navigation currentPage={currentPage} onNavigate={handleNavigate} />
+
+      {/* Dynamic content */}
       <div style={{ position: 'relative', zIndex: 10 }}>
         {renderPage()}
+      </div>
+    </div>
+  )
+}
+
+function HomePage() {
+  const navigate = useNavigate()
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || window.innerHeight < 768)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Prevent body scroll on mobile home page
+  useEffect(() => {
+    if (isMobile) {
+      document.body.style.overflow = 'hidden'
+      document.body.style.height = '100vh'
+    } else {
+      document.body.style.overflow = ''
+      document.body.style.height = ''
+    }
+
+    return () => {
+      document.body.style.overflow = ''
+      document.body.style.height = ''
+    }
+  }, [isMobile])
+
+  const handleNavigate = (page: Page) => {
+    navigate(`/${page}`)
+  }
+
+  return (
+    <div
+      style={{
+        backgroundColor: '#000000',
+        height: '100vh',
+        width: '100%',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Falling code background */}
+      <FallingCode />
+
+      {/* Home content - no navigation header */}
+      <div style={{ position: 'relative', zIndex: 10 }}>
+        <Home onNavigate={handleNavigate} />
       </div>
     </div>
   )
@@ -96,8 +146,13 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<MainApp />} />
+        <Route path="/music" element={<MainApp />} />
+        <Route path="/live-sets" element={<MainApp />} />
+        <Route path="/shows" element={<MainApp />} />
+        <Route path="/contact" element={<MainApp />} />
         <Route path="/epk" element={<EPK />} />
-        <Route path="*" element={<MainApp />} />
       </Routes>
     </Router>
   )
