@@ -19,13 +19,11 @@ function LiveSets() {
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             Suite 52 B2B Henry McBride in NYC
           </h2>
-          <div className="aspect-video w-full">
+          <div className="w-full" style={{ paddingBottom: '56.25%', position: 'relative' }}>
             <iframe
-              width="100%"
-              height="100%"
               src="https://www.youtube.com/embed/dQw4w9WgXcQ"
               title="Suite 52 B2B Henry McBride in NYC"
-              className="w-full h-full rounded-lg"
+              className="absolute top-0 left-0 w-full h-full rounded-lg"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
