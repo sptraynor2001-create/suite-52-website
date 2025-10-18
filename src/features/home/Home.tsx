@@ -415,13 +415,14 @@ function Home({ onNavigate }: HomeProps) {
       }} />
       
       
-      {squares.map(square => (
-        <BouncingSquare 
+      {/* Only show bouncing squares on desktop to prevent mobile scrolling issues */}
+      {!isMobile && squares.map(square => (
+        <BouncingSquare
           key={square.key}
-          initialX={square.x} 
-          initialY={square.y} 
-          velocityX={square.velocityX} 
-          velocityY={square.velocityY} 
+          initialX={square.x}
+          initialY={square.y}
+          velocityX={square.velocityX}
+          velocityY={square.velocityY}
           sizePercent={square.sizePercent}
         />
       ))}

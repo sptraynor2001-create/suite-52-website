@@ -101,6 +101,7 @@ function HomePage() {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
+<<<<<<< HEAD
   // Prevent body scroll on mobile home page - more aggressive approach for Safari
   useEffect(() => {
     if (isMobile) {
@@ -126,6 +127,18 @@ function HomePage() {
       document.body.style.width = ''
       document.body.style.top = ''
       document.body.style.left = ''
+=======
+  // Prevent body scroll on mobile home page - use CSS class for more reliable Safari prevention
+  useEffect(() => {
+    if (isMobile) {
+      document.body.classList.add('mobile-home-no-scroll')
+    } else {
+      document.body.classList.remove('mobile-home-no-scroll')
+    }
+
+    return () => {
+      document.body.classList.remove('mobile-home-no-scroll')
+>>>>>>> 80b01cb (Fix Safari mobile scrolling by disabling bouncing squares and using CSS class)
     }
   }, [isMobile])
 
