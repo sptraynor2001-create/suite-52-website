@@ -8,6 +8,7 @@ import { ReactElement } from 'react'
 interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
   initialEntries?: string[]
   route?: string
+  withRouter?: boolean
 }
 
 // Custom render function with router support
@@ -15,7 +16,12 @@ export const renderWithRouter = (
   ui: ReactElement,
   options: CustomRenderOptions = {}
 ) => {
-  const { initialEntries = ['/'], route = '/', ...renderOptions } = options
+  const { initialEntries = ['/'], route = '/', withRouter = true, ...renderOptions } = options
+
+  // If component already has router (like App), render directly
+  if (!withRouter) {
+    return render(ui, renderOptions)
+  }
 
   const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <MemoryRouter initialEntries={initialEntries}>
