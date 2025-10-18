@@ -124,7 +124,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, children, sticky
           <p
             ref={subtitleRef}
             style={{
-              color: 'rgba(255, 255, 255, 0.9)',
+              color: 'rgba(255, 255, 255, 0.6)',
               fontSize: subtitleFontSize,
               fontFamily: 'monospace',
               letterSpacing: '0.05em',
