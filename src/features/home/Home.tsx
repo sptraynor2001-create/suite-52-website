@@ -401,7 +401,7 @@ function Home({ onNavigate }: HomeProps) {
           opacity: backgroundLoaded ? 0.28 : 0,
           zIndex: 0,
           pointerEvents: 'none',
-          transition: 'opacity 3s ease-in',
+          transition: 'opacity 1.5s ease-in',
           filter: 'url(#horizontalMotionBlur)',
         }}
       />

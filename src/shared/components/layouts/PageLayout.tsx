@@ -159,7 +159,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
             zIndex: -1,
             pointerEvents: 'none',
             filter: 'url(#pageMotionBlur)',
-            transition: 'opacity 3s ease-in',
+            transition: 'opacity 1.5s ease-in',
           }}
         />
       )}
