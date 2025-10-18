@@ -19,7 +19,7 @@ function LiveSets() {
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             Suite 52 B2B Henry McBride in NYC
           </h2>
-          <div className="aspect-video w-full max-w-4xl mx-auto">
+          <div className="aspect-video w-full">
             <iframe
               src="https://www.youtube.com/embed/dQw4w9WgXcQ"
               title="Suite 52 B2B Henry McBride in NYC"
@@ -36,7 +36,7 @@ function LiveSets() {
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             UMANO Radio
           </h2>
-          <div className="w-full max-w-4xl mx-auto">
+          <div className="w-full">
             <iframe
               width="100%"
               height="166"
@@ -45,7 +45,7 @@ function LiveSets() {
               allow="autoplay"
               src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/13158665&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
               title="UMANO Radio"
-              className="rounded-lg"
+              className="w-full rounded-lg"
             ></iframe>
           </div>
         </div>
