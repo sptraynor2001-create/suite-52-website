@@ -254,7 +254,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
             >
               <span style={{ display: 'inline-block', position: 'relative' }}>
                 {displayText || subtitle}
-                {showCursor && (
+                {showCursor && displayText && (
                   <span
                     style={{
                       position: 'absolute',
