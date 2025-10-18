@@ -25,7 +25,7 @@ export const cardStyles = {
   
   // Margin/spacing
   margin: {
-    bottom: '12px',
+    bottom: '20px',
     gap: '20px',
   },
 }
