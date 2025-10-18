@@ -17,9 +17,9 @@ function LiveSets() {
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
 
     // Ease-out transition - stays lower near desktop value
-    // Mobile: 75% (lower positioning), Desktop: 52.5% (centered, subject visible)
+    // Mobile: 65% (even lower positioning), Desktop: 52.5% (centered, subject visible)
     const easedRatio = Math.pow(ratio, 0.25) // Very aggressive curve
-    const verticalPercent = 75 + (easedRatio * -22.5) // Range from 75% down to 52.5%
+    const verticalPercent = 65 + (easedRatio * -12.5) // Range from 65% down to 52.5%
 
     return `center ${verticalPercent}%`
   }
