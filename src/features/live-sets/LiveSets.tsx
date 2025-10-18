@@ -7,15 +7,21 @@ function LiveSets() {
   )
 
   return (
-    <PageLayout
-      title="LIVE_SETS"
-      displayText={subtitleText}
-      showCursor={showSubtitleCursor}
-      backgroundImage="/images/backgrounds/live-sets-background.jpg"
-    >
-      <div className="space-y-12">
+    <div>
+      <PageLayout
+        title="LIVE_SETS"
+        displayText={subtitleText}
+        showCursor={showSubtitleCursor}
+        backgroundImage="/images/backgrounds/live-sets-background.jpg"
+      >
+        {/* Spacer to account for content below */}
+        <div className="h-0"></div>
+      </PageLayout>
+
+      {/* Full-width embeds outside PageLayout constraints */}
+      <div className="space-y-12 px-4 sm:px-6 lg:px-8 xl:px-12">
         {/* YouTube Embed */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-white rounded-lg shadow-md p-6 max-w-7xl mx-auto">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             Suite 52 B2B Henry McBride in NYC
           </h2>
@@ -32,7 +38,7 @@ function LiveSets() {
         </div>
 
         {/* SoundCloud Embed */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-white rounded-lg shadow-md p-6 max-w-7xl mx-auto">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             UMANO Radio
           </h2>
@@ -50,7 +56,7 @@ function LiveSets() {
           </div>
         </div>
       </div>
-    </PageLayout>
+    </div>
   )
 }
 
