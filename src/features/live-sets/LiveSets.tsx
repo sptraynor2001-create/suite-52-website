@@ -15,17 +15,17 @@ function LiveSets() {
     >
       <div className="space-y-12">
         {/* YouTube Embed */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
             Suite 52 B2B Henry McBride in NYC with Element
           </h2>
-          <div className="w-full">
+          <div className="aspect-video w-full max-h-[250px] sm:max-h-[400px]">
             <iframe
               width="100%"
-              height="400"
+              height="100%"
               src="https://www.youtube.com/embed/dQw4w9WgXcQ"
               title="Suite 52 B2B Henry McBride in NYC with Element"
-              className="w-full rounded-lg"
+              className="w-full h-full rounded-lg"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -34,20 +34,20 @@ function LiveSets() {
         </div>
 
         {/* SoundCloud Embed */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
             UMANO Radio
           </h2>
           <div className="w-full">
             <iframe
               width="100%"
-              height="166"
+              height="120"
               scrolling="no"
               frameBorder="no"
               allow="autoplay"
               src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/13158665&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
               title="UMANO Radio"
-              className="w-full rounded-lg"
+              className="w-full rounded-lg sm:h-[166px] h-[120px]"
             ></iframe>
           </div>
         </div>
