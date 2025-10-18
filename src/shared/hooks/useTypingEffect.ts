@@ -38,7 +38,11 @@ export function useTypingEffect(text: string, delay: number = 300) {
           setShowCursor(true)
         }
         currentIndex++
-        const timingDelay = timings[currentIndex - 1] || 60
+        // First two characters take longer to type
+        let timingDelay = timings[currentIndex - 1] || 60
+        if (currentIndex <= 2) {
+          timingDelay = timingDelay * 2.5 // Make first two characters 2.5x slower
+        }
         setTimeout(typeNextChar, timingDelay)
       } else {
         // Stop blinking and do quick flashes
