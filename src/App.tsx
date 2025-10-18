@@ -101,19 +101,31 @@ function HomePage() {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Prevent body scroll on mobile home page
+  // Prevent body scroll on mobile home page - more aggressive approach for Safari
   useEffect(() => {
     if (isMobile) {
       document.body.style.overflow = 'hidden'
       document.body.style.height = '100vh'
+      document.body.style.position = 'fixed'
+      document.body.style.width = '100%'
+      document.body.style.top = '0'
+      document.body.style.left = '0'
     } else {
       document.body.style.overflow = ''
       document.body.style.height = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+      document.body.style.top = ''
+      document.body.style.left = ''
     }
 
     return () => {
       document.body.style.overflow = ''
       document.body.style.height = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+      document.body.style.top = ''
+      document.body.style.left = ''
     }
   }, [isMobile])
 

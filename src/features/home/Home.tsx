@@ -294,37 +294,37 @@ function Home({ onNavigate }: HomeProps) {
     const maxWidth = 1920
     const minSize = 6 // Mobile font size
     const maxSize = 7.5 // Desktop font size
-    
+
     const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
     const size = minSize + (maxSize - minSize) * ratio
-    
+
     return `${size}px`
   }, [viewportWidth])
 
   const philosophicalBottom = useMemo(() => {
     const minWidth = 375
     const maxWidth = 1920
-    
+
     const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-    
-    const bottom = 0.5 + (1 - 0.5) * ratio // 0.5px mobile to 1px desktop (very close to bottom)
+
+    // On mobile, position it higher to ensure it doesn't cause scrolling
+    const bottom = isMobile ? 2 : (0.5 + (1 - 0.5) * ratio) // 2px on mobile, 0.5-1px on desktop
     return `${bottom}px`
-  }, [viewportWidth])
+  }, [viewportWidth, isMobile])
 
   const philosophicalHeight = useMemo(() => {
     const minWidth = 375
     const maxWidth = 1920
-    
+
     const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-    
-    // Mobile: 5 lines (more lines, smaller text) = 45px (shorter)
-    // Desktop: 3 lines (fewer lines, larger text) = 35px (shorter)
-    const height = 45 + (35 - 45) * ratio
+
+    // Mobile: smaller height to prevent scrolling, Desktop: normal height
+    const height = isMobile ? 35 : (45 + (35 - 45) * ratio) // 35px on mobile, 35-45px on desktop
     return `${height}px`
-  }, [viewportWidth])
+  }, [viewportWidth, isMobile])
 
   // Generate random positions and velocities for squares - memoized so it only runs once
   const squares = useMemo(() => {
@@ -500,6 +500,9 @@ function Home({ onNavigate }: HomeProps) {
             transition: 'width 0.3s ease, height 0.3s ease, font-size 0.3s ease, bottom 0.3s ease',
             overflow: 'hidden',
             visibility: 'visible',
+            // Additional Safari-specific scroll prevention
+            WebkitOverflowScrolling: 'touch',
+            touchAction: 'none',
           }}
         >
           {philosophicalText}
