@@ -2,11 +2,15 @@ import { activeFont } from '@/design/fonts'
 import { useState, useEffect, useMemo } from 'react'
 import PageLayout from '@/shared/components/layouts/PageLayout'
 import { cardStyles } from '@/design/cardStyles'
+import { useTypingEffect } from '@/shared/hooks/useTypingEffect'
 
 function Shows() {
   const [visibleShows, setVisibleShows] = useState<number>(0)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
+  const { displayText: subtitleText, showCursor: showSubtitleCursor } = useTypingEffect(
+    "// EVENTS.filter(e => new Date(e.date) >= Date.now()).map(show => show)"
+  )
 
   const shows = [
     { date: '10_18_25', location: 'NEW_YORK_US', event: 'MUZIKA' },
@@ -95,9 +99,10 @@ function Shows() {
   }, [viewportWidth])
 
   return (
-    <PageLayout 
+    <PageLayout
       title="UPCOMING_SHOWS"
-      subtitle="// EVENTS.filter(e => new Date(e.date) >= Date.now()).map(show => show)"
+      displayText={subtitleText}
+      showCursor={showSubtitleCursor}
     >
       <div
         style={{

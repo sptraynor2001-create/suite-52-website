@@ -4,11 +4,13 @@ import { activeFont } from '@/design/fonts'
 interface PageLayoutProps {
   title: string
   subtitle?: string
+  displayText?: string
+  showCursor?: boolean
   children: ReactNode
   stickyHeader?: boolean
 }
 
-function PageLayout({ title, subtitle, children, stickyHeader = false }: PageLayoutProps) {
+function PageLayout({ title, subtitle, displayText, showCursor, children, stickyHeader = false }: PageLayoutProps) {
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
 
@@ -114,8 +116,8 @@ function PageLayout({ title, subtitle, children, stickyHeader = false }: PageLay
             {title}
           </h1>
           
-          {subtitle && (
-            <p 
+          {(subtitle || displayText) && (
+            <p
               ref={subtitleRef}
               style={{
                 background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.25) 25%, rgba(255, 255, 255, 0.32) 50%, rgba(255, 255, 255, 0.25) 75%, rgba(255, 255, 255, 0.2) 100%)',
@@ -132,9 +134,28 @@ function PageLayout({ title, subtitle, children, stickyHeader = false }: PageLay
                 whiteSpace: 'nowrap', // Always stay on one line
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
+                position: 'relative',
               }}
             >
-              {subtitle}
+              <span style={{ display: 'inline-block', position: 'relative' }}>
+                {displayText || subtitle}
+                {showCursor && (
+                  <span
+                    style={{
+                      position: 'absolute',
+                      right: '-0.6em',
+                      top: '0.23em',
+                      opacity: showCursor ? 0.9 : 0,
+                      transition: 'opacity 0.15s ease-in',
+                      display: 'inline-block',
+                      width: '24px',
+                      height: '48px',
+                      backgroundColor: '#ffffff',
+                      boxShadow: '0 0 6px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2)',
+                    }}
+                  />
+                )}
+              </span>
             </p>
           )}
         </div>
