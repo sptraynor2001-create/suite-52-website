@@ -138,9 +138,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, children, sticky
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               position: 'relative',
-              opacity: (displayText && displayText.length > 0) || subtitle ? 1 : 0,
               animation: (displayText && displayText.length > 0) || subtitle ? 'shimmer 12s linear infinite' : 'none',
-              transition: 'opacity 0.3s ease-in',
             }}
             >
               <span style={{ display: 'inline-block', position: 'relative', opacity: (displayText && displayText.length > 0) || subtitle ? 1 : 0, transition: 'opacity 0.3s ease-in' }}>
