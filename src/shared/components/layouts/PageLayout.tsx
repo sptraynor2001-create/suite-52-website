@@ -106,7 +106,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
             height: '100vh',
             backgroundImage: `url(${backgroundImage})`,
             backgroundSize: 'cover',
-            backgroundPosition: '50% 40%',
+            backgroundPosition: '50% 20%',
             backgroundRepeat: 'no-repeat',
             opacity: 0.15, // More subtle for content pages
             zIndex: -1,
