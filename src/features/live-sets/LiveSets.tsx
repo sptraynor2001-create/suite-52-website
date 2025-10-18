@@ -19,7 +19,7 @@ function LiveSets() {
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
             Suite 52 B2B Henry McBride in NYC with Element
           </h2>
-          <div className="aspect-video w-full max-h-[350px] sm:max-h-[400px]">
+          <div className="aspect-video w-full">
             <iframe
               width="100%"
               height="100%"
