@@ -18,7 +18,11 @@ function Home({ onNavigate }: HomeProps) {
   const [showPhilosophicalCursor, setShowPhilosophicalCursor] = useState(false)
   const [isPhilosophicalTyping, setIsPhilosophicalTyping] = useState(false)
   const [backgroundLoaded, setBackgroundLoaded] = useState(false)
+  const [subtitleText, setSubtitleText] = useState('')
+  const [showSubtitleCursor, setShowSubtitleCursor] = useState(false)
+  const [isSubtitleTyping, setIsSubtitleTyping] = useState(false)
   const fullText = 'Suite 52'
+  const fullSubtitleText = '// EVENTS.filter(e => new Date(e.date) >= Date.now()).map(show => show)'
   const fullPhilosophicalText = 'SOUND IS A REBELLION AGAINST SILENCE, AND MUSIC SPEAKS WHAT LOGIC CANNOT DECODE. ALGORITHMS SEARCH FOR PATTERNS WHILE HUMANS SEARCH FOR MEANING. CULTURE LIVES BETWEEN TRADITION AND TRANSFORMATION, AND FREEDOM EMERGES WHEN SPIRIT GUIDES TRANSMISSION. THE SIGNAL SEARCHES FOR THOSE WILLING TO LISTEN, THE MELODY FINDS THOSE WILLING TO FEEL, AND THE RHYTHM IS ONLY UNDERSTOOD BY THOSE WILLING TO MOVE.'
 
   useEffect(() => {
@@ -109,32 +113,58 @@ function Home({ onNavigate }: HomeProps) {
     }
   }, [])
 
-  // Typing animation for philosophical text
+  // Typing animation for subtitle
   useEffect(() => {
-    // Start after main title animation completes and buttons appear (adjusted for slower typing: ~3.5s total)
+    // Start after main title animation completes (~3.5s total)
     const startDelay = setTimeout(() => {
-      setIsPhilosophicalTyping(true)
-      setShowPhilosophicalCursor(true)
+      setIsSubtitleTyping(true)
+      setShowSubtitleCursor(true)
       let currentIndex = 0
-      
+
       const typeNextChar = () => {
-        if (currentIndex < fullPhilosophicalText.length) {
-          setPhilosophicalText(fullPhilosophicalText.substring(0, currentIndex + 1))
+        if (currentIndex < fullSubtitleText.length) {
+          setSubtitleText(fullSubtitleText.substring(0, currentIndex + 1))
           currentIndex++
-          
-          // Variable typing speed: 40-120ms per keystroke
-          const delay = 40 + Math.random() * 80
-          
+
+          // Consistent typing speed for code: 80-120ms per keystroke
+          const delay = 80 + Math.random() * 40
+
           setTimeout(typeNextChar, delay)
         } else {
-          setIsPhilosophicalTyping(false)
-          // Hide cursor after typing is done
+          setIsSubtitleTyping(false)
+          // Hide cursor after typing is done, then start philosophical text
           setTimeout(() => {
-            setShowPhilosophicalCursor(false)
+            setShowSubtitleCursor(false)
+            // Start philosophical text after subtitle is done
+            setTimeout(() => {
+              setIsPhilosophicalTyping(true)
+              setShowPhilosophicalCursor(true)
+              let philosophicalIndex = 0
+
+              const typePhilosophicalChar = () => {
+                if (philosophicalIndex < fullPhilosophicalText.length) {
+                  setPhilosophicalText(fullPhilosophicalText.substring(0, philosophicalIndex + 1))
+                  philosophicalIndex++
+
+                  // Variable typing speed: 40-120ms per keystroke
+                  const delay = 40 + Math.random() * 80
+
+                  setTimeout(typePhilosophicalChar, delay)
+                } else {
+                  setIsPhilosophicalTyping(false)
+                  // Hide cursor after typing is done
+                  setTimeout(() => {
+                    setShowPhilosophicalCursor(false)
+                  }, 1000)
+                }
+              }
+
+              typePhilosophicalChar()
+            }, 500) // Brief pause before philosophical text starts
           }, 1000)
         }
       }
-      
+
       typeNextChar()
     }, 3500)
 
@@ -143,6 +173,26 @@ function Home({ onNavigate }: HomeProps) {
     }
   }, [])
 
+  // Cursor management for subtitle - solid while typing, blink after
+  useEffect(() => {
+    if (isSubtitleTyping) {
+      // Keep cursor solid while typing
+      setShowSubtitleCursor(true)
+      return
+    }
+
+    // After typing is done, blink for a bit then hide
+    if (subtitleText.length === fullSubtitleText.length && subtitleText.length > 0) {
+      const cursorInterval = setInterval(() => {
+        setShowSubtitleCursor(prev => !prev)
+      }, 530)
+
+      return () => {
+        clearInterval(cursorInterval)
+      }
+    }
+  }, [isSubtitleTyping, subtitleText])
+
   // Cursor management for philosophical text - solid while typing, blink after
   useEffect(() => {
     if (isPhilosophicalTyping) {
@@ -150,7 +200,7 @@ function Home({ onNavigate }: HomeProps) {
       setShowPhilosophicalCursor(true)
       return
     }
-    
+
     // After typing is done, blink for a bit then hide
     if (philosophicalText.length === fullPhilosophicalText.length && philosophicalText.length > 0) {
       const cursorInterval = setInterval(() => {
@@ -466,8 +516,8 @@ function Home({ onNavigate }: HomeProps) {
           </span>
         </h1>
         
-        <p 
-          style={{ 
+        <p
+          style={{
             color: 'rgba(255, 255, 255, 0.25)',
             fontSize: subtitleFontSize,
             letterSpacing: '0.05em',
@@ -481,6 +531,39 @@ function Home({ onNavigate }: HomeProps) {
           }}
         >
           Producer // DJ // Artist
+        </p>
+
+        {/* Typing subtitle */}
+        <p
+          style={{
+            color: 'rgba(255, 255, 255, 0.35)',
+            fontSize: '14px',
+            letterSpacing: '0.08em',
+            fontFamily: 'monospace',
+            fontWeight: '400',
+            margin: '4px 0 0 0',
+            visibility: subtitleText.length > 0 ? 'visible' : 'hidden',
+            opacity: subtitleText.length > 0 ? 1 : 0,
+            transition: 'opacity 0.5s ease-in',
+          }}
+        >
+          <span style={{ display: 'inline-block', position: 'relative' }}>
+            {subtitleText}
+            <span
+              style={{
+                position: 'absolute',
+                right: '-0.4em',
+                top: '0.1em',
+                opacity: showSubtitleCursor ? 0.9 : 0,
+                transition: subtitleText.length === fullSubtitleText.length ? 'opacity 0.15s ease-in' : 'none',
+                display: 'inline-block',
+                width: '8px',
+                height: '16px',
+                backgroundColor: '#ffffff',
+                boxShadow: '0 0 4px rgba(255, 255, 255, 0.3)',
+              }}
+            />
+          </span>
         </p>
 
         {/* Philosophical text - subtle and hidden */}
