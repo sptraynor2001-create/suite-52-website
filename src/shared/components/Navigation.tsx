@@ -26,7 +26,6 @@ function Navigation({ currentPage, onNavigate }: NavigationProps) {
   }, [])
 
   const navLinks: { page: Page; label: string }[] = [
-    { page: 'home', label: 'HOME' },
     { page: 'music', label: 'MUSIC' },
     { page: 'shows', label: 'SHOWS' },
     { page: 'live-sets', label: 'LIVE_SETS' },
