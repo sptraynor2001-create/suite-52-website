@@ -87,22 +87,36 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
           background-position: 200% center;
         }
       }
+      @keyframes titleSlideIn {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
     `
     
-    // Check if animation already exists
-    let animationExists = false
+    // Check if animations already exist
+    let shimmerExists = false
+    let titleSlideInExists = false
     try {
       for (let i = 0; i < styleSheet.cssRules.length; i++) {
-        if (styleSheet.cssRules[i].cssText.includes('shimmer')) {
-          animationExists = true
-          break
+        const cssText = styleSheet.cssRules[i].cssText
+        if (cssText.includes('shimmer')) {
+          shimmerExists = true
+        }
+        if (cssText.includes('titleSlideIn')) {
+          titleSlideInExists = true
         }
       }
     } catch (e) {
       // Some stylesheets may not be accessible
     }
 
-    if (!animationExists) {
+    if (!shimmerExists || !titleSlideInExists) {
       try {
         styleSheet.insertRule(shimmerKeyframes, styleSheet.cssRules.length)
       } catch (e) {
@@ -199,6 +213,9 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
             fontFamily: activeFont.family,
             margin: 0,
             textShadow: '0 0 20px rgba(255, 255, 255, 0.1)',
+            opacity: 0,
+            transform: 'translateY(20px)',
+            animation: 'titleSlideIn 0.8s ease-out 0.3s forwards',
           }}>
             {title}
           </h1>
