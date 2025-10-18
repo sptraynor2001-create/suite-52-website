@@ -17,7 +17,7 @@ function LiveSets() {
       <div className="space-y-12">
         {/* YouTube Embed */}
         <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
             Suite 52 B2B Henry McBride in NYC with Element
           </h2>
           <div className="w-full" style={{ aspectRatio: '16/9' }}>
@@ -36,7 +36,7 @@ function LiveSets() {
 
         {/* SoundCloud Embed */}
         <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
             UMANO Radio
           </h2>
           <div className="w-full">
