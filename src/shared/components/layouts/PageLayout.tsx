@@ -15,6 +15,39 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
 
+  // Calculate smooth background size based on viewport aspect ratio - same as home page
+  const getBackgroundSize = () => {
+    // On mobile/portrait: make image BIGGER than viewport so positioning works
+    // On desktop/landscape: constrain by width
+    const aspectRatio = viewportWidth / window.innerHeight
+
+    if (aspectRatio < 0.8) {
+      // Portrait/mobile: make image 150% of viewport height so we can crop/position it
+      return 'auto 150%'
+    } else {
+      // Landscape/desktop: constrain by width
+      return '100% auto'
+    }
+  }
+
+  // Calculate smooth background position - same logic as home page
+  const getBackgroundPosition = () => {
+    const minWidth = 375 // Mobile minimum
+    const maxWidth = 1920 // Desktop maximum
+
+    // Calculate ratio: 0 at mobile, 1 at desktop
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+
+    // Ease-out transition - stays very high near desktop value, minimal dip throughout
+    // Mobile: 95% (subject positioned high), Desktop: 52.5% (centered, subject visible)
+    // Using very small exponent to minimize dip in middle ranges
+    const easedRatio = Math.pow(ratio, 0.25) // Very aggressive curve - stays high almost entire transition
+    const verticalPercent = 95 + (easedRatio * -42.5) // Range from 95% down to 52.5%
+
+    return `center ${verticalPercent}%`
+  }
+
   useEffect(() => {
     const handleResize = () => {
       setViewportWidth(window.innerWidth)
@@ -105,8 +138,8 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
             width: '100vw',
             height: '100vh',
             backgroundImage: `url(${backgroundImage})`,
-            backgroundSize: '100% auto',
-            backgroundPosition: 'center 5%',
+            backgroundSize: getBackgroundSize(),
+            backgroundPosition: getBackgroundPosition(),
             backgroundRepeat: 'no-repeat',
             opacity: 0.15, // More subtle for content pages
             zIndex: -1,
