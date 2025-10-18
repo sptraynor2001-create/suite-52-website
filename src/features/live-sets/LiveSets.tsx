@@ -17,14 +17,14 @@ function LiveSets() {
         {/* YouTube Embed */}
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-            Suite 52 B2B Henry McBride in NYC
+            Suite 52 B2B Henry McBride in NYC with Element
           </h2>
           <div className="w-full">
             <iframe
               width="100%"
               height="400"
               src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-              title="Suite 52 B2B Henry McBride in NYC"
+              title="Suite 52 B2B Henry McBride in NYC with Element"
               className="w-full rounded-lg"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
