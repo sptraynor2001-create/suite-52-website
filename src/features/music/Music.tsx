@@ -36,6 +36,7 @@ function Music() {
       title="RELEASES"
       displayText={subtitleText}
       showCursor={showSubtitleCursor}
+      backgroundImage="/images/backgrounds/music-background.jpg"
     >
       {releases.slice(0, visibleReleases).map((release, index) => (
         <ReleaseCard

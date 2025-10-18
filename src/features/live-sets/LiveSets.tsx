@@ -24,6 +24,7 @@ function LiveSets() {
       title="LIVE_SETS"
       displayText={subtitleText}
       showCursor={showSubtitleCursor}
+      backgroundImage="/images/backgrounds/live-sets-background.jpg"
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {sortedSets.map((set) => (

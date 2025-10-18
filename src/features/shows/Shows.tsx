@@ -103,6 +103,7 @@ function Shows() {
       title="UPCOMING_SHOWS"
       displayText={subtitleText}
       showCursor={showSubtitleCursor}
+      backgroundImage="/images/backgrounds/shows-background.jpg"
     >
       <div
         style={{

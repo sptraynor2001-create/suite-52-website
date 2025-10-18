@@ -12,6 +12,7 @@ function Contact() {
       title="CONTACT"
       displayText={subtitleText}
       showCursor={showSubtitleCursor}
+      backgroundImage="/images/backgrounds/contact-background.jpg"
     >
       <div className="bg-white rounded-lg shadow-md p-6 sm:p-8">
         <div className="mb-8">

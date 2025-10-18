@@ -11,6 +11,7 @@ function About() {
       title="ABOUT"
       displayText={subtitleText}
       showCursor={showSubtitleCursor}
+      backgroundImage="/images/backgrounds/about-background.jpg"
     >
       <div className="bg-white rounded-lg shadow-md p-6 sm:p-8">
         <div className="prose prose-lg max-w-none">

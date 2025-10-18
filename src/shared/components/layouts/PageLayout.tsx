@@ -6,11 +6,12 @@ interface PageLayoutProps {
   subtitle?: string
   displayText?: string
   showCursor?: boolean
+  backgroundImage?: string
   children: ReactNode
   stickyHeader?: boolean
 }
 
-function PageLayout({ title, subtitle, displayText, showCursor, children, stickyHeader = false }: PageLayoutProps) {
+function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage, children, stickyHeader = false }: PageLayoutProps) {
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
 
@@ -95,23 +96,25 @@ function PageLayout({ title, subtitle, displayText, showCursor, children, sticky
       </svg>
 
       {/* Background image - beneath everything */}
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          backgroundImage: 'url(/images/backgrounds/main-background.JPEG)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.15, // More subtle for content pages
-          zIndex: -1,
-          pointerEvents: 'none',
-          filter: 'url(#pageMotionBlur)',
-        }}
-      />
+      {backgroundImage && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            opacity: 0.15, // More subtle for content pages
+            zIndex: -1,
+            pointerEvents: 'none',
+            filter: 'url(#pageMotionBlur)',
+          }}
+        />
+      )}
 
       <div style={{
         maxWidth: '900px',
