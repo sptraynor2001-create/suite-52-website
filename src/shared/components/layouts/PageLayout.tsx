@@ -93,6 +93,10 @@ function PageLayout({ title, subtitle, displayText, showCursor, children, sticky
           borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
           paddingBottom: '10px',
           paddingTop: stickyHeader ? '100px' : '0',
+          minHeight: '60px', // Reserve space for title + subtitle to prevent layout shift
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
           ...(stickyHeader && {
             position: 'sticky',
             top: 0,
@@ -116,27 +120,28 @@ function PageLayout({ title, subtitle, displayText, showCursor, children, sticky
             {title}
           </h1>
           
-          {(subtitle || displayText) && (
-            <p
-              ref={subtitleRef}
-              style={{
-                background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.25) 25%, rgba(255, 255, 255, 0.32) 50%, rgba(255, 255, 255, 0.25) 75%, rgba(255, 255, 255, 0.2) 100%)',
-                backgroundSize: '200% auto',
-                color: 'transparent',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                fontSize: subtitleFontSize,
-                fontFamily: 'monospace',
-                letterSpacing: '0.05em',
-                margin: '8px 0 0 0',
-                animation: 'shimmer 12s linear infinite',
-                filter: 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.1))',
-                whiteSpace: 'nowrap', // Always stay on one line
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                position: 'relative',
-              }}
-            >
+          {/* Always render subtitle element to prevent layout shift */}
+          <p
+            ref={subtitleRef}
+            style={{
+              background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.25) 25%, rgba(255, 255, 255, 0.32) 50%, rgba(255, 255, 255, 0.25) 75%, rgba(255, 255, 255, 0.2) 100%)',
+              backgroundSize: '200% auto',
+              color: 'transparent',
+              WebkitBackgroundClip: 'text',
+              backgroundClip: 'text',
+              fontSize: subtitleFontSize,
+              fontFamily: 'monospace',
+              letterSpacing: '0.05em',
+              margin: '8px 0 0 0',
+              animation: 'shimmer 12s linear infinite',
+              filter: 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.1))',
+              whiteSpace: 'nowrap', // Always stay on one line
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              position: 'relative',
+              visibility: displayText || subtitle ? 'visible' : 'hidden',
+            }}
+          >
               <span style={{ display: 'inline-block', position: 'relative' }}>
                 {displayText || subtitle}
                 {showCursor && (
@@ -156,8 +161,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, children, sticky
                   />
                 )}
               </span>
-            </p>
-          )}
+          </p>
         </div>
 
         {/* Content */}
