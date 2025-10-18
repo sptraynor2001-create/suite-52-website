@@ -7,11 +7,12 @@ interface PageLayoutProps {
   displayText?: string
   showCursor?: boolean
   backgroundImage?: string
+  backgroundPositionOverride?: string
   children: ReactNode
   stickyHeader?: boolean
 }
 
-function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage, children, stickyHeader = false }: PageLayoutProps) {
+function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage, backgroundPositionOverride, children, stickyHeader = false }: PageLayoutProps) {
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
 
@@ -139,7 +140,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
             height: '100vh',
             backgroundImage: `url(${backgroundImage})`,
             backgroundSize: getBackgroundSize(),
-            backgroundPosition: getBackgroundPosition(),
+            backgroundPosition: backgroundPositionOverride || getBackgroundPosition(),
             backgroundRepeat: 'no-repeat',
             opacity: 0.15, // More subtle for content pages
             zIndex: -1,
