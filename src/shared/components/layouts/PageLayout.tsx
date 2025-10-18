@@ -231,7 +231,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
               textShadow: '0 0 20px rgba(255, 255, 255, 0.1)',
               opacity: 0,
               transform: 'translateY(20px)',
-              transition: 'opacity 0.8s ease-out 0.3s, transform 0.8s ease-out 0.3s',
+              transition: 'opacity 1.0s ease-out 0.3s, transform 0.8s ease-out 0.3s',
             }}
           >
             {title}
