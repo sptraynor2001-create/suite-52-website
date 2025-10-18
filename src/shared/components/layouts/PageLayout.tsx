@@ -141,26 +141,24 @@ function PageLayout({ title, subtitle, displayText, showCursor, children, sticky
               animation: (displayText && displayText.length > 0) || subtitle ? 'shimmer 12s linear infinite' : 'none',
             }}
             >
-              <span style={{ display: 'inline-block', position: 'relative', opacity: (displayText && displayText.length > 0) || subtitle ? 1 : 0, transition: 'opacity 0.3s ease-in' }}>
+              <span style={{ display: 'inline-block', position: 'relative' }}>
                 {displayText || subtitle}
+                {showCursor && (
+                  <span
+                    style={{
+                      position: 'absolute',
+                      right: '-0.6em',
+                      top: '0.23em',
+                      opacity: 0.9,
+                      display: 'inline-block',
+                      width: '2px',
+                      height: '1.2em',
+                      backgroundColor: '#ffffff',
+                      boxShadow: '0 0 6px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2)',
+                    }}
+                  />
+                )}
               </span>
-              {showCursor && (
-                <span
-                  style={{
-                    position: 'absolute',
-                    left: (displayText && displayText.length > 0) ? 'auto' : '0',
-                    right: (displayText && displayText.length > 0) ? '-0.6em' : 'auto',
-                    top: '0.23em',
-                    opacity: showCursor ? 0.9 : 0,
-                    transition: 'opacity 0.15s ease-in',
-                    display: 'inline-block',
-                    width: '2px',
-                    height: '1.2em',
-                    backgroundColor: '#ffffff',
-                    boxShadow: '0 0 6px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2)',
-                  }}
-                />
-              )}
           </p>
         </div>
 
