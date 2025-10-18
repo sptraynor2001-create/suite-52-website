@@ -105,7 +105,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
             width: '100vw',
             height: '100vh',
             backgroundImage: `url(${backgroundImage})`,
-            backgroundSize: 'cover',
+            backgroundSize: '100% auto',
             backgroundPosition: 'center 30%',
             backgroundRepeat: 'no-repeat',
             opacity: 0.15, // More subtle for content pages
