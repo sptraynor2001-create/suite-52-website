@@ -33,6 +33,10 @@ export function useTypingEffect(text: string, delay: number = 300) {
     const typeNextChar = () => {
       if (currentIndex < text.length) {
         setDisplayText(text.substring(0, currentIndex + 1))
+        // Show cursor only after first character appears
+        if (currentIndex === 0) {
+          setShowCursor(true)
+        }
         currentIndex++
         const timingDelay = timings[currentIndex - 1] || 60
         setTimeout(typeNextChar, timingDelay)
@@ -69,7 +73,6 @@ export function useTypingEffect(text: string, delay: number = 300) {
 
     // Start typing after delay
     const startDelay = setTimeout(() => {
-      setShowCursor(true)
       typeNextChar()
     }, delay)
 
