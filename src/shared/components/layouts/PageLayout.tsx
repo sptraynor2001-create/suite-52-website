@@ -146,6 +146,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
             zIndex: -1,
             pointerEvents: 'none',
             filter: 'url(#pageMotionBlur)',
+            transition: 'background-position 0.5s ease-in-out',
           }}
         />
       )}
