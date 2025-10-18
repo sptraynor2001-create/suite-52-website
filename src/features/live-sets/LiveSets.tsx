@@ -7,26 +7,22 @@ function LiveSets() {
   )
 
   return (
-    <div>
-      <PageLayout
-        title="LIVE_SETS"
-        displayText={subtitleText}
-        showCursor={showSubtitleCursor}
-        backgroundImage="/images/backgrounds/live-sets-background.jpg"
-      >
-        {/* Spacer to account for content below */}
-        <div className="h-0"></div>
-      </PageLayout>
-
-      {/* Full-width embeds outside PageLayout constraints */}
-      <div className="space-y-12 px-4 sm:px-6 lg:px-8 xl:px-12">
+    <PageLayout
+      title="LIVE_SETS"
+      displayText={subtitleText}
+      showCursor={showSubtitleCursor}
+      backgroundImage="/images/backgrounds/live-sets-background.jpg"
+    >
+      <div className="space-y-12">
         {/* YouTube Embed */}
-        <div className="bg-white rounded-lg shadow-md p-6 max-w-7xl mx-auto">
+        <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             Suite 52 B2B Henry McBride in NYC
           </h2>
           <div className="aspect-video w-full">
             <iframe
+              width="100%"
+              height="100%"
               src="https://www.youtube.com/embed/dQw4w9WgXcQ"
               title="Suite 52 B2B Henry McBride in NYC"
               className="w-full h-full rounded-lg"
@@ -38,7 +34,7 @@ function LiveSets() {
         </div>
 
         {/* SoundCloud Embed */}
-        <div className="bg-white rounded-lg shadow-md p-6 max-w-7xl mx-auto">
+        <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             UMANO Radio
           </h2>
@@ -56,7 +52,7 @@ function LiveSets() {
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   )
 }
 
