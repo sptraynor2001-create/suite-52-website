@@ -1,39 +1,14 @@
 import { liveSets } from './data'
 import PageLayout from '@/shared/components/layouts/PageLayout'
 import { useTypingEffect } from '@/shared/hooks/useTypingEffect'
-import { useState, useEffect } from 'react'
 
 function LiveSets() {
-  const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
   const { displayText: subtitleText, showCursor: showSubtitleCursor } = useTypingEffect(
     "// RECORDINGS.sort((a, b) => b.timestamp - a.timestamp).slice(0, 10)"
   )
 
-  useEffect(() => {
-    const handleResize = () => {
-      setViewportWidth(window.innerWidth)
-    }
-
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
-  // Custom background positioning for Live Sets - lower in portrait mode
-  const getLiveSetsBackgroundPosition = () => {
-    const minWidth = 375 // Mobile minimum
-    const maxWidth = 1920 // Desktop maximum
-
-    // Calculate ratio: 0 at mobile, 1 at desktop
-    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
-    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-
-    // Ease-out transition - stays lower near desktop value
-    // Mobile: 65% (even lower positioning), Desktop: 52.5% (centered, subject visible)
-    const easedRatio = Math.pow(ratio, 0.25) // Very aggressive curve
-    const verticalPercent = 65 + (easedRatio * -12.5) // Range from 65% down to 52.5%
-
-    return `center ${verticalPercent}%`
-  }
+  // Simple centered background positioning for Live Sets
+  const liveSetsBackgroundPosition = 'center'
   // Sort live sets by date (most recent first)
   const sortedSets = [...liveSets].sort((a, b) => 
     new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -53,7 +28,7 @@ function LiveSets() {
       displayText={subtitleText}
       showCursor={showSubtitleCursor}
       backgroundImage="/images/backgrounds/live-sets-background.jpg"
-      backgroundPositionOverride={getLiveSetsBackgroundPosition()}
+      backgroundPositionOverride={liveSetsBackgroundPosition}
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {sortedSets.map((set) => (
