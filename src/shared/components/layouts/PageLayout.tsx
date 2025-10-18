@@ -87,7 +87,7 @@ function PageLayout({ title, subtitle, children, stickyHeader = false }: PageLay
       }}>
         {/* Header */}
         <div style={{
-          marginBottom: '40px',
+          marginBottom: '20px',
           borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
           paddingBottom: '10px',
           paddingTop: stickyHeader ? '100px' : '0',
