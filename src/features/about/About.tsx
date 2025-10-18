@@ -3,7 +3,8 @@ import { useTypingEffect } from '@/shared/hooks/useTypingEffect'
 
 function About() {
   const { displayText: subtitleText, showCursor: showSubtitleCursor } = useTypingEffect(
-    "// const ARTIST = { name: 'Suite 52', genre: 'Electronic', vibe: 'Immersive' }"
+    "// const ARTIST = { name: 'Suite 52', genre: 'Electronic', vibe: 'Immersive' }",
+    1500
   )
 
   return (

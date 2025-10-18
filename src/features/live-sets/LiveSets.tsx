@@ -3,7 +3,8 @@ import { useTypingEffect } from '@/shared/hooks/useTypingEffect'
 
 function LiveSets() {
   const { displayText: subtitleText, showCursor: showSubtitleCursor } = useTypingEffect(
-    "// RECORDINGS.sort((a, b) => b.timestamp - a.timestamp).slice(0, 10)"
+    "// RECORDINGS.sort((a, b) => b.timestamp - a.timestamp).slice(0, 10)",
+    1500
   )
 
   return (

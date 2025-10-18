@@ -9,7 +9,8 @@ function Shows() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
   const { displayText: subtitleText, showCursor: showSubtitleCursor } = useTypingEffect(
-    "// EVENTS.filter(e => new Date(e.date) >= Date.now()).map(show => show)"
+    "// EVENTS.filter(e => new Date(e.date) >= Date.now()).map(show => show)",
+    1500
   )
 
   const shows = [

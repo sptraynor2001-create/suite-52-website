@@ -8,7 +8,8 @@ import { useState, useEffect } from 'react'
 function Music() {
   const [visibleReleases, setVisibleReleases] = useState<number>(0)
   const { displayText: subtitleText, showCursor: showSubtitleCursor } = useTypingEffect(
-    "// MUSIC.sort((a, b) => new Date(b.date) - new Date(a.date))"
+    "// MUSIC.sort((a, b) => new Date(b.date) - new Date(a.date))",
+    1500
   )
 
   useEffect(() => {

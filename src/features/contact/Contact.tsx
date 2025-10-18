@@ -4,7 +4,8 @@ import { useTypingEffect } from '@/shared/hooks/useTypingEffect'
 
 function Contact() {
   const { displayText: subtitleText, showCursor: showSubtitleCursor } = useTypingEffect(
-    "// await connect({ booking: true, collaboration: true, press: true })"
+    "// await connect({ booking: true, collaboration: true, press: true })",
+    1500
   )
 
   return (
