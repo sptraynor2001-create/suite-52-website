@@ -12,10 +12,10 @@ describe('Music Data', () => {
       releases.forEach((release) => {
         expect(release).toHaveProperty('id')
         expect(release).toHaveProperty('title')
-        expect(release).toHaveProperty('date')
+        expect(release).toHaveProperty('releaseDate')
         expect(typeof release.id).toBe('string')
         expect(typeof release.title).toBe('string')
-        expect(typeof release.date).toBe('string')
+        expect(typeof release.releaseDate).toBe('string')
       })
     })
 
@@ -25,9 +25,9 @@ describe('Music Data', () => {
       expect(uniqueIds.size).toBe(ids.length)
     })
 
-    it('should have valid dates', () => {
+    it('should have valid release dates', () => {
       releases.forEach((release) => {
-        const date = new Date(release.date)
+        const date = new Date(release.releaseDate)
         expect(date).toBeInstanceOf(Date)
         expect(isNaN(date.getTime())).toBe(false)
       })
@@ -71,11 +71,13 @@ describe('Music Data', () => {
       })
     })
 
-    it('should have dates in the past or present', () => {
+    it('should have release dates in the future (upcoming releases)', () => {
       const now = new Date()
       releases.forEach((release) => {
-        const releaseDate = new Date(release.date)
-        expect(releaseDate.getTime()).toBeLessThanOrEqual(now.getTime())
+        const releaseDate = new Date(release.releaseDate)
+        // Allow some tolerance for timezone differences
+        const tolerance = 24 * 60 * 60 * 1000 // 24 hours
+        expect(releaseDate.getTime()).toBeGreaterThan(now.getTime() - tolerance)
       })
     })
   })

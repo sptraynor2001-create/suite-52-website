@@ -1,4 +1,4 @@
-import PageLayout from '@/shared/components/layouts/PageLayout'
+import PageLayout from '@/shared/components/layout/PageLayout'
 import { useTypingEffect } from '@/shared/hooks/useTypingEffect'
 
 function LiveSets() {

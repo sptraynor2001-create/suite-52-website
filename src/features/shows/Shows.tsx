@@ -1,6 +1,6 @@
 import { activeFont } from '@/design/fonts'
 import { useState, useEffect, useMemo } from 'react'
-import PageLayout from '@/shared/components/layouts/PageLayout'
+import PageLayout from '@/shared/components/layout/PageLayout'
 import { cardStyles } from '@/design/cardStyles'
 import { useTypingEffect } from '@/shared/hooks/useTypingEffect'
 

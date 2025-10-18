@@ -1,6 +1,6 @@
 import { releases } from './data'
-import ReleaseCard from '@/shared/components/molecules/ReleaseCard'
-import PageLayout from '@/shared/components/layouts/PageLayout'
+import ReleaseCard from '@/shared/components/ui/ReleaseCard'
+import PageLayout from '@/shared/components/layout/PageLayout'
 import { activeFont } from '@/design/fonts'
 import { useTypingEffect } from '@/shared/hooks/useTypingEffect'
 import { useState, useEffect } from 'react'

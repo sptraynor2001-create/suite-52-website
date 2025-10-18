@@ -1,5 +1,5 @@
 import { socialLinks } from './data'
-import PageLayout from '@/shared/components/layouts/PageLayout'
+import PageLayout from '@/shared/components/layout/PageLayout'
 import { useTypingEffect } from '@/shared/hooks/useTypingEffect'
 
 function Contact() {

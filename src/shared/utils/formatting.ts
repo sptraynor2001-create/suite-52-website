@@ -7,11 +7,10 @@
  */
 export function formatDate(date: Date | string): string {
   const d = new Date(date)
-  return d.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
+  const month = d.getMonth() + 1 // getMonth() returns 0-11
+  const day = d.getDate()
+  const year = d.getFullYear()
+  return `${month}/${day}/${year}`
 }
 
 /**

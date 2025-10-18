@@ -1,14 +1,23 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import Navigation from '@/shared/components/Navigation'
-import FallingCode from '@/shared/components/FallingCode'
-import Home from '@/features/home'
-import About from '@/features/about'
-import Contact from '@/features/contact'
-import Music from '@/features/music'
-import LiveSets from '@/features/live-sets'
-import Shows from '@/features/shows'
-import EPK from '@/features/epk'
+import { useState, useEffect, Suspense, lazy } from 'react'
+import Navigation from '@/shared/components/layout/Navigation'
+import FallingCode from '@/shared/components/effects/FallingCode'
+
+// Lazy load page components for better performance
+const Home = lazy(() => import('@/features/home'))
+const About = lazy(() => import('@/features/about'))
+const Contact = lazy(() => import('@/features/contact'))
+const Music = lazy(() => import('@/features/music'))
+const LiveSets = lazy(() => import('@/features/live-sets'))
+const Shows = lazy(() => import('@/features/shows'))
+const EPK = lazy(() => import('@/features/epk'))
+
+// Loading fallback component
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white"></div>
+  </div>
+)
 
 type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'
 
@@ -142,15 +151,17 @@ function HomePage() {
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/about" element={<MainApp />} />
-        <Route path="/music" element={<MainApp />} />
-        <Route path="/live-sets" element={<MainApp />} />
-        <Route path="/shows" element={<MainApp />} />
-        <Route path="/contact" element={<MainApp />} />
-        <Route path="/epk" element={<EPK />} />
-      </Routes>
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<MainApp />} />
+          <Route path="/music" element={<MainApp />} />
+          <Route path="/live-sets" element={<MainApp />} />
+          <Route path="/shows" element={<MainApp />} />
+          <Route path="/contact" element={<MainApp />} />
+          <Route path="/epk" element={<EPK />} />
+        </Routes>
+      </Suspense>
     </Router>
   )
 }

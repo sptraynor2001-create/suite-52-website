@@ -1,4 +1,4 @@
-import PageLayout from '@/shared/components/layouts/PageLayout'
+import PageLayout from '@/shared/components/layout/PageLayout'
 
 function EPK() {
   return (

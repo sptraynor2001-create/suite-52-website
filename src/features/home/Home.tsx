@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react'
 import { activeFont } from '@/design/fonts'
-import BouncingSquare from '@/shared/components/BouncingSquare'
+import BouncingSquare from '@/shared/components/effects/BouncingSquare'
 
 type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'
 
