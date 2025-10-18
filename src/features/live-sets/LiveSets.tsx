@@ -1,11 +1,22 @@
 import { liveSets } from './data'
 import PageLayout from '@/shared/components/layouts/PageLayout'
 import { useTypingEffect } from '@/shared/hooks/useTypingEffect'
+import { useState, useEffect } from 'react'
 
 function LiveSets() {
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
   const { displayText: subtitleText, showCursor: showSubtitleCursor } = useTypingEffect(
     "// RECORDINGS.sort((a, b) => b.timestamp - a.timestamp).slice(0, 10)"
   )
+
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   // Custom background positioning for Live Sets - lower in portrait mode
   const getLiveSetsBackgroundPosition = () => {
@@ -13,7 +24,7 @@ function LiveSets() {
     const maxWidth = 1920 // Desktop maximum
 
     // Calculate ratio: 0 at mobile, 1 at desktop
-    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, window.innerWidth))
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
 
     // Ease-out transition - stays lower near desktop value
