@@ -101,33 +101,6 @@ function HomePage() {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-<<<<<<< HEAD
-  // Prevent body scroll on mobile home page - more aggressive approach for Safari
-  useEffect(() => {
-    if (isMobile) {
-      document.body.style.overflow = 'hidden'
-      document.body.style.height = '100vh'
-      document.body.style.position = 'fixed'
-      document.body.style.width = '100%'
-      document.body.style.top = '0'
-      document.body.style.left = '0'
-    } else {
-      document.body.style.overflow = ''
-      document.body.style.height = ''
-      document.body.style.position = ''
-      document.body.style.width = ''
-      document.body.style.top = ''
-      document.body.style.left = ''
-    }
-
-    return () => {
-      document.body.style.overflow = ''
-      document.body.style.height = ''
-      document.body.style.position = ''
-      document.body.style.width = ''
-      document.body.style.top = ''
-      document.body.style.left = ''
-=======
   // Prevent body scroll on mobile home page - use CSS class for more reliable Safari prevention
   useEffect(() => {
     if (isMobile) {
@@ -138,7 +111,6 @@ function HomePage() {
 
     return () => {
       document.body.classList.remove('mobile-home-no-scroll')
->>>>>>> 80b01cb (Fix Safari mobile scrolling by disabling bouncing squares and using CSS class)
     }
   }, [isMobile])
 
