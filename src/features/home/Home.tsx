@@ -172,6 +172,11 @@ function Home({ onNavigate }: HomeProps) {
     }
   }, [])
 
+  // Clear hovered state when component mounts (when returning to home page)
+  useEffect(() => {
+    setHoveredLink(null)
+  }, [])
+
   const navLinks: { page: Page; label: string }[] = [
     { page: 'music', label: 'MUSIC' },
     { page: 'shows', label: 'SHOWS' },
@@ -544,7 +549,11 @@ function Home({ onNavigate }: HomeProps) {
             return (
               <button
                 key={link.page}
-                onClick={() => onNavigate(link.page)}
+                onClick={(e) => {
+                  setHoveredLink(null) // Clear hovered state immediately
+                  e.currentTarget.blur() // Remove focus state on mobile
+                  onNavigate(link.page)
+                }}
                 onMouseEnter={() => setHoveredLink(link.page)}
                 onMouseLeave={() => setHoveredLink(null)}
                 style={{
