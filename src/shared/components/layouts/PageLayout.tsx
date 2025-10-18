@@ -15,24 +15,20 @@ interface PageLayoutProps {
 function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage, backgroundPositionOverride, children, stickyHeader = false }: PageLayoutProps) {
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
+  const [backgroundLoaded, setBackgroundLoaded] = useState(false)
 
-  // Calculate smooth background size based on viewport aspect ratio - smooth transitions
+  // Calculate smooth background size based on viewport aspect ratio - same as home page
   const getBackgroundSize = () => {
+    // On mobile/portrait: make image BIGGER than viewport so positioning works
+    // On desktop/landscape: constrain by width
     const aspectRatio = viewportWidth / window.innerHeight
 
-    // Smooth transition: gradually change from portrait (150% height) to landscape (100% width)
-    // Use a smooth curve instead of hard breakpoint at 0.8
-    const normalizedRatio = Math.max(0, Math.min(1, (aspectRatio - 0.5) / 1.0)) // 0 at portrait, 1 at landscape
-    const easedRatio = 1 - Math.pow(1 - normalizedRatio, 2) // Smooth easing
-
-    if (easedRatio < 0.5) {
-      // Portrait: use height scaling (150% down to 125%)
-      const heightScale = 150 - (25 * easedRatio * 2)
-      return `auto ${Math.round(heightScale)}%`
+    if (aspectRatio < 0.8) {
+      // Portrait/mobile: make image 150% of viewport height so we can crop/position it
+      return 'auto 150%'
     } else {
-      // Landscape: use width scaling (0% up to 100%)
-      const widthScale = (easedRatio - 0.5) * 2 * 100
-      return `${Math.round(widthScale)}% auto`
+      // Landscape/desktop: constrain by width
+      return '100% auto'
     }
   }
 
@@ -113,9 +109,21 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         // Fail silently
       }
     }
-  }, [])
+      }, [])
 
-  return (
+      // Preload background image for fade-in effect
+      useEffect(() => {
+        if (backgroundImage) {
+          setBackgroundLoaded(false)
+          const img = new Image()
+          img.src = backgroundImage
+          img.onload = () => {
+            setBackgroundLoaded(true)
+          }
+        }
+      }, [backgroundImage])
+
+      return (
     <div style={{
       paddingTop: stickyHeader ? '0' : '100px', // Increased for fixed nav
       paddingBottom: '60px',
@@ -147,11 +155,11 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
             backgroundSize: getBackgroundSize(),
             backgroundPosition: backgroundPositionOverride || getBackgroundPosition(),
             backgroundRepeat: 'no-repeat',
-            opacity: 0.15, // More subtle for content pages
+            opacity: backgroundLoaded ? 0.15 : 0, // More subtle for content pages
             zIndex: -1,
             pointerEvents: 'none',
             filter: 'url(#pageMotionBlur)',
-            transition: 'background-size 0.3s ease-out, background-position 0.3s ease-out',
+            transition: 'opacity 3s ease-in',
           }}
         />
       )}

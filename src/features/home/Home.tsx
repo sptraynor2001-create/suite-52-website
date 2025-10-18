@@ -166,7 +166,7 @@ function Home({ onNavigate }: HomeProps) {
   // Preload background image
   useEffect(() => {
     const img = new Image()
-    img.src = '/images/backgrounds/main-background.JPEG'
+    img.src = '/images/backgrounds/home-background.jpg'
     img.onload = () => {
       setBackgroundLoaded(true)
     }
@@ -394,7 +394,7 @@ function Home({ onNavigate }: HomeProps) {
           left: 0,
           width: '100vw',
           height: '100vh',
-          backgroundImage: 'url(/images/backgrounds/main-background.JPEG)',
+          backgroundImage: 'url(/images/backgrounds/home-background.jpg)',
           backgroundSize: getBackgroundSize(),
           backgroundPosition: getBackgroundPosition(),
           backgroundRepeat: 'no-repeat',
