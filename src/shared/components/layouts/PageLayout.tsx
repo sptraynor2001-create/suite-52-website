@@ -82,10 +82,43 @@ function PageLayout({ title, subtitle, displayText, showCursor, children, sticky
       paddingBottom: '60px',
       paddingLeft: '20px',
       paddingRight: '20px',
+      position: 'relative',
     }}>
+      {/* SVG filter for horizontal motion blur and grayscale */}
+      <svg style={{ position: 'absolute', width: 0, height: 0, top: 0, left: 0 }}>
+        <defs>
+          <filter id="pageMotionBlur">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="12,0" result="blur" />
+            {/* Convert to grayscale */}
+            <feColorMatrix in="blur" type="matrix" values="0.299 0.587 0.114 0 0  0.299 0.587 0.114 0 0  0.299 0.587 0.114 0 0  0 0 0 1 0" />
+          </filter>
+        </defs>
+      </svg>
+
+      {/* Background image - beneath everything */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundImage: 'url(/images/backgrounds/main-background.JPEG)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.15, // More subtle for content pages
+          zIndex: -1,
+          pointerEvents: 'none',
+          filter: 'url(#pageMotionBlur)',
+        }}
+      />
+
       <div style={{
         maxWidth: '900px',
         margin: '0 auto',
+        position: 'relative',
+        zIndex: 1,
       }}>
         {/* Header */}
         <div style={{
