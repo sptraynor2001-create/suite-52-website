@@ -89,7 +89,7 @@ function PageLayout({ title, subtitle, children, stickyHeader = false }: PageLay
         <div style={{
           marginBottom: '40px',
           borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
-          paddingBottom: '20px',
+          paddingBottom: '10px',
           paddingTop: stickyHeader ? '100px' : '0',
           ...(stickyHeader && {
             position: 'sticky',
