@@ -14,8 +14,10 @@ interface PageLayoutProps {
 
 function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage, backgroundPositionOverride, children, stickyHeader = false }: PageLayoutProps) {
   const subtitleRef = useRef<HTMLParagraphElement>(null)
+  const titleRef = useRef<HTMLHeadingElement>(null)
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
   const [backgroundLoaded, setBackgroundLoaded] = useState(false)
+  const [titleAnimated, setTitleAnimated] = useState(false)
 
   // Calculate smooth background size based on viewport aspect ratio - same as home page
   const getBackgroundSize = () => {
@@ -137,6 +139,18 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         }
       }, [backgroundImage])
 
+      // Trigger title animation
+      useEffect(() => {
+        const timer = setTimeout(() => {
+          setTitleAnimated(true)
+          if (titleRef.current) {
+            titleRef.current.style.opacity = '1'
+            titleRef.current.style.transform = 'translateY(0)'
+          }
+        }, 100)
+        return () => clearTimeout(timer)
+      }, [])
+
       return (
     <div style={{
       paddingTop: stickyHeader ? '0' : '100px', // Increased for fixed nav
@@ -205,18 +219,21 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
             paddingRight: '20px',
           }),
         }}>
-          <h1 style={{
-            color: 'rgba(255, 255, 255, 0.95)',
-            fontSize: '42px',
-            fontWeight: '700',
-            letterSpacing: '-0.02em',
-            fontFamily: activeFont.family,
-            margin: 0,
-            textShadow: '0 0 20px rgba(255, 255, 255, 0.1)',
-            opacity: 0,
-            transform: 'translateY(20px)',
-            animation: 'titleSlideIn 0.8s ease-out 0.3s forwards',
-          }}>
+          <h1
+            ref={titleRef}
+            style={{
+              color: 'rgba(255, 255, 255, 0.95)',
+              fontSize: '42px',
+              fontWeight: '700',
+              letterSpacing: '-0.02em',
+              fontFamily: activeFont.family,
+              margin: 0,
+              textShadow: '0 0 20px rgba(255, 255, 255, 0.1)',
+              opacity: 0,
+              transform: 'translateY(20px)',
+              transition: 'opacity 0.8s ease-out 0.3s, transform 0.8s ease-out 0.3s',
+            }}
+          >
             {title}
           </h1>
           
