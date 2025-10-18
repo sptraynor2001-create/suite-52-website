@@ -77,7 +77,6 @@ function PageLayout({ title, subtitle, displayText, showCursor, children, sticky
 
   return (
     <div style={{
-      backgroundColor: '#000000',
       paddingTop: stickyHeader ? '0' : '100px', // Increased for fixed nav
       paddingBottom: '60px',
       paddingLeft: '20px',
