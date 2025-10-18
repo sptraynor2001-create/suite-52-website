@@ -3,9 +3,10 @@
  * @description Integration tests for the home page
  */
 
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
-import { Home } from './Home'
+import userEvent from '@testing-library/user-event'
+import Home from './Home'
 
 describe('Home Page', () => {
   const mockOnNavigate = vi.fn()
@@ -14,10 +15,13 @@ describe('Home Page', () => {
     mockOnNavigate.mockClear()
   })
 
-  it('should render main title', () => {
+  it('should render main title', async () => {
     render(<Home onNavigate={mockOnNavigate} />)
 
-    expect(screen.getByText('Suite 52')).toBeInTheDocument()
+    // Wait for typing animation to show complete title
+    await waitFor(() => {
+      expect(screen.getByText('Suite 52')).toBeInTheDocument()
+    }, { timeout: 3000 })
   })
 
   it('should render navigation links', () => {
@@ -43,10 +47,10 @@ describe('Home Page', () => {
   it('should render philosophical text with typing animation', async () => {
     render(<Home onNavigate={mockOnNavigate} />)
 
-    // Wait for typing animation to complete
+    // Wait for philosophical typing animation to start (happens after main title)
     await waitFor(() => {
-      expect(screen.getByText(/const|ARTIST|name|genre|vibe/i)).toBeInTheDocument()
-    }, { timeout: 3000 })
+      expect(screen.getByText(/SOUND|REBELLION|SILENCE/i)).toBeInTheDocument()
+    }, { timeout: 5000 })
   })
 
   it('should render background image', () => {

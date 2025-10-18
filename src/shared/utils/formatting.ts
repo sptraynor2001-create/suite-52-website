@@ -7,9 +7,10 @@
  */
 export function formatDate(date: Date | string): string {
   const d = new Date(date)
-  const month = d.getMonth() + 1 // getMonth() returns 0-11
-  const day = d.getDate()
-  const year = d.getFullYear()
+  // Use UTC methods to avoid timezone issues
+  const month = d.getUTCMonth() + 1 // getUTCMonth() returns 0-11
+  const day = d.getUTCDate()
+  const year = d.getUTCFullYear()
   return `${month}/${day}/${year}`
 }
 

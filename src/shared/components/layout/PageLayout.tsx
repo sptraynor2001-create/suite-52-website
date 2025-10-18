@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useRef, useState, useMemo } from 'react'
-import { activeFont } from '@/design/fonts'
+import { activeFont } from '@/themes'
 
 interface PageLayoutProps {
   title: string

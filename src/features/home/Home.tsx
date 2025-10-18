@@ -1,5 +1,7 @@
 import { useEffect, useState, useMemo } from 'react'
-import { activeFont } from '@/design/fonts'
+import { homeConfig } from './config'
+import { homeContent } from '@/content/pages/home'
+import { activeFont } from '@/themes'
 import BouncingSquare from '@/shared/components/effects/BouncingSquare'
 
 type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'

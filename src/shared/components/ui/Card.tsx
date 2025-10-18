@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { colors, gradients } from '@/design'
+import { colors, componentColors } from '@/themes'
 
 interface CardProps {
   children: ReactNode
@@ -22,19 +22,19 @@ function Card({
 }: CardProps) {
   const variants = {
     default: {
-      background: gradients.card.default,
-      border: colors.border.default,
-      hover: hover ? gradients.card.hover : gradients.card.default,
+      background: componentColors.card.background,
+      border: componentColors.card.border,
+      shadow: componentColors.card.shadow,
     },
     elevated: {
-      background: gradients.card.elevated,
-      border: colors.border.strong,
-      hover: hover ? gradients.card.elevated : gradients.card.elevated,
+      background: componentColors.card.background,
+      border: componentColors.card.border,
+      shadow: '0 10px 25px rgba(0, 0, 0, 0.15)',
     },
     neon: {
-      background: gradients.neon.blue,  // Using subtle gradient
-      border: colors.border.highlight,  // Changed from colors.border.neon
-      hover: hover ? gradients.neon.purple : gradients.neon.blue,  // Using available gradients
+      background: colors.brand.primary,
+      border: colors.brand.secondary,
+      shadow: '0 0 20px rgba(230, 57, 70, 0.3)',
     },
   }
 
@@ -53,16 +53,9 @@ function Card({
         ${className}
       `}
       style={{
-        backgroundImage: selectedVariant.background,
+        backgroundColor: selectedVariant.background,
         borderColor: selectedVariant.border,
-      }}
-      onMouseEnter={(e) => {
-        if (hover) {
-          e.currentTarget.style.backgroundImage = selectedVariant.hover
-        }
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundImage = selectedVariant.background
+        boxShadow: selectedVariant.shadow,
       }}
     >
       {children}

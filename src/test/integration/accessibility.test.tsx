@@ -4,17 +4,12 @@
  */
 
 import { describe, it, expect } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { renderWithRouter, screen } from '../test-utils'
 import userEvent from '@testing-library/user-event'
-import { BrowserRouter } from 'react-router-dom'
 import App from '../../App'
 
 describe('Accessibility', () => {
-  const renderApp = () => render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  )
+  const renderApp = () => renderWithRouter(<App />)
 
   describe('Keyboard Navigation', () => {
     it('should support Tab navigation through interactive elements', async () => {

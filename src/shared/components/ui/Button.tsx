@@ -1,5 +1,5 @@
 import { ReactNode, ButtonHTMLAttributes } from 'react'
-import { colors, gradients, tokens } from '@/design'
+import { colors, componentColors } from '@/themes'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode
@@ -25,28 +25,28 @@ function Button({
 }: ButtonProps) {
   const variants = {
     primary: {
-      background: gradients.button.primary,
-      text: colors.text.primary,
-      shadow: tokens.shadows.glow.cyan.sm,
-      hoverShadow: tokens.shadows.glow.cyan.md,
+      background: componentColors.button.primary.bg,
+      text: componentColors.button.primary.text,
+      shadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+      hoverShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
     },
     secondary: {
-      background: gradients.button.secondary,
-      text: colors.text.secondary,
-      shadow: tokens.shadows.sm,
-      hoverShadow: tokens.shadows.md,
+      background: componentColors.button.secondary.bg,
+      text: componentColors.button.secondary.text,
+      shadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+      hoverShadow: '0 2px 4px rgba(0, 0, 0, 0.15)',
     },
     ghost: {
-      background: gradients.button.ghost,
-      text: colors.text.primary,  // Changed from colors.neon.cyan
+      background: 'transparent',
+      text: componentColors.text.primary,
       shadow: 'none',
-      hoverShadow: tokens.shadows.glow.blue.sm,
+      hoverShadow: '0 1px 3px rgba(255, 255, 255, 0.2)',
     },
     danger: {
-      background: gradients.button.danger,
-      text: colors.text.primary,
-      shadow: tokens.shadows.sm,
-      hoverShadow: tokens.shadows.md,
+      background: colors.semantic.error,
+      text: colors.neutral.white,
+      shadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+      hoverShadow: '0 2px 4px rgba(0, 0, 0, 0.15)',
     },
   }
 
@@ -77,7 +77,7 @@ function Button({
         ${className}
       `}
       style={{
-        backgroundImage: selectedVariant.background,
+        backgroundColor: selectedVariant.background,
         color: selectedVariant.text,
         boxShadow: selectedVariant.shadow,
       }}

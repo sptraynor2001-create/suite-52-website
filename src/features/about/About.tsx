@@ -1,18 +1,20 @@
+import { aboutConfig } from './config'
+import { aboutContent } from '@/content/pages/about'
 import PageLayout from '@/shared/components/layout/PageLayout'
 import { useTypingEffect } from '@/shared/hooks/useTypingEffect'
 
 function About() {
   const { displayText: subtitleText, showCursor: showSubtitleCursor } = useTypingEffect(
-    "// const ARTIST = { name: 'Suite 52', genre: 'Electronic', vibe: 'Immersive' }",
-    1500
+    aboutContent.codeSnippet,
+    aboutConfig.animations.typingDelay
   )
 
   return (
     <PageLayout
-      title="ABOUT"
+      title={aboutContent.title}
       displayText={subtitleText}
       showCursor={showSubtitleCursor}
-      backgroundImage="/images/backgrounds/about-background.jpg"
+      backgroundImage={aboutConfig.background.image}
     >
       <div className="bg-white rounded-lg shadow-md p-6 sm:p-8">
         <div className="prose prose-lg max-w-none">

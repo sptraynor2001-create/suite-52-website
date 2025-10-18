@@ -3,39 +3,44 @@
  * @description Unit tests for the BouncingSquare animation component
  */
 
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { BouncingSquare } from './BouncingSquare'
+
+// Unmock BouncingSquare for this test
+vi.unmock('@/shared/components/effects/BouncingSquare')
+
+import BouncingSquare from './BouncingSquare'
 
 describe('BouncingSquare', () => {
   const defaultProps = {
-    initialX: 100,
-    initialY: 200,
+    initialX: 10,
+    initialY: 20,
     velocityX: 1,
     velocityY: -2,
-    sizePercent: 50,
+    sizePercent: 0.1, // 10% of viewport to ensure it fits
   }
 
   it('should render a square element', () => {
     render(<BouncingSquare {...defaultProps} />)
 
-    const square = document.querySelector('[style*="position: absolute"]')
+    const square = document.querySelector('[style*="position: fixed"]')
     expect(square).toBeInTheDocument()
   })
 
   it('should apply correct positioning styles', () => {
     render(<BouncingSquare {...defaultProps} />)
 
-    const square = document.querySelector('[style*="position: absolute"]') as HTMLElement
+    const square = document.querySelector('[style*="position: fixed"]') as HTMLElement
 
-    // Should have transform with initial position
-    expect(square.style.transform).toContain('translate(100px, 200px)')
+    // Should have left and top positioning
+    expect(square.style.left).toContain('10px')
+    expect(square.style.top).toContain('20px')
   })
 
   it('should apply correct size based on sizePercent', () => {
     render(<BouncingSquare {...defaultProps} />)
 
-    const square = document.querySelector('[style*="position: absolute"]') as HTMLElement
+    const square = document.querySelector('[style*="position: fixed"]') as HTMLElement
 
     // Size should be calculated based on sizePercent
     expect(square.style.width).toBeDefined()
@@ -45,21 +50,21 @@ describe('BouncingSquare', () => {
   it('should have proper ARIA attributes for screen readers', () => {
     render(<BouncingSquare {...defaultProps} />)
 
-    const square = document.querySelector('[style*="position: absolute"]') as HTMLElement
+    const square = document.querySelector('[style*="position: fixed"]') as HTMLElement
 
     // Should be hidden from screen readers as it's decorative
     expect(square.getAttribute('aria-hidden')).toBe('true')
   })
 
   it('should handle different size percentages', () => {
-    const { rerender } = render(<BouncingSquare {...defaultProps} sizePercent={25} />)
+    const { rerender } = render(<BouncingSquare {...defaultProps} sizePercent={0.05} />)
 
-    let square = document.querySelector('[style*="position: absolute"]') as HTMLElement
+    let square = document.querySelector('[style*="position: fixed"]') as HTMLElement
     const smallSize = square.style.width
 
-    rerender(<BouncingSquare {...defaultProps} sizePercent={75} />)
+    rerender(<BouncingSquare {...defaultProps} sizePercent={0.15} />)
 
-    square = document.querySelector('[style*="position: absolute"]') as HTMLElement
+    square = document.querySelector('[style*="position: fixed"]') as HTMLElement
     const largeSize = square.style.width
 
     // Larger percentage should result in larger size
@@ -70,7 +75,7 @@ describe('BouncingSquare', () => {
     render(<BouncingSquare {...defaultProps} sizePercent={0} />)
 
     // Should not crash with 0 size
-    const square = document.querySelector('[style*="position: absolute"]')
+    const square = document.querySelector('[style*="position: fixed"]')
     expect(square).toBeInTheDocument()
   })
 })

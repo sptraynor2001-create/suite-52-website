@@ -135,6 +135,7 @@ function BouncingSquare({
 
   return (
     <div
+      aria-hidden="true"
       style={{
         position: 'fixed',
         left: `${position.x}px`,

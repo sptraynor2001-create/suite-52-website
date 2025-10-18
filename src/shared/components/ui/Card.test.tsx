@@ -5,7 +5,7 @@
 
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { Card } from './Card'
+import Card from './Card'
 
 describe('Card', () => {
   it('should render children content', () => {
@@ -22,7 +22,10 @@ describe('Card', () => {
     render(<Card>Test</Card>)
 
     const card = screen.getByText('Test').parentElement
-    expect(card).toHaveClass('shadow-md')
+    expect(card).toHaveStyle({
+      backgroundColor: 'rgb(255, 255, 255)',
+      boxShadow: expect.any(String)
+    })
   })
 
   it('should support custom className', () => {
@@ -30,6 +33,7 @@ describe('Card', () => {
 
     const card = screen.getByText('Test').parentElement
     expect(card).toHaveClass('custom-class')
+    expect(card).toHaveClass('rounded-xl')
   })
 
   it('should be accessible as a generic container', () => {

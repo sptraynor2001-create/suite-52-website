@@ -3,15 +3,10 @@
  * @description Unit tests for the Navigation component
  */
 
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { BrowserRouter } from 'react-router-dom'
-import { Navigation } from './Navigation'
-
-const renderWithRouter = (component: React.ReactElement) => {
-  return render(<BrowserRouter>{component}</BrowserRouter>)
-}
+import Navigation from './Navigation'
 
 describe('Navigation', () => {
   const mockOnNavigate = vi.fn()
@@ -21,7 +16,7 @@ describe('Navigation', () => {
   })
 
   it('should render all navigation links', () => {
-    renderWithRouter(<Navigation currentPage="home" onNavigate={mockOnNavigate} />)
+    render(<Navigation currentPage="home" onNavigate={mockOnNavigate} />)
 
     expect(screen.getByText('MUSIC')).toBeInTheDocument()
     expect(screen.getByText('SHOWS')).toBeInTheDocument()
@@ -31,15 +26,20 @@ describe('Navigation', () => {
   })
 
   it('should highlight current page', () => {
-    renderWithRouter(<Navigation currentPage="music" onNavigate={mockOnNavigate} />)
+    render(<Navigation currentPage="music" onNavigate={mockOnNavigate} />)
 
     const musicLink = screen.getByText('MUSIC')
-    expect(musicLink).toHaveClass('text-red-500') // Active state styling
+    const button = musicLink.closest('button')
+    
+    // Check that the style attribute contains the expected color
+    const styleAttr = button?.getAttribute('style')
+    expect(styleAttr).toContain('color: rgb(230, 57, 70)')
+    expect(styleAttr).toContain('font-style: italic')
   })
 
   it('should call onNavigate when link is clicked', async () => {
     const user = userEvent.setup()
-    renderWithRouter(<Navigation currentPage="home" onNavigate={mockOnNavigate} />)
+    render(<Navigation currentPage="home" onNavigate={mockOnNavigate} />)
 
     const musicLink = screen.getByText('MUSIC')
     await user.click(musicLink)
@@ -49,21 +49,20 @@ describe('Navigation', () => {
 
   it('should apply hover effects', async () => {
     const user = userEvent.setup()
-    renderWithRouter(<Navigation currentPage="home" onNavigate={mockOnNavigate} />)
+    render(<Navigation currentPage="home" onNavigate={mockOnNavigate} />)
 
     const aboutLink = screen.getByText('ABOUT')
+    const button = aboutLink.closest('button')
 
-    // Before hover
-    expect(aboutLink).toHaveClass('text-white')
-
-    // Hover simulation (would need additional setup for CSS hover testing)
-    // This tests that the element exists and is interactive
-    expect(aboutLink.closest('button')).toBeInTheDocument()
+    // Check that the style attribute contains the expected styles
+    const styleAttr = button?.getAttribute('style')
+    expect(styleAttr).toContain('color: rgb(255, 255, 255)')
+    expect(styleAttr).toContain('font-style: normal')
   })
 
   it('should be keyboard accessible', async () => {
     const user = userEvent.setup()
-    renderWithRouter(<Navigation currentPage="home" onNavigate={mockOnNavigate} />)
+    render(<Navigation currentPage="home" onNavigate={mockOnNavigate} />)
 
     // Tab to first navigation item
     await user.tab()
@@ -73,7 +72,7 @@ describe('Navigation', () => {
   })
 
   it('should have proper ARIA attributes', () => {
-    renderWithRouter(<Navigation currentPage="home" onNavigate={mockOnNavigate} />)
+    render(<Navigation currentPage="home" onNavigate={mockOnNavigate} />)
 
     // Navigation should be properly structured
     const navElement = document.querySelector('nav')
@@ -86,14 +85,10 @@ describe('Navigation', () => {
     ]
 
     pages.forEach(page => {
-      const { rerender } = renderWithRouter(
-        <Navigation currentPage={page} onNavigate={mockOnNavigate} />
-      )
+      render(<Navigation currentPage={page} onNavigate={mockOnNavigate} />)
 
       // Should render without crashing for each page type
       expect(document.body).toBeInTheDocument()
-
-      rerender(<BrowserRouter><Navigation currentPage={page} onNavigate={mockOnNavigate} /></BrowserRouter>)
     })
   })
 })

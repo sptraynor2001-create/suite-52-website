@@ -5,7 +5,7 @@
 
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { GlowText } from './GlowText'
+import GlowText from './GlowText'
 
 describe('GlowText', () => {
   it('should render text content', () => {

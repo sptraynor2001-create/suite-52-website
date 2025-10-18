@@ -4,31 +4,27 @@
  */
 
 import { describe, it, expect, vi } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { renderApp, screen, waitFor } from '../test-utils'
 import userEvent from '@testing-library/user-event'
-import { BrowserRouter } from 'react-router-dom'
 import App from '../../App'
 
 describe('Routing Integration', () => {
-  const renderWithRouter = (initialRoute = '/') => {
-    window.history.pushState({}, '', initialRoute)
-    return render(
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    )
+  const renderAppWithRoute = (initialRoute = '/') => {
+    return renderApp(<App />, { 
+      initialEntries: [initialRoute] 
+    })
   }
 
   describe('Navigation', () => {
     it('should render home page by default', () => {
-      renderWithRouter('/')
+      renderAppWithRoute('/')
 
       // Home page specific elements
       expect(screen.getByText(/Suite 52/i)).toBeInTheDocument()
     })
 
     it('should navigate to about page', async () => {
-      renderWithRouter('/')
+      renderAppWithRoute('/')
 
       const user = userEvent.setup()
       const aboutLink = screen.getByText('ABOUT')
@@ -41,7 +37,7 @@ describe('Routing Integration', () => {
     })
 
     it('should navigate to music page', async () => {
-      renderWithRouter('/')
+      renderAppWithRoute('/')
 
       const user = userEvent.setup()
       const musicLink = screen.getByText('MUSIC')
@@ -56,7 +52,7 @@ describe('Routing Integration', () => {
 
   describe('Page Content', () => {
     it('should display correct content on about page', async () => {
-      renderWithRouter('/about')
+      renderAppWithRoute('/about')
 
       await waitFor(() => {
         expect(screen.getByText('ABOUT')).toBeInTheDocument()
@@ -69,7 +65,7 @@ describe('Routing Integration', () => {
     })
 
     it('should display live sets with embeds', async () => {
-      renderWithRouter('/live-sets')
+      renderAppWithRoute('/live-sets')
 
       await waitFor(() => {
         expect(screen.getByText('LIVE_SETS')).toBeInTheDocument()
@@ -83,7 +79,7 @@ describe('Routing Integration', () => {
 
   describe('Animations', () => {
     it('should trigger title animations on page load', async () => {
-      renderWithRouter('/about')
+      renderAppWithRoute('/about')
 
       const title = screen.getByText('ABOUT')
 
@@ -103,7 +99,7 @@ describe('Routing Integration', () => {
     })
 
     it('should trigger typing animation after title', async () => {
-      renderWithRouter('/about')
+      renderAppWithRoute('/about')
 
       // Wait for title animation
       await waitFor(() => {
@@ -120,7 +116,7 @@ describe('Routing Integration', () => {
 
   describe('Background Images', () => {
     it('should load background images with fade-in', async () => {
-      renderWithRouter('/about')
+      renderAppWithRoute('/about')
 
       // Background should fade in
       const backgroundDiv = document.querySelector('[style*="background-image"]')
@@ -139,7 +135,7 @@ describe('Routing Integration', () => {
       // Mock mobile viewport
       Object.defineProperty(window, 'innerWidth', { value: 375 })
 
-      renderWithRouter('/')
+      renderAppWithRoute('/')
 
       // Navigation should be mobile-friendly
       const navLinks = screen.getAllByRole('link')
@@ -147,7 +143,7 @@ describe('Routing Integration', () => {
     })
 
     it('should handle different screen sizes for embeds', () => {
-      renderWithRouter('/live-sets')
+      renderAppWithRoute('/live-sets')
 
       // Embeds should be responsive
       const iframes = document.querySelectorAll('iframe')

@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { activeFont } from '@/design/fonts'
+import { activeFont } from '@/themes'
 
 type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'
 
