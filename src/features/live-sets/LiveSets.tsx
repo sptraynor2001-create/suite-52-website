@@ -7,8 +7,8 @@ function LiveSets() {
     "// RECORDINGS.sort((a, b) => b.timestamp - a.timestamp).slice(0, 10)"
   )
 
-  // Simple centered background positioning for Live Sets
-  const liveSetsBackgroundPosition = 'center'
+  // Lower background positioning for Live Sets - center the image lower on the page
+  const liveSetsBackgroundPosition = 'center 70%'
   // Sort live sets by date (most recent first)
   const sortedSets = [...liveSets].sort((a, b) => 
     new Date(b.date).getTime() - new Date(a.date).getTime()
