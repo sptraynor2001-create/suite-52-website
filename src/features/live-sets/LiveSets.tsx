@@ -22,6 +22,7 @@ function LiveSets() {
           <div className="w-full">
             <iframe
               width="100%"
+              height="400"
               src="https://www.youtube.com/embed/dQw4w9WgXcQ"
               title="Suite 52 B2B Henry McBride in NYC"
               className="w-full rounded-lg"
