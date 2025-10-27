@@ -71,6 +71,7 @@ function ReleaseCard({ release, index = 0, onClick }: ReleaseCardProps) {
         alignItems: 'center',
         gap: '16px',
         padding: '16px',
+        width: '100%',
         backgroundColor: componentColors.card.background,
         borderRadius: '12px',
         border: `1px solid ${componentColors.card.border}`,
