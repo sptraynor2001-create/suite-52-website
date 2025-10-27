@@ -197,7 +197,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         top: 100, // Below the fixed navigation
         left: 0,
         right: 0,
-        backgroundColor: 'transparent',
+        backgroundColor: 'rgba(255, 0, 0, 0.3)', // DEBUG: Red background
         borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
         paddingBottom: '10px',
         minHeight: '60px',
@@ -278,9 +278,14 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         paddingLeft: '20px',
         paddingRight: '20px',
         marginTop: '170px', // Start below fixed header (100px nav + 70px header)
+        backgroundColor: 'rgba(0, 255, 0, 0.3)', // DEBUG: Green background
       }}>
         {/* Content */}
-        <div style={{ marginTop: 0, paddingTop: 0 }}>
+        <div style={{
+          marginTop: 0,
+          paddingTop: 0,
+          backgroundColor: 'rgba(0, 0, 255, 0.3)', // DEBUG: Blue background
+        }}>
           {children}
         </div>
       </div>
