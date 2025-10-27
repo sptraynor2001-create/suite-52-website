@@ -16,7 +16,7 @@ function LiveSets() {
     >
       <div className="space-y-12">
         {/* Suite 52 B2B Henry McBride in NYC with Element */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6" style={{ maxWidth: '900px', margin: '0 auto' }}>
           <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
             Suite 52 B2B Henry McBride in NYC with Element
           </h2>
@@ -35,7 +35,7 @@ function LiveSets() {
         </div>
 
         {/* UMANO Radio */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6" style={{ maxWidth: '900px', margin: '0 auto' }}>
           <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
             UMANO Radio
           </h2>
@@ -54,7 +54,7 @@ function LiveSets() {
         </div>
 
         {/* Suite 52 Live at Brooklyn Mirage */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6" style={{ maxWidth: '900px', margin: '0 auto' }}>
           <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
             Suite 52 Live at Brooklyn Mirage
           </h2>
@@ -73,7 +73,7 @@ function LiveSets() {
         </div>
 
         {/* Suite 52 Essential Mix for BBC Radio 1 */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6" style={{ maxWidth: '900px', margin: '0 auto' }}>
           <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
             Suite 52 Essential Mix for BBC Radio 1
           </h2>
@@ -92,7 +92,7 @@ function LiveSets() {
         </div>
 
         {/* Suite 52 B2B with Tale of Us */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6" style={{ maxWidth: '900px', margin: '0 auto' }}>
           <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
             Suite 52 B2B with Tale of Us
           </h2>
@@ -111,7 +111,7 @@ function LiveSets() {
         </div>
 
         {/* Suite 52 Ambient Mix */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6" style={{ maxWidth: '900px', margin: '0 auto' }}>
           <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
             Suite 52 Ambient Mix
           </h2>
@@ -130,7 +130,7 @@ function LiveSets() {
         </div>
 
         {/* Suite 52 Warehouse Sessions */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6" style={{ maxWidth: '900px', margin: '0 auto' }}>
           <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
             Suite 52 Warehouse Sessions
           </h2>
@@ -149,7 +149,7 @@ function LiveSets() {
         </div>
 
         {/* Suite 52 Fabric London Residency */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6" style={{ maxWidth: '900px', margin: '0 auto' }}>
           <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
             Suite 52 Fabric London Residency
           </h2>
