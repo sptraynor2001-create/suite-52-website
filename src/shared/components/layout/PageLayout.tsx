@@ -277,7 +277,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         zIndex: 1,
         paddingLeft: '20px',
         paddingRight: '20px',
-        paddingTop: '10px', // Small gap below divider
+        marginTop: '170px', // Start below fixed header (100px nav + 70px header)
       }}>
         {/* Content */}
         <div>
