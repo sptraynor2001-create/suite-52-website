@@ -14,9 +14,12 @@ interface PageLayoutProps {
 function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage, backgroundPositionOverride, children }: PageLayoutProps) {
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
   const [backgroundLoaded, setBackgroundLoaded] = useState(false)
   const [titleAnimated, setTitleAnimated] = useState(false)
+  const [navHeight, setNavHeight] = useState(80) // Default estimate
+  const [headerHeight, setHeaderHeight] = useState(70) // Default estimate
 
   // Calculate smooth background size based on viewport aspect ratio - same as home page
   const getBackgroundSize = () => {
@@ -59,6 +62,38 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+  // Measure navigation and header heights dynamically
+  useEffect(() => {
+    const measureHeights = () => {
+      // Measure navigation height
+      const navElement = document.querySelector('nav')
+      if (navElement) {
+        const navRect = navElement.getBoundingClientRect()
+        setNavHeight(navRect.height)
+      }
+
+      // Measure header height
+      if (headerRef.current) {
+        const headerRect = headerRef.current.getBoundingClientRect()
+        setHeaderHeight(headerRect.height)
+      }
+    }
+
+    // Measure immediately
+    measureHeights()
+
+    // Measure again after a short delay to ensure DOM is fully rendered
+    const timeoutId = setTimeout(measureHeights, 100)
+
+    // Also measure on resize
+    window.addEventListener('resize', measureHeights)
+
+    return () => {
+      clearTimeout(timeoutId)
+      window.removeEventListener('resize', measureHeights)
+    }
+  }, [viewportWidth])
 
   // Responsive subtitle font size
   const subtitleFontSize = useMemo(() => {
@@ -193,20 +228,23 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
       )}
 
       {/* Fixed Header */}
-      <div style={{
-        position: 'fixed',
-        top: 100, // Below the fixed navigation
-        left: 0,
-        right: 0,
-        backgroundColor: 'rgba(255, 0, 0, 0.3)', // DEBUG: Red background
-        borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
-        paddingBottom: '10px',
-        minHeight: '60px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        zIndex: 50,
-      }}>
+      <div
+        ref={headerRef}
+        style={{
+          position: 'fixed',
+          top: navHeight, // Below the measured navigation height
+          left: 0,
+          right: 0,
+          backgroundColor: 'rgba(255, 0, 0, 0.3)', // DEBUG: Red background
+          borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
+          paddingBottom: '10px',
+          minHeight: '60px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          zIndex: 50,
+        }}
+      >
         <div style={{
           maxWidth: '900px',
           margin: '0 auto', // Center align like content containers
@@ -278,7 +316,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         zIndex: 1,
         paddingLeft: '20px',
         paddingRight: '20px',
-        marginTop: '170px', // Start below fixed header (100px nav + 70px header)
+        marginTop: `${navHeight + headerHeight}px`, // Start below navigation + header
         backgroundColor: 'rgba(0, 255, 0, 0.3)', // DEBUG: Green background
       }}>
         {/* Content */}
