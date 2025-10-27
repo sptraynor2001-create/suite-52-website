@@ -14,4 +14,6 @@ export { default as MediaEmbed } from './media/MediaEmbed'
 // Feedback components - loading, effects, etc.
 export { default as BouncingSquare } from './feedback/BouncingSquare'
 export { default as FallingCode } from './feedback/FallingCode'
+export { default as LoadingSpinner } from './LoadingSpinner'
+export { default as ErrorFallback } from './ErrorFallback'
 
