@@ -280,7 +280,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         marginTop: '170px', // Start below fixed header (100px nav + 70px header)
       }}>
         {/* Content */}
-        <div>
+        <div style={{ marginTop: 0, paddingTop: 0 }}>
           {children}
         </div>
       </div>
