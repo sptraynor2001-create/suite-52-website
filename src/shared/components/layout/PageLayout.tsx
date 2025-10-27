@@ -152,7 +152,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
 
       return (
     <div style={{
-      paddingTop: '100px', // Increased for fixed nav
+      paddingTop: '0px', // No padding needed - fixed header handles spacing
       paddingBottom: '60px',
       paddingLeft: '20px',
       paddingRight: '20px',
