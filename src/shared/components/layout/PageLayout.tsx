@@ -195,7 +195,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
       {/* Fixed Header */}
       <div style={{
         position: 'fixed',
-        top: 100, // Below the fixed navigation
+        top: 0, // Immediately below the fixed navigation
         left: 0,
         right: 0,
         backgroundColor: 'rgba(255, 0, 0, 0.3)', // DEBUG: Red background
@@ -209,7 +209,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
       }}>
         <div style={{
           maxWidth: '900px',
-          margin: '0',
+          margin: '0 auto', // Center align like content containers
           paddingLeft: '20px',
           paddingRight: '20px',
         }}>
@@ -278,7 +278,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         zIndex: 1,
         paddingLeft: '20px',
         paddingRight: '20px',
-        marginTop: '170px', // Start below fixed header (100px nav + 70px header)
+        marginTop: '70px', // Start below fixed header (70px header height)
         backgroundColor: 'rgba(0, 255, 0, 0.3)', // DEBUG: Green background
       }}>
         {/* Content */}
