@@ -81,8 +81,8 @@ function ReleaseCard({ release, index = 0, onClick }: ReleaseCardProps) {
         animation: 'dropInShow 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = '#f9fafb'
-        e.currentTarget.style.borderColor = componentColors.card.border
+        e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'
+        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'
         e.currentTarget.style.transform = 'translateX(4px)'
       }}
       onMouseLeave={(e) => {

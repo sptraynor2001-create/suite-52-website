@@ -78,9 +78,9 @@ export const componentColors = {
   },
 
   card: {
-    background: colors.neutral.white,
-    shadow: 'rgba(0, 0, 0, 0.1)',
-    border: colors.neutral.gray[200],
+    background: 'transparent',
+    shadow: 'rgba(0, 0, 0, 0.3)',
+    border: 'rgba(255, 255, 255, 0.2)',
   },
 
   text: {
