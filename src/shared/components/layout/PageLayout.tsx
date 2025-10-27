@@ -269,18 +269,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         </div>
       </div>
 
-      {/* Full-width background cover for when content scrolls above divider */}
-      <div style={{
-        position: 'fixed',
-        top: 180, // Below the fixed header (100px nav + 80px header)
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: '#000000',
-        zIndex: 5, // Above background image but below content
-      }}></div>
-
-      {/* Content Container - starts below fixed header */}
+      {/* Content Container - starts below divider */}
       <div style={{
         maxWidth: '900px',
         margin: '0 auto',
@@ -288,7 +277,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         zIndex: 1,
         paddingLeft: '20px',
         paddingRight: '20px',
-        paddingTop: '80px', // Space for fixed header (60px min-height + 10px padding + 10px margin)
+        paddingTop: '10px', // Small gap below divider
       }}>
         {/* Content */}
         <div>
