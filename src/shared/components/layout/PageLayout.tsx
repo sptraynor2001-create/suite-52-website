@@ -323,6 +323,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         <div style={{
           marginTop: 0,
           paddingTop: 0,
+          width: '100%', // Fill full width of green container
           backgroundColor: 'rgba(0, 0, 255, 0.3)', // DEBUG: Blue background
         }}>
           {children}
