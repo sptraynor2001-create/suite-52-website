@@ -191,28 +191,22 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         />
       )}
 
+      {/* Header - positioned at viewport level for proper sticky behavior */}
       <div style={{
-        maxWidth: '900px',
-        margin: '0 auto',
-        position: 'relative',
-        zIndex: 1,
+        position: 'sticky',
+        top: 100, // Account for the fixed navigation (100px)
+        backgroundColor: '#000000',
+        zIndex: 10,
+        borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
+        paddingBottom: '10px',
+        minHeight: '60px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
       }}>
-        {/* Header */}
         <div style={{
-          marginBottom: '20px',
-          borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
-          paddingBottom: '10px',
-          paddingTop: '0',
-          minHeight: '60px', // Reserve space for title + subtitle to prevent layout shift
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          position: 'sticky',
-          top: 0,
-          backgroundColor: '#000000',
-          zIndex: 10,
-          marginLeft: '-20px',
-          marginRight: '-20px',
+          maxWidth: '900px',
+          margin: '0 auto',
           paddingLeft: '20px',
           paddingRight: '20px',
         }}>
@@ -233,7 +227,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
           >
             {title}
           </h1>
-          
+
           {/* Always render subtitle element to prevent layout shift */}
           <p
             ref={subtitleRef}
@@ -269,7 +263,17 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
               </span>
           </p>
         </div>
+      </div>
 
+      {/* Content Container */}
+      <div style={{
+        maxWidth: '900px',
+        margin: '0 auto',
+        position: 'relative',
+        zIndex: 1,
+        paddingLeft: '20px',
+        paddingRight: '20px',
+      }}>
         {/* Content */}
         <div>
           {children}
