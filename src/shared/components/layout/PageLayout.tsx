@@ -242,12 +242,13 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
+          textAlign: 'left',
           zIndex: 50,
         }}
       >
         <div style={{
           maxWidth: '900px',
-          margin: '0 auto', // Center align like content containers
+          margin: '0 auto', // Center like content containers
           paddingLeft: '20px',
           paddingRight: '20px',
         }}>
