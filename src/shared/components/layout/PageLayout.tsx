@@ -191,18 +191,18 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         />
       )}
 
-      {/* Header - positioned at viewport level for proper sticky behavior */}
+      {/* Header */}
       <div style={{
         position: 'sticky',
-        top: 100, // Account for the fixed navigation (100px)
+        top: 100, // Below the fixed navigation
         backgroundColor: '#000000',
-        zIndex: 10,
         borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
         paddingBottom: '10px',
         minHeight: '60px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        zIndex: 10,
       }}>
         <div style={{
           maxWidth: '900px',
