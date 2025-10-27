@@ -1,4 +1,5 @@
 import PageLayout from '@/shared/components/layout/PageLayout'
+import { LiveSetCard } from '@/shared/components/ui'
 import { useTypingEffect } from '@/shared/hooks/useTypingEffect'
 
 function LiveSets() {
@@ -16,10 +17,7 @@ function LiveSets() {
     >
       <div className="space-y-12">
         {/* Suite 52 B2B Henry McBride in NYC with Element */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6" style={{ width: '100%' }}>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
-            Suite 52 B2B Henry McBride in NYC with Element
-          </h2>
+        <LiveSetCard title="Suite 52 B2B Henry McBride in NYC with Element">
           <div className="w-full max-w-2xl mx-auto" style={{ aspectRatio: '16/9' }}>
             <iframe
               width="100%"
@@ -32,13 +30,10 @@ function LiveSets() {
               allowFullScreen
             ></iframe>
           </div>
-        </div>
+        </LiveSetCard>
 
         {/* UMANO Radio */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6" style={{ width: '100%' }}>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
-            UMANO Radio
-          </h2>
+        <LiveSetCard title="UMANO Radio">
           <div className="w-full">
             <iframe
               width="100%"
@@ -51,13 +46,10 @@ function LiveSets() {
               className="w-full rounded-lg sm:h-[166px] h-[120px]"
             ></iframe>
           </div>
-        </div>
+        </LiveSetCard>
 
         {/* Suite 52 Live at Brooklyn Mirage */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6" style={{ width: '100%' }}>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
-            Suite 52 Live at Brooklyn Mirage
-          </h2>
+        <LiveSetCard title="Suite 52 Live at Brooklyn Mirage">
           <div className="w-full max-w-2xl mx-auto" style={{ aspectRatio: '16/9' }}>
             <iframe
               width="100%"
@@ -70,13 +62,10 @@ function LiveSets() {
               allowFullScreen
             ></iframe>
           </div>
-        </div>
+        </LiveSetCard>
 
         {/* Suite 52 Essential Mix for BBC Radio 1 */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6" style={{ width: '100%' }}>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
-            Suite 52 Essential Mix for BBC Radio 1
-          </h2>
+        <LiveSetCard title="Suite 52 Essential Mix for BBC Radio 1">
           <div className="w-full">
             <iframe
               width="100%"
@@ -89,13 +78,10 @@ function LiveSets() {
               className="w-full rounded-lg sm:h-[166px] h-[120px]"
             ></iframe>
           </div>
-        </div>
+        </LiveSetCard>
 
         {/* Suite 52 B2B with Tale of Us */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6" style={{ width: '100%' }}>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
-            Suite 52 B2B with Tale of Us
-          </h2>
+        <LiveSetCard title="Suite 52 B2B with Tale of Us">
           <div className="w-full max-w-2xl mx-auto" style={{ aspectRatio: '16/9' }}>
             <iframe
               width="100%"
@@ -108,13 +94,10 @@ function LiveSets() {
               allowFullScreen
             ></iframe>
           </div>
-        </div>
+        </LiveSetCard>
 
         {/* Suite 52 Ambient Mix */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6" style={{ width: '100%' }}>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
-            Suite 52 Ambient Mix
-          </h2>
+        <LiveSetCard title="Suite 52 Ambient Mix">
           <div className="w-full">
             <iframe
               width="100%"
@@ -127,13 +110,10 @@ function LiveSets() {
               className="w-full rounded-lg sm:h-[166px] h-[120px]"
             ></iframe>
           </div>
-        </div>
+        </LiveSetCard>
 
         {/* Suite 52 Warehouse Sessions */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6" style={{ width: '100%' }}>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
-            Suite 52 Warehouse Sessions
-          </h2>
+        <LiveSetCard title="Suite 52 Warehouse Sessions">
           <div className="w-full max-w-2xl mx-auto" style={{ aspectRatio: '16/9' }}>
             <iframe
               width="100%"
@@ -146,13 +126,10 @@ function LiveSets() {
               allowFullScreen
             ></iframe>
           </div>
-        </div>
+        </LiveSetCard>
 
         {/* Suite 52 Fabric London Residency */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6" style={{ width: '100%' }}>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
-            Suite 52 Fabric London Residency
-          </h2>
+        <LiveSetCard title="Suite 52 Fabric London Residency">
           <div className="w-full">
             <iframe
               width="100%"
@@ -165,7 +142,7 @@ function LiveSets() {
               className="w-full rounded-lg sm:h-[166px] h-[120px]"
             ></iframe>
           </div>
-        </div>
+        </LiveSetCard>
       </div>
     </PageLayout>
   )
