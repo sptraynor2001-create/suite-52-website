@@ -1,4 +1,4 @@
-import { getTextStyles, getButtonStyles } from '../../styles'
+import { getTextStyles, getButtonStyles } from '@/themes'
 
 interface ErrorFallbackProps {
   error?: Error | string

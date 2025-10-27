@@ -1,4 +1,4 @@
-import { getTextStyles } from '../../styles'
+import { getTextStyles } from '@/themes'
 
 interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg'
