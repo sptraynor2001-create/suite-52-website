@@ -97,12 +97,12 @@ describe('PageLayout', () => {
   })
 
   describe('Responsive Behavior', () => {
-    it('should apply fixed header when specified', () => {
-      render(<PageLayout {...defaultProps} fixedHeader />)
+    it('should have sticky header by default', () => {
+      render(<PageLayout {...defaultProps} />)
 
       const headerDiv = screen.getByText('Test Page').parentElement
       const style = headerDiv?.getAttribute('style') || ''
-      expect(style).toContain('position: fixed')
+      expect(style).toContain('position: sticky')
     })
 
     it('should have correct padding on mobile vs desktop', () => {

@@ -9,10 +9,9 @@ interface PageLayoutProps {
   backgroundImage?: string
   backgroundPositionOverride?: string
   children: ReactNode
-  fixedHeader?: boolean
 }
 
-function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage, backgroundPositionOverride, children, fixedHeader = false }: PageLayoutProps) {
+function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage, backgroundPositionOverride, children }: PageLayoutProps) {
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
@@ -153,7 +152,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
 
       return (
     <div style={{
-      paddingTop: fixedHeader ? '120px' : '100px', // Space for fixed header
+      paddingTop: '100px', // Increased for fixed nav
       paddingBottom: '60px',
       paddingLeft: '20px',
       paddingRight: '20px',
@@ -196,28 +195,26 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         maxWidth: '900px',
         margin: '0 auto',
         position: 'relative',
-        zIndex: fixedHeader ? 5 : 1,
+        zIndex: 1,
       }}>
         {/* Header */}
         <div style={{
           marginBottom: '20px',
           borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
           paddingBottom: '10px',
-          paddingTop: fixedHeader ? '20px' : '0',
+          paddingTop: '0',
           minHeight: '60px', // Reserve space for title + subtitle to prevent layout shift
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          ...(fixedHeader && {
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            backgroundColor: '#000000',
-            zIndex: 10,
-            paddingLeft: '20px',
-            paddingRight: '20px',
-          }),
+          position: 'sticky',
+          top: 0,
+          backgroundColor: '#000000',
+          zIndex: 10,
+          marginLeft: '-20px',
+          marginRight: '-20px',
+          paddingLeft: '20px',
+          paddingRight: '20px',
         }}>
           <h1
             ref={titleRef}

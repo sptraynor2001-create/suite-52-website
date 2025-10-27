@@ -14,7 +14,6 @@ function Contact() {
       displayText={subtitleText}
       showCursor={showSubtitleCursor}
       backgroundImage="/images/backgrounds/contact-background.jpg"
-      fixedHeader={true}
     >
       <div className="bg-white rounded-lg shadow-md p-6 sm:p-8">
         <div className="mb-8">

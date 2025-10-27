@@ -105,7 +105,6 @@ function Shows() {
       displayText={subtitleText}
       showCursor={showSubtitleCursor}
       backgroundImage="/images/backgrounds/shows-background.jpg"
-      fixedHeader={true}
     >
       <div
         style={{
