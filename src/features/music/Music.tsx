@@ -1,8 +1,8 @@
-import { releases } from './data'
-import ReleaseCard from '@/shared/components/ui/ReleaseCard'
+import { ReleaseCard, LoadingSpinner, ErrorFallback } from '@/shared/components/ui'
 import PageLayout from '@/shared/components/layout/PageLayout'
 import { activeFont } from '@/design/fonts'
-import { useTypingEffect } from '@/shared/hooks/useTypingEffect'
+import { useTypingEffect } from '@/shared/hooks'
+import { useMusicData } from './hooks/useMusicData'
 import { useState, useEffect } from 'react'
 
 function Music() {
@@ -12,25 +12,55 @@ function Music() {
     1500
   )
 
-  useEffect(() => {
-    let currentIndex = 0
+  const { releases, loading, error } = useMusicData()
 
-    const showNext = () => {
-      if (currentIndex < releases.length) {
-        setVisibleReleases(currentIndex + 1)
-        currentIndex++
-        setTimeout(showNext, 80) // Fast domino effect
+  useEffect(() => {
+    if (releases.length > 0) {
+      let currentIndex = 0
+
+      const showNext = () => {
+        if (currentIndex < releases.length) {
+          setVisibleReleases(currentIndex + 1)
+          currentIndex++
+          setTimeout(showNext, 80) // Fast domino effect
+        }
+      }
+
+      const startDelay = setTimeout(() => {
+        showNext()
+      }, 300)
+
+      return () => {
+        clearTimeout(startDelay)
       }
     }
+  }, [releases])
 
-    const startDelay = setTimeout(() => {
-      showNext()
-    }, 300)
+  if (loading) {
+    return (
+      <PageLayout
+        title="RELEASES"
+        displayText={subtitleText}
+        showCursor={showSubtitleCursor}
+        backgroundImage="/images/backgrounds/music-background.jpg"
+      >
+        <LoadingSpinner size="lg" text="Loading releases..." />
+      </PageLayout>
+    )
+  }
 
-    return () => {
-      clearTimeout(startDelay)
-    }
-  }, [])
+  if (error) {
+    return (
+      <PageLayout
+        title="RELEASES"
+        displayText={subtitleText}
+        showCursor={showSubtitleCursor}
+        backgroundImage="/images/backgrounds/music-background.jpg"
+      >
+        <ErrorFallback error={error} onRetry={() => window.location.reload()} />
+      </PageLayout>
+    )
+  }
 
   return (
     <PageLayout
