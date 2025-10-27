@@ -157,6 +157,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
       paddingLeft: '20px',
       paddingRight: '20px',
       position: 'relative',
+      backgroundColor: 'rgba(255, 255, 0, 0.2)', // DEBUG: Yellow background for main container
     }}>
       {/* SVG filter for horizontal motion blur and grayscale */}
       <svg style={{ position: 'absolute', width: 0, height: 0, top: 0, left: 0 }}>
