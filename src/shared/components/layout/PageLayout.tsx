@@ -191,10 +191,12 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         />
       )}
 
-      {/* Header */}
+      {/* Fixed Header */}
       <div style={{
-        position: 'sticky',
+        position: 'fixed',
         top: 100, // Below the fixed navigation
+        left: 0,
+        right: 0,
         backgroundColor: '#000000',
         borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
         paddingBottom: '10px',
@@ -265,7 +267,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         </div>
       </div>
 
-      {/* Content Container */}
+      {/* Content Container - starts below fixed header */}
       <div style={{
         maxWidth: '900px',
         margin: '0 auto',
@@ -273,6 +275,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         zIndex: 1,
         paddingLeft: '20px',
         paddingRight: '20px',
+        paddingTop: '80px', // Space for fixed header (60px min-height + 10px padding + 10px margin)
       }}>
         {/* Content */}
         <div>
