@@ -197,7 +197,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         top: 100, // Below the fixed navigation
         left: 0,
         right: 0,
-        backgroundColor: '#000000',
+        backgroundColor: 'transparent',
         borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
         paddingBottom: '10px',
         minHeight: '60px',
@@ -268,6 +268,17 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
           </p>
         </div>
       </div>
+
+      {/* Full-width background cover for when content scrolls above divider */}
+      <div style={{
+        position: 'fixed',
+        top: 180, // Below the fixed header (100px nav + 80px header)
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: '#000000',
+        zIndex: 5, // Above background image but below content
+      }}></div>
 
       {/* Content Container - starts below fixed header */}
       <div style={{
