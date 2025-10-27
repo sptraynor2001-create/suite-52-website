@@ -9,10 +9,10 @@ interface PageLayoutProps {
   backgroundImage?: string
   backgroundPositionOverride?: string
   children: ReactNode
-  stickyHeader?: boolean
+  fixedHeader?: boolean
 }
 
-function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage, backgroundPositionOverride, children, stickyHeader = false }: PageLayoutProps) {
+function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage, backgroundPositionOverride, children, fixedHeader = false }: PageLayoutProps) {
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
@@ -153,7 +153,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
 
       return (
     <div style={{
-      paddingTop: stickyHeader ? '0' : '100px', // Increased for fixed nav
+      paddingTop: fixedHeader ? '120px' : '100px', // Space for fixed header
       paddingBottom: '60px',
       paddingLeft: '20px',
       paddingRight: '20px',
@@ -196,25 +196,25 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         maxWidth: '900px',
         margin: '0 auto',
         position: 'relative',
-        zIndex: 1,
+        zIndex: fixedHeader ? 5 : 1,
       }}>
         {/* Header */}
         <div style={{
           marginBottom: '20px',
           borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
           paddingBottom: '10px',
-          paddingTop: stickyHeader ? '100px' : '0',
+          paddingTop: fixedHeader ? '20px' : '0',
           minHeight: '60px', // Reserve space for title + subtitle to prevent layout shift
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          ...(stickyHeader && {
-            position: 'sticky',
+          ...(fixedHeader && {
+            position: 'fixed',
             top: 0,
+            left: 0,
+            right: 0,
             backgroundColor: '#000000',
             zIndex: 10,
-            marginLeft: '-20px',
-            marginRight: '-20px',
             paddingLeft: '20px',
             paddingRight: '20px',
           }),

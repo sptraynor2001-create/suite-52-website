@@ -13,6 +13,7 @@ function LiveSets() {
       displayText={subtitleText}
       showCursor={showSubtitleCursor}
       backgroundImage="/images/backgrounds/live-sets-background.jpg"
+      fixedHeader={true}
     >
       <div className="space-y-12">
         {/* Suite 52 B2B Henry McBride in NYC with Element */}
