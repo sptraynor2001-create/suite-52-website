@@ -195,7 +195,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
       {/* Fixed Header */}
       <div style={{
         position: 'fixed',
-        top: 0, // Immediately below the fixed navigation
+        top: 100, // Below the fixed navigation
         left: 0,
         right: 0,
         backgroundColor: 'rgba(255, 0, 0, 0.3)', // DEBUG: Red background
@@ -205,7 +205,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        zIndex: 10,
+        zIndex: 50,
       }}>
         <div style={{
           maxWidth: '900px',
@@ -278,7 +278,7 @@ function PageLayout({ title, subtitle, displayText, showCursor, backgroundImage,
         zIndex: 1,
         paddingLeft: '20px',
         paddingRight: '20px',
-        marginTop: '70px', // Start below fixed header (70px header height)
+        marginTop: '170px', // Start below fixed header (100px nav + 70px header)
         backgroundColor: 'rgba(0, 255, 0, 0.3)', // DEBUG: Green background
       }}>
         {/* Content */}
