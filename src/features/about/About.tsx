@@ -126,7 +126,7 @@ function About() {
           <p
             style={{
               color: 'rgba(255, 255, 255, 0.3)',
-              fontSize: '12px',
+              fontSize: viewportWidth <= 480 ? '8px' : viewportWidth <= 768 ? '10px' : '12px',
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',
               margin: '12px 0 0 0',
@@ -135,7 +135,7 @@ function About() {
             }}
           >
             {'// ENTITY.initialize(vectors: [SOUND, CODE, VISION])'}
-            </p>
+          </p>
           </div>
 
         {/* Bio Sections */}
