@@ -49,6 +49,23 @@ function Music() {
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
+      {/* Background image */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundImage: 'url(/images/backgrounds/music-background.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.15,
+          filter: 'blur(1px) saturate(0.7)',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      />
       {/* Content */}
       <div
         style={{
@@ -84,7 +101,7 @@ function Music() {
           <p
             style={{
               color: 'rgba(255, 255, 255, 0.3)',
-              fontSize: viewportWidth <= 480 ? '8px' : viewportWidth <= 768 ? '10px' : '12px',
+              fontSize: viewportWidth <= 480 ? '11px' : viewportWidth <= 768 ? '12px' : '12px',
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',
               margin: '12px 0 0 0',

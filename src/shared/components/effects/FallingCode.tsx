@@ -25,11 +25,58 @@ function FallingCode() {
   }, [])
 
   useEffect(() => {
-    // Generate random opacity with normal distribution
-    // Using Box-Muller transform for gaussian distribution
-    const generateRandomOpacity = () => {
-      const mean = 0.045
-      const stdDev = 0.015
+    // Generate random opacity with variable range per row
+    // Each row gets a different base opacity range for more variation
+    const generateRandomOpacity = (rowIndex: number) => {
+      // Create different opacity ranges based on row index for variation
+      const rowVariation = (rowIndex % 7) / 7 // Cycle through 7 different ranges
+      
+      // Different mean and stdDev per row group for more variation
+      let mean, stdDev, minVal, maxVal
+      
+      if (rowVariation < 0.14) {
+        // Group 1: Very subtle
+        mean = 0.010
+        stdDev = 0.008
+        minVal = 0.003
+        maxVal = 0.020
+      } else if (rowVariation < 0.28) {
+        // Group 2: Subtle
+        mean = 0.012
+        stdDev = 0.009
+        minVal = 0.004
+        maxVal = 0.025
+      } else if (rowVariation < 0.42) {
+        // Group 3: Medium-low
+        mean = 0.008
+        stdDev = 0.007
+        minVal = 0.002
+        maxVal = 0.018
+      } else if (rowVariation < 0.57) {
+        // Group 4: Medium
+        mean = 0.014
+        stdDev = 0.010
+        minVal = 0.005
+        maxVal = 0.028
+      } else if (rowVariation < 0.71) {
+        // Group 5: Medium-high
+        mean = 0.011
+        stdDev = 0.008
+        minVal = 0.003
+        maxVal = 0.022
+      } else if (rowVariation < 0.85) {
+        // Group 6: Higher
+        mean = 0.016
+        stdDev = 0.011
+        minVal = 0.006
+        maxVal = 0.030
+      } else {
+        // Group 7: Highest (but still subtle)
+        mean = 0.013
+        stdDev = 0.009
+        minVal = 0.004
+        maxVal = 0.026
+      }
       
       // Box-Muller transform for normal distribution
       const u1 = Math.random()
@@ -39,8 +86,8 @@ function FallingCode() {
       // Apply mean and standard deviation
       let opacity = mean + z0 * stdDev
       
-      // Clamp to reasonable range (0.02 to 0.08)
-      opacity = Math.max(0.02, Math.min(0.08, opacity))
+      // Clamp to row-specific range
+      opacity = Math.max(minVal, Math.min(maxVal, opacity))
       
       return opacity
     }
@@ -165,7 +212,7 @@ function FallingCode() {
         content: generateChaos() + ' ' + generateChaos() + ' ' + generateChaos(),
         speed: speed,
         direction: Math.random() > 0.5 ? 'left' : 'right' as 'left' | 'right',
-        opacity: generateRandomOpacity()
+        opacity: generateRandomOpacity(i)
       })
     }
     setCodeLines(initialLines)

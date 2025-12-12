@@ -96,8 +96,8 @@ function MainApp() {
         overflow: 'visible',
       }}
     >
-      {/* Falling code background */}
-      <FallingCode />
+      {/* Falling code background - only on non-home pages */}
+      {currentPage !== 'home' && <FallingCode />}
 
       {/* Sticky header */}
       <Navigation currentPage={currentPage} onNavigate={handleNavigate} />

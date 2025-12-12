@@ -15,39 +15,9 @@ interface SceneProps extends Omit<CanvasProps, 'children'> {
   fallback?: ReactNode
 }
 
-// Loading placeholder
+// Loading placeholder - invisible, just fades in naturally
 function SceneLoader() {
-  return (
-    <div 
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#000000',
-      }}
-    >
-      <div 
-        style={{
-          width: '40px',
-          height: '40px',
-          border: '2px solid rgba(255, 255, 255, 0.1)',
-          borderTopColor: '#e63946',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite',
-        }}
-      />
-      <style>{`
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
-    </div>
-  )
+  return null
 }
 
 export function Scene({ 

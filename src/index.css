@@ -290,10 +290,10 @@ button.accent:hover {
   }
 }
 
-/* Opacity oscillation for falling code */
+/* Opacity oscillation for falling code - uses CSS variable for per-row variation */
 @keyframes opacityOscillate {
-  0%, 100% { opacity: 0.01; }
-  50% { opacity: 0.03; }
+  0%, 100% { opacity: calc(var(--base-opacity) * 0.4); }
+  50% { opacity: calc(var(--base-opacity) * 1.2); }
 }
 
 /* Portal animations */

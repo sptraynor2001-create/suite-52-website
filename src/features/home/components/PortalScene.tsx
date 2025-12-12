@@ -14,7 +14,13 @@ import {
   Fog,
   PostProcessing,
 } from '@/shared/components/3d'
-import { WhirlpoolParticles, AccentParticles } from './HomeParticles'
+import { 
+  WhirlpoolParticles, 
+  AccentParticles,
+  BlueAccentParticles,
+  GreenAccentParticles,
+  YellowAccentParticles,
+} from './HomeParticles'
 
 interface PortalSceneProps {
   onEnter?: () => void
@@ -45,6 +51,15 @@ function SceneContent({ mouseX = 0, mouseY = 0 }: PortalSceneProps) {
       
       {/* Subtle red accent particles */}
       <AccentParticles mouseX={mouseX} mouseY={mouseY} />
+      
+      {/* Blue accent particles */}
+      <BlueAccentParticles mouseX={mouseX} mouseY={mouseY} />
+      
+      {/* Green accent particles */}
+      <GreenAccentParticles mouseX={mouseX} mouseY={mouseY} />
+      
+      {/* Yellow accent particles */}
+      <YellowAccentParticles mouseX={mouseX} mouseY={mouseY} />
 
       {/* Subtle post processing */}
       <PostProcessing
@@ -79,8 +94,15 @@ export function PortalScene({ onEnter, mouseX = 0, mouseY = 0 }: PortalSceneProp
         width: '100vw',
         height: '100vh',
         zIndex: 2,
+        opacity: 0,
+        animation: 'fadeIn 1.5s ease-in forwards',
       }}
     >
+      <style>{`
+        @keyframes fadeIn {
+          to { opacity: 1; }
+        }
+      `}</style>
       <QualityProvider>
         <Canvas
           dpr={[1, 2]}

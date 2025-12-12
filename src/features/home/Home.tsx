@@ -359,12 +359,50 @@ function Home({ onNavigate }: HomeProps) {
           width: '110%',
           height: '110%',
           zIndex: 0,
-          backgroundImage: 'url(/images/backgrounds/home-background.jpg)',
+          backgroundImage: 'url(/images/backgrounds/home-background.JPG)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.2,
-          filter: 'blur(2px) saturate(0.5)',
+          backgroundPosition: 'center 25%',
+          opacity: 0.25,
+          filter: 'blur(1.5px) saturate(0.7)',
           transform: 'scale(1.05)',
+          animation: 'subtleFloat 25s ease-in-out infinite',
+        }}
+      />
+
+      {/* Horizontal motion blur layers - left trail */}
+      <div
+        style={{
+          position: 'fixed',
+          top: '-5%',
+          left: '-5%',
+          width: '110%',
+          height: '110%',
+          zIndex: 0,
+          backgroundImage: 'url(/images/backgrounds/home-background.JPG)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center 25%',
+          opacity: 0.05,
+          filter: 'blur(15px) saturate(0.6)',
+          transform: 'scale(1.05) translateX(-20px)',
+          animation: 'subtleFloat 25s ease-in-out infinite',
+        }}
+      />
+      
+      {/* Horizontal motion blur layers - right trail */}
+      <div
+        style={{
+          position: 'fixed',
+          top: '-5%',
+          left: '-5%',
+          width: '110%',
+          height: '110%',
+          zIndex: 0,
+          backgroundImage: 'url(/images/backgrounds/home-background.JPG)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center 25%',
+          opacity: 0.05,
+          filter: 'blur(15px) saturate(0.6)',
+          transform: 'scale(1.05) translateX(20px)',
           animation: 'subtleFloat 25s ease-in-out infinite',
         }}
       />
@@ -378,11 +416,11 @@ function Home({ onNavigate }: HomeProps) {
           width: '110%',
           height: '110%',
           zIndex: 1,
-          backgroundImage: 'url(/images/backgrounds/home-background.jpg)',
+          backgroundImage: 'url(/images/backgrounds/home-background.JPG)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.1,
-          filter: 'blur(6px) saturate(0.3)',
+          backgroundPosition: 'center 25%',
+          opacity: 0.10,
+          filter: 'blur(5px) saturate(0.5)',
           transform: 'scale(1.1)',
           animation: 'subtleFloat 30s ease-in-out infinite reverse',
         }}
@@ -403,7 +441,7 @@ function Home({ onNavigate }: HomeProps) {
           width: '100vw',
           height: '100vh',
           zIndex: 3,
-          background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.85) 100%)',
+          background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.7) 100%)',
           pointerEvents: 'none',
         }}
       />
@@ -535,6 +573,7 @@ function Home({ onNavigate }: HomeProps) {
 
         {/* Click to Enter */}
         <p 
+          className="click-to-enter"
           style={{
             color: '#e63946',
             fontSize: isMobile ? '14px' : '18px',
@@ -545,7 +584,7 @@ function Home({ onNavigate }: HomeProps) {
             visibility: displayText.length === fullText.length ? 'visible' : 'hidden',
             opacity: displayText.length === fullText.length ? 1 : 0,
             transform: displayText.length === fullText.length ? 'translateY(0)' : 'translateY(10px)',
-            transition: 'opacity 1s ease-in 1.5s, transform 1s ease-in 1.5s',
+            transition: 'opacity 1s ease-in 1.5s, transform 1s ease-in 1.5s, font-size 0.3s ease',
             animation: displayText.length === fullText.length ? 'glitchyGlow 3s ease-in-out forwards, subtlePulse 4s ease-in-out 3s infinite' : 'none',
             pointerEvents: 'auto',
             cursor: 'pointer',
@@ -700,6 +739,9 @@ function Home({ onNavigate }: HomeProps) {
               0 0 40px rgba(230, 57, 70, 0.3),
               0 0 60px rgba(230, 57, 70, 0.2);
           }
+        }
+        .click-to-enter:hover {
+          font-size: ${isMobile ? '15px' : '20px'} !important;
         }
       `}</style>
     </div>
