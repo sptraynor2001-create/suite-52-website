@@ -36,6 +36,7 @@ function Home({ onNavigate }: HomeProps) {
     'MUSIC PRODUCER',
     'DJ',
     'ENGINEER',
+    'DESIGNER',
   ]
 
   // Colors
