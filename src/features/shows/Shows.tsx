@@ -1,162 +1,238 @@
-import { activeFont } from '@/design/fonts'
+/**
+ * Shows - Upcoming events with interactive globe
+ */
+
 import { useState, useEffect, useMemo } from 'react'
-import PageLayout from '@/shared/components/layout/PageLayout'
+import { activeFont } from '@/themes'
 import { cardStyles } from '@/design/cardStyles'
-import { useTypingEffect } from '@/shared/hooks/useTypingEffect'
+
+const shows = [
+  { date: '10_18_25', location: 'NEW_YORK_US', event: 'MUZIKA' },
+  { date: '11_01_25', location: 'BROOKLYN_US', event: 'PRIVATE' },
+  { date: '11_21_25', location: 'BROOKLYN_US', event: 'UNVEILED' },
+  { date: '12_06_25', location: 'BOSTON_US', event: '5ESS1ONS' },
+  { date: '12_11_25', location: 'CDMX', event: 'DINSMOOR' },
+  { date: '12_13_25', location: 'MADRID_ES', event: 'HOUDINNI' },
+  { date: '12_14_25', location: 'MARBELLA_ES', event: 'LA_SIESTA' },
+  { date: '12_15_25', location: 'MARBELLA_ES', event: 'MOMENTO' },
+  { date: '01_12_26', location: 'BARCELONA_ES', event: 'UMANO_BARCELONA' },
+  { date: '01_19_26', location: 'CASABLANCA_MA', event: 'SOLENA' },
+  { date: '01_21_26', location: 'LISBON_PT', event: 'UMANO_X_KAYO' },
+  { date: '01_30_26', location: 'DUBAI_AE', event: 'BE_BEACH' },
+  { date: '01_31_26', location: 'BEIRUT_LB', event: 'GRAND_FACTORY' },
+]
 
 function Shows() {
-  const [visibleShows, setVisibleShows] = useState<number>(0)
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
-  const { displayText: subtitleText, showCursor: showSubtitleCursor } = useTypingEffect(
-    "// EVENTS.filter(e => new Date(e.date) >= Date.now()).map(show => show)",
-    1500
-  )
-
-  const shows = [
-    { date: '10_18_25', location: 'NEW_YORK_US', event: 'MUZIKA' },
-    { date: '11_01_25', location: 'BROOKLYN_US', event: 'PRIVATE' },
-    { date: '11_21_25', location: 'BROOKLYN_US', event: 'UNVEILED' },
-    { date: '12_06_25', location: 'BOSTON_US', event: '5ESS1ONS' },
-    { date: '12_11_25', location: 'CDMX', event: 'DINSMOOR' },
-    { date: '12_13_25', location: 'MADRID_ES', event: 'HOUDINNI' },
-    { date: '12_14_25', location: 'MARBELLA_ES', event: 'LA_SIESTA' },
-    { date: '12_15_25', location: 'MARBELLA_ES', event: 'MOMENTO' },
-    { date: '01_12_26', location: 'BARCELONA_ES', event: 'UMANO_BARCELONA' },
-    { date: '01_19_26', location: 'CASABLANCA_MA', event: 'SOLENA' },
-    { date: '01_21_26', location: 'LISBON_PT', event: 'UMANO_X_KAYO' },
-    { date: '01_30_26', location: 'DUBAI_AE', event: 'BE_BEACH' },
-    { date: '01_31_26', location: 'BEIRUT_LB', event: 'GRAND_FACTORY' },
-  ]
+  const [visibleShows, setVisibleShows] = useState(0)
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   useEffect(() => {
-    const updateViewport = () => {
-      setViewportWidth(window.innerWidth)
-    }
-    
-    updateViewport()
-    window.addEventListener('resize', updateViewport)
+    const handleResize = () => setViewportWidth(window.innerWidth)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
+  // Stagger show reveals
+  useEffect(() => {
     let currentIndex = 0
-    
     const showNext = () => {
       if (currentIndex < shows.length) {
         setVisibleShows(currentIndex + 1)
         currentIndex++
-        setTimeout(showNext, 80) // Fast domino effect
+        setTimeout(showNext, 80)
       }
     }
 
-    const startDelay = setTimeout(() => {
-      showNext()
-    }, 300)
-
-    return () => {
-      window.removeEventListener('resize', updateViewport)
-      clearTimeout(startDelay)
-    }
+    const startDelay = setTimeout(showNext, 400)
+    return () => clearTimeout(startDelay)
   }, [])
 
-  // Responsive font size for show rows - scale down more aggressively for mobile
+  // Responsive sizes
+  const titleSize = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    return `${28 + (42 - 28) * ratio}px`
+  }, [viewportWidth])
+
   const showFontSize = useMemo(() => {
     const minWidth = 375
     const maxWidth = 1920
-    const minSize = 10 // Much smaller on mobile to fit long text
-    const maxSize = 16
-
     const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-    const size = minSize + (maxSize - minSize) * ratio
-
-    return `${size}px`
+    return `${11 + (16 - 11) * ratio}px`
   }, [viewportWidth])
 
-  // Responsive gap for show rows - tighter on mobile
   const showGap = useMemo(() => {
     const minWidth = 375
     const maxWidth = 1920
-    const minGap = 5 // Much tighter on mobile
-    const maxGap = 30
-
     const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-    const gap = minGap + (maxGap - minGap) * ratio
-
-    return `${gap}px`
-  }, [viewportWidth])
-
-  // Responsive padding for show rows - taller on mobile
-  const showPadding = useMemo(() => {
-    const minWidth = 375
-    const maxWidth = 1920
-
-    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
-    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-
-    const vertPadding = 16 - (16 - 12) * ratio // Taller on mobile (16px) to smaller on desktop (12px)
-    const horizPadding = 12 + (20 - 12) * ratio
-
-    return `${vertPadding}px ${horizPadding}px`
+    return `${8 + (30 - 8) * ratio}px`
   }, [viewportWidth])
 
   return (
-    <PageLayout
-      title="UPCOMING_SHOWS"
-      displayText={subtitleText}
-      showCursor={showSubtitleCursor}
-      backgroundImage="/images/backgrounds/shows-background.jpg"
-    >
+    <div style={{ position: 'relative', minHeight: '100vh' }}>
+      {/* Content */}
       <div
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '20px',
+          position: 'relative',
+          zIndex: 10,
+          paddingTop: '120px',
+          paddingBottom: '80px',
+          paddingLeft: '20px',
+          paddingRight: '20px',
         }}
       >
-        {shows.slice(0, visibleShows).map((show, index) => (
-            <a
-              key={index}
-              href="https://bubbl.so"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => {
-                // Clear any text selection and blur active element
-                window.getSelection()?.removeAllRanges()
-                if (document.activeElement instanceof HTMLElement) {
-                  document.activeElement.blur()
-                }
-              }}
-              style={{
-                ...cardStyles.base,
-                color: 'rgba(255, 255, 255, 0.85)',
-                fontSize: showFontSize,
-                fontFamily: activeFont.family,
-                letterSpacing: '0.08em',
-                display: 'flex',
-                justifyContent: 'space-between',
-                gap: showGap,
-                padding: showPadding,
-                textDecoration: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                animation: 'dropInShow 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
-                backgroundColor: hoveredIndex === index ? cardStyles.hover.backgroundColor : cardStyles.base.backgroundColor,
-                borderColor: hoveredIndex === index ? cardStyles.hover.borderColor : cardStyles.base.border,
-              }}
-              onMouseEnter={() => {
-                setHoveredIndex(index)
-              }}
-              onMouseLeave={() => {
-                setHoveredIndex(null)
-              }}
-            >
-              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'left' }}>{show.date}</span>
-              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'center' }}>{show.event}</span>
-              <span style={{ flex: '1 1 0', minWidth: '0', textAlign: 'right' }}>{show.location}</span>
-            </a>
-        ))}
+        {/* Header */}
+        <div
+          style={{
+            maxWidth: '800px',
+            margin: '0 auto 12px',
+            textAlign: 'left',
+          }}
+        >
+          <h1
+            style={{
+              color: '#ffffff',
+              fontSize: titleSize,
+              fontWeight: '700',
+              letterSpacing: '-0.02em',
+              fontFamily: activeFont.family,
+              margin: 0,
+              textShadow: '0 0 30px rgba(255, 255, 255, 0.2)',
+            }}
+          >
+            UPCOMING_SHOWS
+          </h1>
+          <p
+            style={{
+              color: 'rgba(255, 255, 255, 0.3)',
+              fontSize: '12px',
+              fontFamily: activeFont.family,
+              letterSpacing: '0.1em',
+              margin: '12px 0 0 0',
+            }}
+          >
+            {'// TIMELINE.query(t => t.status === PENDING && t.coordinates !== NULL)'}
+          </p>
+        </div>
+
+        {/* Shows List */}
+        <div
+          style={{
+            maxWidth: '800px',
+            margin: '0 auto',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            pointerEvents: 'auto',
+          }}
+        >
+          {shows.slice(0, visibleShows).map((show, index) => {
+            const isHovered = hoveredIndex === index
+            
+            return (
+              <a
+                key={index}
+                href="https://ra.co"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  ...cardStyles.base,
+                  padding: viewportWidth < 600 ? '14px 16px' : '16px 20px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  gap: showGap,
+                  textDecoration: 'none',
+                  cursor: 'pointer',
+                  color: 'rgba(255, 255, 255, 0.85)',
+                  fontSize: showFontSize,
+                  fontFamily: activeFont.family,
+                  letterSpacing: '0.08em',
+                  opacity: 1,
+                  animation: `slideIn 0.5s ease-out ${index * 0.03}s both`,
+                  backgroundColor: isHovered ? 'rgba(230, 57, 70, 0.08)' : cardStyles.base.backgroundColor,
+                  border: isHovered ? '1px solid rgba(230, 57, 70, 0.4)' : cardStyles.base.border,
+                  boxShadow: isHovered ? '0 4px 20px rgba(230, 57, 70, 0.15)' : 'none',
+                  transform: isHovered ? 'translateX(8px)' : 'translateX(0)',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                <span 
+                  style={{ 
+                    flex: '0 0 auto',
+                    width: viewportWidth < 600 ? '70px' : '100px',
+                    color: isHovered ? '#e63946' : 'rgba(255, 255, 255, 0.6)',
+                    transition: 'color 0.2s ease',
+                  }}
+                >
+                  {show.date}
+                </span>
+                <span 
+                  style={{ 
+                    flex: 1,
+                    textAlign: 'center',
+                    fontWeight: '700',
+                    color: isHovered ? '#e63946' : 'rgba(255, 255, 255, 0.9)',
+                    transition: 'color 0.2s ease',
+                  }}
+                >
+                  {show.event}
+                </span>
+                <span 
+                  style={{ 
+                    flex: '0 0 auto',
+                    width: viewportWidth < 600 ? '90px' : '140px',
+                    textAlign: 'right',
+                    color: isHovered ? '#e63946' : 'rgba(255, 255, 255, 0.5)',
+                    transition: 'color 0.2s ease',
+                  }}
+                >
+                  {show.location}
+                </span>
+              </a>
+            )
+          })}
+        </div>
+
+        {/* Footer note */}
+        <p
+          style={{
+            maxWidth: '800px',
+            margin: '24px auto 0',
+            textAlign: 'center',
+            color: 'rgba(255, 255, 255, 0.3)',
+            fontSize: '12px',
+            fontFamily: activeFont.family,
+            letterSpacing: '0.1em',
+            opacity: visibleShows > 0 ? 1 : 0,
+            transition: 'opacity 1s ease-out 2s',
+          }}
+        >
+          [ WHERE THE FREQUENCIES CONVERGE, WE GATHER ]
+        </p>
+
       </div>
-    </PageLayout>
+
+      <style>{`
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+    </div>
   )
 }
 

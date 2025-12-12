@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from
 import { useState, useEffect, Suspense, lazy } from 'react'
 import Navigation from '@/shared/components/layout/Navigation'
 import FallingCode from '@/shared/components/effects/FallingCode'
+import { QualityProvider } from '@/shared/components/3d'
 
 // Lazy load page components for better performance
 const Home = lazy(() => import('@/features/home'))
@@ -14,8 +15,22 @@ const EPK = lazy(() => import('@/features/epk'))
 
 // Loading fallback component
 const PageLoader = () => (
-  <div className="flex items-center justify-center min-h-screen">
-    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white"></div>
+  <div className="flex items-center justify-center min-h-screen bg-void">
+    <div 
+      style={{
+        width: '40px',
+        height: '40px',
+        border: '2px solid rgba(255, 255, 255, 0.1)',
+        borderTopColor: '#e63946',
+        borderRadius: '50%',
+        animation: 'spin 1s linear infinite',
+      }}
+    />
+    <style>{`
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    `}</style>
   </div>
 )
 
@@ -26,7 +41,7 @@ function MainApp() {
   const navigate = useNavigate()
 
   const getCurrentPage = (): Page => {
-    const path = location.pathname.slice(1) // Remove leading slash
+    const path = location.pathname.slice(1)
     switch (path) {
       case 'about':
         return 'about'
@@ -110,7 +125,7 @@ function HomePage() {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Prevent body scroll on mobile home page - use CSS class for more reliable Safari prevention
+  // Prevent body scroll on mobile home page
   useEffect(() => {
     if (isMobile) {
       document.body.classList.add('mobile-home-no-scroll')
@@ -137,19 +152,15 @@ function HomePage() {
         overflow: 'hidden',
       }}
     >
-      {/* Falling code background */}
-      <FallingCode />
-
-      {/* Home content - no navigation header */}
-      <div style={{ position: 'relative', zIndex: 10 }}>
+      {/* Home content with 3D portal scene */}
         <Home onNavigate={handleNavigate} />
-      </div>
     </div>
   )
 }
 
 function App() {
   return (
+    <QualityProvider>
     <Router>
       <Suspense fallback={<PageLoader />}>
         <Routes>
@@ -163,6 +174,7 @@ function App() {
         </Routes>
       </Suspense>
     </Router>
+    </QualityProvider>
   )
 }
 

@@ -1,54 +1,211 @@
-import { aboutConfig } from './config'
-import { aboutContent } from '@/content/pages/about'
-import PageLayout from '@/shared/components/layout/PageLayout'
-import { useTypingEffect } from '@/shared/hooks/useTypingEffect'
+/**
+ * About - Bio page with 3D terrain background
+ * Tells the story of Suite 52: software engineer + producer + DJ
+ */
+
+import { useState, useEffect, useMemo } from 'react'
+import { activeFont } from '@/themes'
+import { AboutScene } from './components'
+import { cardStyles } from '@/design/cardStyles'
 
 function About() {
-  const { displayText: subtitleText, showCursor: showSubtitleCursor } = useTypingEffect(
-    aboutContent.codeSnippet,
-    aboutConfig.animations.typingDelay
-  )
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
+  const [visibleSections, setVisibleSections] = useState(0)
+
+  useEffect(() => {
+    const handleResize = () => setViewportWidth(window.innerWidth)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // Stagger section reveals
+  useEffect(() => {
+    let currentSection = 0
+    const totalSections = 4 // Only bio sections now
+
+    const showNext = () => {
+      if (currentSection < totalSections) {
+        setVisibleSections(currentSection + 1)
+        currentSection++
+        setTimeout(showNext, 200)
+      }
+    }
+
+    const startDelay = setTimeout(showNext, 400)
+    return () => clearTimeout(startDelay)
+  }, [])
+
+  // Responsive font sizes
+  const titleSize = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    return `${28 + (42 - 28) * ratio}px`
+  }, [viewportWidth])
+
+  const bodySize = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    return `${14 + (16 - 14) * ratio}px`
+  }, [viewportWidth])
+
+  const sections = [
+    {
+      title: '// THE_APPROACH',
+      content: `Suite 52 operates at the convergence of technical mastery and artistic pursuit. 
+        Technology transforms from tool to medium, crafting moments where sound transcends function 
+        and becomes experience. Each track, each set, an attempt to articulate what words cannot. 
+        The search for something that exists only in the space between intention and interpretation.`,
+    },
+    {
+      title: '// THE_SOUND',
+      content: `Sonic architecture built at the intersection of opposing forces. Organic textures layered 
+        with digital precision. Darkness giving weight to melody. Emotion grounded by intellect. The work 
+        evolves continuously, refusing to settle into predictable patterns. Creating music with enough 
+        character to cut through an industry saturated with noise but devoid of voice.`,
+    },
+    {
+      title: '// THE_PHILOSOPHY',
+      content: `Art above all. Technology unlocks infinite possibility, but human vision determines what 
+        matters. The culture needs architects who understand its foundation, who recognize what separates 
+        meaningful work from manufactured product. Building something that demands attention in a landscape 
+        where most have chosen silence over substance.`,
+    },
+    {
+      title: '// THE_CREW',
+      content: `Co-founder of UMANO, an independent label and events platform forged by five artists who 
+        challenge convention daily. Genre-agnostic by design. Mind-bending by necessity. The sound shifts 
+        between darkness and melody, aggression and introspection, but everything carries unmistakable 
+        personality. This is music that refuses to compromise individuality for conformity.`,
+    },
+  ]
 
   return (
-    <PageLayout
-      title={aboutContent.title}
-      displayText={subtitleText}
-      showCursor={showSubtitleCursor}
-      backgroundImage={aboutConfig.background.image}
-    >
-      <div className="bg-white rounded-lg shadow-md p-6 sm:p-8">
-        <div className="prose prose-lg max-w-none">
-          <p className="text-gray-700 mb-4 text-base sm:text-lg leading-relaxed">
-            Welcome to Suite 52. This is where you can share your story, 
-            musical journey, and what makes your sound unique.
-          </p>
-          
-          <p className="text-gray-700 mb-4 text-base sm:text-lg leading-relaxed">
-            Edit this page in <code className="text-sm bg-gray-100 px-2 py-1 rounded">
-            src/pages/About.tsx
-            </code> to add your bio, band members, influences, and more.
-          </p>
+    <div style={{ position: 'relative', minHeight: '100vh' }}>
+      {/* 3D Background Scene */}
+      <AboutScene />
 
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Band Members
-            </h2>
-            <p className="text-gray-700 text-base sm:text-lg">
-              Add information about your band members here...
+      {/* Content */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          paddingTop: '120px',
+          paddingBottom: '80px',
+          paddingLeft: '20px',
+          paddingRight: '20px',
+        }}
+      >
+        {/* Header */}
+        <div
+          style={{
+            maxWidth: '800px',
+            margin: '0 auto 12px',
+            textAlign: 'left',
+          }}
+        >
+          <h1
+            style={{
+              color: '#ffffff',
+              fontSize: titleSize,
+              fontWeight: '700',
+              letterSpacing: '-0.02em',
+              fontFamily: activeFont.family,
+              margin: 0,
+              textShadow: '0 0 30px rgba(255, 255, 255, 0.2)',
+              opacity: visibleSections > 0 ? 1 : 0,
+              transform: visibleSections > 0 ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
+            }}
+          >
+            ABOUT
+          </h1>
+          <p
+            style={{
+              color: 'rgba(255, 255, 255, 0.3)',
+              fontSize: '12px',
+              fontFamily: activeFont.family,
+              letterSpacing: '0.1em',
+              margin: '12px 0 0 0',
+              opacity: visibleSections > 0 ? 1 : 0,
+              transition: 'opacity 0.8s ease-out 0.2s',
+            }}
+          >
+            {'// ENTITY.initialize(vectors: [SOUND, CODE, VISION])'}
             </p>
           </div>
 
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Our Sound
+        {/* Bio Sections */}
+        <div
+          style={{
+            maxWidth: '800px',
+            margin: '0 auto',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '24px',
+          }}
+        >
+          {sections.map((section, index) => (
+            <div
+              key={section.title}
+              style={{
+                ...cardStyles.base,
+                padding: '28px 32px',
+                opacity: visibleSections > index ? 1 : 0,
+                transform: visibleSections > index ? 'translateY(0)' : 'translateY(30px)',
+                transition: `opacity 0.6s ease-out ${index * 0.1}s, transform 0.6s ease-out ${index * 0.1}s`,
+              }}
+            >
+              <h2
+                style={{
+                  color: '#e63946',
+                  fontSize: '14px',
+                  fontWeight: '700',
+                  letterSpacing: '0.1em',
+                  fontFamily: activeFont.family,
+                  margin: '0 0 16px 0',
+                  textShadow: '0 0 15px rgba(230, 57, 70, 0.4)',
+                }}
+              >
+                {section.title}
             </h2>
-            <p className="text-gray-700 text-base sm:text-lg">
-              Describe your musical style and influences...
+              <p
+                style={{
+                  color: 'rgba(180, 180, 180, 0.9)',
+                  fontSize: bodySize,
+                  lineHeight: '1.8',
+                  fontFamily: activeFont.family,
+                  margin: 0,
+                  letterSpacing: '0.02em',
+                }}
+              >
+                {section.content}
             </p>
           </div>
+          ))}
+
+          {/* Footer note */}
+          <p
+            style={{
+              maxWidth: '700px',
+              margin: '24px auto 0',
+              textAlign: 'center',
+              color: 'rgba(255, 255, 255, 0.3)',
+              fontSize: '12px',
+              fontFamily: activeFont.family,
+              letterSpacing: '0.1em',
+              opacity: visibleSections >= 2 ? 1 : 0,
+              transition: 'opacity 1s ease-out 2s',
+            }}
+          >
+            [ THE ARCHITECT BEHIND THE FREQUENCIES ]
+          </p>
         </div>
       </div>
-    </PageLayout>
+    </div>
   )
 }
 

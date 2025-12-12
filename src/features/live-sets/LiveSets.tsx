@@ -1,152 +1,218 @@
-import PageLayout from '@/shared/components/layout/PageLayout'
-import { LiveSetCard } from '@/shared/components/ui'
-import { useTypingEffect } from '@/shared/hooks/useTypingEffect'
+/**
+ * LiveSets - Recorded sets with 3D portal backgrounds
+ */
+
+import { useState, useEffect, useMemo } from 'react'
+import { activeFont } from '@/themes'
+import { cardStyles } from '@/design/cardStyles'
+
+const liveSets = [
+  {
+    id: '1',
+    title: 'Suite 52 b2b Henry McBride in NYC [10.04.25]',
+    type: 'youtube',
+    embedUrl: 'https://www.youtube.com/embed/M3y5BRFdOa8',
+  },
+]
 
 function LiveSets() {
-  const { displayText: subtitleText, showCursor: showSubtitleCursor } = useTypingEffect(
-    "// RECORDINGS.sort((a, b) => b.timestamp - a.timestamp).slice(0, 10)",
-    1500
-  )
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
+
+  useEffect(() => {
+    const handleResize = () => setViewportWidth(window.innerWidth)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const titleSize = useMemo(() => {
+    const minWidth = 375
+    const maxWidth = 1920
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
+    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
+    return `${28 + (42 - 28) * ratio}px`
+  }, [viewportWidth])
 
   return (
-    <PageLayout
-      title="LIVE_SETS"
-      displayText={subtitleText}
-      showCursor={showSubtitleCursor}
-      backgroundImage="/images/backgrounds/live-sets-background.jpg"
-    >
-      <div className="space-y-12">
-        {/* Suite 52 B2B Henry McBride in NYC with Element */}
-        <LiveSetCard title="Suite 52 B2B Henry McBride in NYC with Element">
-          <div className="w-full max-w-2xl mx-auto" style={{ aspectRatio: '16/9' }}>
-            <iframe
-              width="100%"
-              height="100%"
-              src="https://www.youtube.com/embed/ziTP36Ixqkk"
-              title="Suite 52 B2B Henry McBride in NYC with Element"
-              className="w-full h-full rounded-lg"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-        </LiveSetCard>
+    <div style={{ position: 'relative', minHeight: '100vh' }}>
+      {/* Content */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          paddingTop: '120px',
+          paddingBottom: '80px',
+          paddingLeft: '20px',
+          paddingRight: '20px',
+        }}
+      >
+        {/* Header */}
+        <div
+          style={{
+            maxWidth: '800px',
+            margin: '0 auto 12px',
+            textAlign: 'left',
+          }}
+        >
+          <h1
+            style={{
+              color: '#ffffff',
+              fontSize: titleSize,
+              fontWeight: '700',
+              letterSpacing: '-0.02em',
+              fontFamily: activeFont.family,
+              margin: 0,
+              textShadow: '0 0 30px rgba(255, 255, 255, 0.2)',
+            }}
+          >
+            LIVE_SETS
+          </h1>
+          <p
+            style={{
+              color: 'rgba(255, 255, 255, 0.3)',
+              fontSize: '12px',
+              fontFamily: activeFont.family,
+              letterSpacing: '0.1em',
+              margin: '12px 0 0 0',
+            }}
+          >
+            {'// ARCHIVE.stream(moment => moment.captured && moment.raw)'}
+          </p>
+        </div>
 
-        {/* UMANO Radio */}
-        <LiveSetCard title="UMANO Radio">
-          <div className="w-full">
-            <iframe
-              width="100%"
-              height="120"
-              scrolling="no"
-              frameBorder="no"
-              allow="autoplay"
-              src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/13158665&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
-              title="UMANO Radio"
-              className="w-full rounded-lg sm:h-[166px] h-[120px]"
-            ></iframe>
-          </div>
-        </LiveSetCard>
+        {/* Sets Grid */}
+        <div
+          style={{
+            maxWidth: '800px',
+            margin: '0 auto',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '32px',
+          }}
+        >
+          {liveSets.map((set, index) => (
+            <div
+              key={set.id}
+              style={{
+                ...cardStyles.base,
+                padding: '24px',
+                opacity: 1,
+                animation: `fadeUp 0.6s ease-out ${index * 0.1}s both`,
+              }}
+            >
+              {/* Title */}
+              <h3
+                style={{
+                  color: '#ffffff',
+                  fontSize: '16px',
+                  fontWeight: '700',
+                  fontFamily: activeFont.family,
+                  margin: '0 0 16px 0',
+                  letterSpacing: '0.02em',
+                }}
+              >
+                {set.title}
+              </h3>
 
-        {/* Suite 52 Live at Brooklyn Mirage */}
-        <LiveSetCard title="Suite 52 Live at Brooklyn Mirage">
-          <div className="w-full max-w-2xl mx-auto" style={{ aspectRatio: '16/9' }}>
-            <iframe
-              width="100%"
-              height="100%"
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-              title="Suite 52 Live at Brooklyn Mirage"
-              className="w-full h-full rounded-lg"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-        </LiveSetCard>
+              {/* Embed */}
+              <div
+                style={{
+                  position: 'relative',
+                  borderRadius: '8px',
+                  overflow: 'hidden',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                }}
+              >
+                {set.type === 'youtube' ? (
+                  <div style={{ aspectRatio: '16/9' }}>
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src={set.embedUrl}
+                      title={set.title}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      style={{ display: 'block' }}
+                    />
+                  </div>
+                ) : (
+                  <iframe
+                    width="100%"
+                    height={viewportWidth < 600 ? '120' : '166'}
+                    scrolling="no"
+                    frameBorder="no"
+                    allow="autoplay"
+                    src={set.embedUrl}
+                    title={set.title}
+                    style={{ display: 'block' }}
+                  />
+                )}
 
-        {/* Suite 52 Essential Mix for BBC Radio 1 */}
-        <LiveSetCard title="Suite 52 Essential Mix for BBC Radio 1">
-          <div className="w-full">
-            <iframe
-              width="100%"
-              height="120"
-              scrolling="no"
-              frameBorder="no"
-              allow="autoplay"
-              src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/123456789&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
-              title="Suite 52 Essential Mix for BBC Radio 1"
-              className="w-full rounded-lg sm:h-[166px] h-[120px]"
-            ></iframe>
-          </div>
-        </LiveSetCard>
-
-        {/* Suite 52 B2B with Tale of Us */}
-        <LiveSetCard title="Suite 52 B2B with Tale of Us">
-          <div className="w-full max-w-2xl mx-auto" style={{ aspectRatio: '16/9' }}>
-            <iframe
-              width="100%"
-              height="100%"
-              src="https://www.youtube.com/embed/jNQXAC9IVRw"
-              title="Suite 52 B2B with Tale of Us"
-              className="w-full h-full rounded-lg"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-        </LiveSetCard>
-
-        {/* Suite 52 Ambient Mix */}
-        <LiveSetCard title="Suite 52 Ambient Mix">
-          <div className="w-full">
-            <iframe
-              width="100%"
-              height="120"
-              scrolling="no"
-              frameBorder="no"
-              allow="autoplay"
-              src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/987654321&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
-              title="Suite 52 Ambient Mix"
-              className="w-full rounded-lg sm:h-[166px] h-[120px]"
-            ></iframe>
-          </div>
-        </LiveSetCard>
-
-        {/* Suite 52 Warehouse Sessions */}
-        <LiveSetCard title="Suite 52 Warehouse Sessions">
-          <div className="w-full max-w-2xl mx-auto" style={{ aspectRatio: '16/9' }}>
-            <iframe
-              width="100%"
-              height="100%"
-              src="https://www.youtube.com/embed/9bZkp7q19f0"
-              title="Suite 52 Warehouse Sessions"
-              className="w-full h-full rounded-lg"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-        </LiveSetCard>
-
-        {/* Suite 52 Fabric London Residency */}
-        <LiveSetCard title="Suite 52 Fabric London Residency">
-          <div className="w-full">
-            <iframe
-              width="100%"
-              height="120"
-              scrolling="no"
-              frameBorder="no"
-              allow="autoplay"
-              src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/555666777&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
-              title="Suite 52 Fabric London Residency"
-              className="w-full rounded-lg sm:h-[166px] h-[120px]"
-            ></iframe>
-          </div>
-        </LiveSetCard>
+                {/* Portal glow overlay */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    pointerEvents: 'none',
+                    boxShadow: 'inset 0 0 30px rgba(230, 57, 70, 0.1)',
+                    borderRadius: '8px',
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </PageLayout>
+
+      <style>{`
+        @keyframes fadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+      `}</style>
+
+      {/* Footer note */}
+      <p
+        style={{
+          position: 'absolute',
+          bottom: '60px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '100%',
+          maxWidth: '800px',
+          textAlign: 'center',
+          color: 'rgba(255, 255, 255, 0.3)',
+          fontSize: '12px',
+          fontFamily: activeFont.family,
+          letterSpacing: '0.1em',
+          padding: '0 20px',
+          margin: 0,
+          animation: 'fadeIn 1s ease-out 2s both',
+        }}
+      >
+        [ MOMENTS CAPTURED IN THE SPACE BETWEEN BEATS ]
+      </p>
+    </div>
   )
 }
 
 export default LiveSets
-

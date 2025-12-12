@@ -1,8 +1,11 @@
-import { useEffect, useState, useMemo } from 'react'
-import { homeConfig } from './config'
-import { homeContent } from '@/content/pages/home'
+/**
+ * Home - Entry Experience
+ * Elegant landing with motion-blurred background and swirling particles
+ */
+
+import { useEffect, useState, useCallback } from 'react'
 import { activeFont } from '@/themes'
-import BouncingSquare from '@/shared/components/effects/BouncingSquare'
+import { PortalScene } from './components'
 
 type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'
 
@@ -15,16 +18,44 @@ function Home({ onNavigate }: HomeProps) {
   const [showCursor, setShowCursor] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
-  const [hoveredLink, setHoveredLink] = useState<Page | null>(null)
   const [philosophicalText, setPhilosophicalText] = useState('')
   const [showPhilosophicalCursor, setShowPhilosophicalCursor] = useState(false)
   const [isPhilosophicalTyping, setIsPhilosophicalTyping] = useState(false)
-  const [backgroundLoaded, setBackgroundLoaded] = useState(false)
+  const [isReady, setIsReady] = useState(false)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [roleIndex, setRoleIndex] = useState(0)
+  const [jumbledText, setJumbledText] = useState('')
+  const [showJumbled, setShowJumbled] = useState(false)
+
   const fullText = 'Suite 52'
-  const fullPhilosophicalText = 'SOUND IS A REBELLION AGAINST SILENCE, AND MUSIC SPEAKS WHAT LOGIC CANNOT DECODE. ALGORITHMS SEARCH FOR PATTERNS WHILE HUMANS SEARCH FOR MEANING. CULTURE LIVES BETWEEN TRADITION AND TRANSFORMATION, AND FREEDOM EMERGES WHEN SPIRIT GUIDES TRANSMISSION. THE SIGNAL SEARCHES FOR THOSE WILLING TO LISTEN, THE MELODY FINDS THOSE WILLING TO FEEL, AND THE RHYTHM IS ONLY UNDERSTOOD BY THOSE WILLING TO MOVE.'
+  const fullPhilosophicalText = 'PATTERNS MANIFEST IN MUSIC THROUGH RHYTHM AND MEASURE. IN MATHEMATICS THROUGH EQUATIONS. IN NATURE THROUGH PHYSICAL LAWS. BUT MOST PROFOUNDLY IN THE ARCHITECTURE OF HUMAN EXPERIENCE. THE WORK IS TRANSLATING THESE EMOTIONAL PATTERNS INTO FREQUENCIES THAT RESONATE. INTO RHYTHMS THAT CONNECT. INTO MOMENTS WHERE A ROOM FULL OF INDIVIDUALS BECOMES SOMETHING MORE.'
+  
+  // Rotating individual roles
+  const roles = [
+    'ARTIST',
+    'MUSIC PRODUCER',
+    'DJ',
+    'ENGINEER',
+  ]
+
+  // Colors
+  const ACCENT = 'rgba(230, 57, 70, 0.8)'
+  const WHITE = '#ffffff'
+
+  // Track mouse for parallax
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    setMousePosition({
+      x: (e.clientX / window.innerWidth) * 2 - 1,
+      y: -(e.clientY / window.innerHeight) * 2 + 1,
+    })
+  }, [])
 
   useEffect(() => {
-    // Check if mobile and track viewport width
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [handleMouseMove])
+
+  useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768 || window.innerHeight < 768)
       setViewportWidth(window.innerWidth)
@@ -32,29 +63,19 @@ function Home({ onNavigate }: HomeProps) {
     
     checkMobile()
     window.addEventListener('resize', checkMobile)
+    setIsReady(true)
 
-    // Load Ubuntu Mono font
-    const link = document.createElement('link')
-    link.href = activeFont.googleFontsUrl
-    link.rel = 'stylesheet'
-    document.head.appendChild(link)
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+    }
+  }, [])
 
-    // Typing animation with expressive timing (slower)
-    const timings = [
-      220, // S
-      120,  // u - faster
-      130,  // i
-      100,  // t - fast
-      160, // e
-      300, // (pause before space)
-      150, // 5
-      125,  // 2
-    ]
-
+  // Typing animation for title
+  useEffect(() => {
+    const timings = [220, 120, 130, 100, 160, 300, 150, 125]
     let currentIndex = 0
     let typingComplete = false
     
-    // Cursor blink - declare first so it can be cleared in typeNextChar
     const cursorInterval = setInterval(() => {
       if (!typingComplete) {
         setShowCursor(prev => !prev)
@@ -68,11 +89,9 @@ function Home({ onNavigate }: HomeProps) {
         const delay = timings[currentIndex - 1] || 100
         setTimeout(typeNextChar, delay)
       } else {
-        // Stop blinking and do quick flashes: off-fade on-off-on-off-on-hold-off
         typingComplete = true
         clearInterval(cursorInterval)
         setShowCursor(false)
-        // Wait a moment then fade in (shorter delay for first flash)
         setTimeout(() => {
           setShowCursor(true)
           setTimeout(() => {
@@ -81,39 +100,26 @@ function Home({ onNavigate }: HomeProps) {
               setShowCursor(true)
               setTimeout(() => {
                 setShowCursor(false)
-                setTimeout(() => {
-                  setShowCursor(true)
-                  setTimeout(() => {
-                    // Hold for normal duration (530ms)
-                    setTimeout(() => {
-                      setShowCursor(false)
-                    }, 530)
-                  }, 265)
-                }, 265)
-              }, 265)
+              }, 530)
             }, 265)
-          }, 180)
+          }, 265)
         }, 400)
       }
     }
 
-    // Start typing after a brief delay
     const startDelay = setTimeout(() => {
-      setShowCursor(true) // Show cursor when typing starts
+      setShowCursor(true)
       typeNextChar()
-    }, 300)
+    }, 800)
 
     return () => {
-      window.removeEventListener('resize', checkMobile)
-      document.head.removeChild(link)
       clearTimeout(startDelay)
       clearInterval(cursorInterval)
     }
   }, [])
 
-  // Typing animation for philosophical text
+  // Philosophical text typing
   useEffect(() => {
-    // Start after main title animation completes and buttons appear (adjusted for slower typing: ~3.5s total)
     const startDelay = setTimeout(() => {
       setIsPhilosophicalTyping(true)
       setShowPhilosophicalCursor(true)
@@ -123,248 +129,210 @@ function Home({ onNavigate }: HomeProps) {
         if (currentIndex < fullPhilosophicalText.length) {
           setPhilosophicalText(fullPhilosophicalText.substring(0, currentIndex + 1))
           currentIndex++
-          
-          // Variable typing speed: 40-120ms per keystroke
-          const delay = 40 + Math.random() * 80
-          
+          const delay = 30 + Math.random() * 50
           setTimeout(typeNextChar, delay)
         } else {
           setIsPhilosophicalTyping(false)
-          // Hide cursor after typing is done
-          setTimeout(() => {
-            setShowPhilosophicalCursor(false)
-          }, 1000)
+          setTimeout(() => setShowPhilosophicalCursor(false), 1000)
         }
       }
       
       typeNextChar()
     }, 3500)
 
-    return () => {
-      clearTimeout(startDelay)
-    }
+    return () => clearTimeout(startDelay)
   }, [])
 
-  // Cursor management for philosophical text - solid while typing, blink after
+  // Cursor blink for philosophical text
   useEffect(() => {
     if (isPhilosophicalTyping) {
-      // Keep cursor solid while typing
       setShowPhilosophicalCursor(true)
       return
     }
     
-    // After typing is done, blink for a bit then hide
     if (philosophicalText.length === fullPhilosophicalText.length && philosophicalText.length > 0) {
       const cursorInterval = setInterval(() => {
         setShowPhilosophicalCursor(prev => !prev)
       }, 530)
-
-      return () => {
-        clearInterval(cursorInterval)
-      }
+      return () => clearInterval(cursorInterval)
     }
   }, [isPhilosophicalTyping, philosophicalText])
 
-  // Preload background image
+  // Rotate through roles animation with intelligent transformation
   useEffect(() => {
-    const img = new Image()
-    img.src = '/images/backgrounds/home-background.jpg'
-    img.onload = () => {
-      setBackgroundLoaded(true)
+    // Start rotation after title is complete
+    if (displayText.length !== fullText.length) return
+
+    let interval: NodeJS.Timeout | null = null
+    let transitionInterval: NodeJS.Timeout | null = null
+
+    const startDelay = setTimeout(() => {
+      const scheduleNextTransition = () => {
+        const currentPrevIndex = roleIndex
+        const nextIndex = (roleIndex + 1) % roles.length
+        const oldText = roles[currentPrevIndex]
+        const newText = roles[nextIndex]
+        
+        setShowJumbled(true)
+        
+        // Intelligently transform text step by step with random timing
+        let progress = 0
+        // Use more steps for transitions with larger character differences
+        // ARTIST (6 chars) -> MUSIC PRODUCER (14 chars) = 8 char difference
+        // DJ (2 chars) -> ENGINEER (8 chars) = 6 char difference
+        const isLongTransition = 
+          (currentPrevIndex === 0 && nextIndex === 1) || // ARTIST -> MUSIC PRODUCER
+          (currentPrevIndex === 2 && nextIndex === 3)    // DJ -> ENGINEER
+        const steps = isLongTransition 
+          ? 40 + Math.floor(Math.random() * 20) // 40-60 steps for long transitions
+          : 20 + Math.floor(Math.random() * 10) // 20-30 steps for normal transitions
+        let stepIndex = 0
+        
+        const doStep = () => {
+          if (stepIndex >= steps) {
+            // Set final text
+            setRoleIndex(nextIndex)
+            setShowJumbled(false)
+            setJumbledText('')
+            
+            // Schedule next transition with random delay
+            const nextDelay = 2000 + Math.random() * 1500 // 2-3.5 seconds
+            interval = setTimeout(scheduleNextTransition, nextDelay)
+            return
+          }
+          
+          progress = stepIndex / steps
+          setJumbledText(generateTransitionText(oldText, newText, progress))
+          stepIndex++
+          
+          // Random step duration: 35-55ms for variation
+          const stepDuration = 35 + Math.random() * 20
+          transitionInterval = setTimeout(doStep, stepDuration)
+        }
+        
+        doStep()
+      }
+      
+      // Start first transition
+      scheduleNextTransition()
+    }, 2800) // Start 2.8 seconds after title completes
+
+    return () => {
+      clearTimeout(startDelay)
+      if (interval) clearTimeout(interval)
+      if (transitionInterval) clearTimeout(transitionInterval)
     }
-  }, [])
+  }, [displayText.length, fullText.length, roles.length, roleIndex])
 
-  // Clear hovered state when component mounts (when returning to home page)
-  useEffect(() => {
-    setHoveredLink(null)
-  }, [])
-
-  const navLinks: { page: Page; label: string }[] = [
-    { page: 'music', label: 'MUSIC' },
-    { page: 'shows', label: 'SHOWS' },
-    { page: 'live-sets', label: 'LIVE_SETS' },
-    { page: 'about', label: 'ABOUT' },
-    { page: 'contact', label: 'CONTACT' },
-  ]
-
-  const POKER_RED = '#e63946'
-  const WHITE = '#ffffff'
-
-  // Calculate smooth background size based on viewport aspect ratio
-  const getBackgroundSize = () => {
-    // On mobile/portrait: make image BIGGER than viewport so positioning works
-    // On desktop/landscape: constrain by width
-    const aspectRatio = viewportWidth / window.innerHeight
-    
-    if (aspectRatio < 0.8) {
-      // Portrait/mobile: make image 150% of viewport height so we can crop/position it
-      return 'auto 150%'
-    } else {
-      // Landscape/desktop: constrain by width
-      return '100% auto'
-    }
-  }
-
-  // Calculate smooth background position - pinned to top on mobile, centered on desktop
-  const getBackgroundPosition = () => {
-    const minWidth = 375 // Mobile minimum
-    const maxWidth = 1920 // Desktop maximum
-    
-    // Calculate ratio: 0 at mobile, 1 at desktop
+  // Responsive width calculation
+  const getContentWidth = () => {
+    const minWidth = 375
+    const maxWidth = 1920
     const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-    
-    // Ease-out transition - stays very high near desktop value, minimal dip throughout
-    // Mobile: 95% (subject positioned high), Desktop: 52.5% (centered, subject visible)
-    // Using very small exponent to minimize dip in middle ranges
-    const easedRatio = Math.pow(ratio, 0.25) // Very aggressive curve - stays high almost entire transition
-    const verticalPercent = 95 + (easedRatio * -42.5) // Range from 95% down to 52.5%
-    
-    return `center ${verticalPercent}%`
-  }
-
-  // Calculate nav width based on viewport - scale from 45% (desktop) to 95% (mobile)
-  const getNavWidth = () => {
-    const minWidth = 375 // Mobile minimum
-    const maxWidth = 1920 // Desktop maximum
-    const minPercent = 95 // Mobile: 95%
-    const maxPercent = 45 // Desktop: 45% (tighter grouping)
-    
-    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
-    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-    const percent = minPercent + (maxPercent - minPercent) * ratio
-    
+    const percent = 95 + (45 - 95) * ratio
     return `${percent}%`
   }
 
-  // Fixed text sizes for all screen sizes
-  const titleFontSize = '70px' // Fixed size
-  const subtitleFontSize = '18px' // Fixed size
-  const navFontSize = '16px' // Fixed size
-
-  // Memoize nav button gap - very tight on mobile
-  const navGap = useMemo(() => {
-    const minWidth = 375
-    const maxWidth = 1920
-    const minGap = 2 // Very tight spacing on mobile
-    const maxGap = 12 // Less spread out on desktop
+  // Intelligently transform text from old to new, step by step
+  const generateTransitionText = (oldText: string, newText: string, progress: number): string => {
+    // progress is 0 to 1, where 0 = oldText, 1 = newText
+    const oldLength = oldText.length
+    const newLength = newText.length
+    let result = ''
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     
-    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
-    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-    const gap = minGap + (maxGap - minGap) * ratio
+    // Calculate target length - characters are added/removed during middle of animation (0.3-0.7)
+    let targetLength = oldLength
+    if (progress < 0.3) {
+      // Early: keep old length
+      targetLength = oldLength
+    } else if (progress < 0.7) {
+      // Middle: gradually transition length
+      const midProgress = (progress - 0.3) / 0.4 // 0 to 1 within middle section
+      const lengthDiff = newLength - oldLength
+      targetLength = oldLength + Math.round(lengthDiff * midProgress)
+    } else {
+      // Late: use new length
+      targetLength = newLength
+    }
     
-    return `${gap}px`
-  }, [viewportWidth, isMobile])
-
-  // Memoize nav button padding - smooth transition
-  const navPadding = useMemo(() => {
-    const minWidth = 375
-    const maxWidth = 1920
+    // Calculate character transformation progress (for individual character changes)
+    // Characters transform more gradually, starting earlier
+    const charTransformStart = 0.2
+    const charTransformEnd = 0.9
+    const charProgress = progress < charTransformStart 
+      ? 0 
+      : progress > charTransformEnd 
+        ? 1 
+        : (progress - charTransformStart) / (charTransformEnd - charTransformStart)
     
-    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
-    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-    
-    const vertPadding = 10 // Keep consistent
-    const horizPadding = 8 + (16 - 8) * ratio // 8px mobile to 16px desktop
-    
-    return `${vertPadding}px ${horizPadding}px`
-  }, [viewportWidth])
-
-  // Check if we're in mobile range for hover effects
-  const isMobileRange = useMemo(() => {
-    return viewportWidth < 768 // Consider < 768px as mobile range
-  }, [viewportWidth])
-
-  // Fixed vertical spacing for all screen sizes
-  const titleMarginBottom = '3px' // Fixed spacing
-  const subtitleMarginBottom = '15px' // Fixed spacing
-  const cursorWidth = '24px' // Fixed width
-  const cursorHeight = '48px' // Fixed height (slightly taller)
-
-  // Memoize horizontal blur amount - more on desktop, less on mobile
-  const horizontalBlur = useMemo(() => {
-    const minWidth = 375 // Mobile minimum
-    const maxWidth = 1920 // Desktop maximum
-    const minBlur = 12 // Mobile: current blur (threshold)
-    const maxBlur = 24 // Desktop: more blurry
-    
-    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
-    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-    const blur = minBlur + (maxBlur - minBlur) * ratio
-    
-    return blur
-  }, [viewportWidth])
-
-  // Memoize philosophical text properties - smooth transitions
-  const philosophicalFontSize = useMemo(() => {
-    const minWidth = 375
-    const maxWidth = 1920
-    const minSize = 6 // Mobile font size
-    const maxSize = 7.5 // Desktop font size
-
-    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
-    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-    const size = minSize + (maxSize - minSize) * ratio
-
-    return `${size}px`
-  }, [viewportWidth])
-
-  const philosophicalBottom = useMemo(() => {
-    const minWidth = 375
-    const maxWidth = 1920
-
-    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
-    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-
-    // On mobile, position it higher to ensure it doesn't cause scrolling
-    const bottom = isMobile ? 2 : (0.5 + (1 - 0.5) * ratio) // 2px on mobile, 0.5-1px on desktop
-    return `${bottom}px`
-  }, [viewportWidth, isMobile])
-
-  const philosophicalHeight = useMemo(() => {
-    const minWidth = 375
-    const maxWidth = 1920
-
-    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
-    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-
-    // Mobile: smaller height to prevent scrolling, Desktop: normal height
-    const height = isMobile ? 35 : (45 + (35 - 45) * ratio) // 35px on mobile, 35-45px on desktop
-    return `${height}px`
-  }, [viewportWidth, isMobile])
-
-  // Generate random positions and velocities for squares - memoized so it only runs once
-  const squares = useMemo(() => {
-    const result = []
-    const numSquares = 2
-    const sizePercent = 0.9 // 90% of smaller viewport dimension for both
-    
-    for (let index = 0; index < numSquares; index++) {
-      const smallerDimension = Math.min(window.innerWidth, window.innerHeight)
-      const squareSize = smallerDimension * sizePercent
+    for (let i = 0; i < targetLength; i++) {
+      const oldChar = i < oldLength ? oldText[i] : null
+      const newChar = i < newLength ? newText[i] : null
       
-      // Random position within valid bounds
-      const maxX = Math.max(0, window.innerWidth - squareSize)
-      const maxY = Math.max(0, window.innerHeight - squareSize)
-      const x = Math.random() * maxX
-      const y = Math.random() * maxY
+      // Determine if this character position should be transformed
+      const shouldTransform = i < Math.floor(charProgress * targetLength)
       
-      // Random velocity between 0.15 and 0.35, random direction
-      const velocityX = (Math.random() * 0.2 + 0.15) * (Math.random() > 0.5 ? 1 : -1)
-      const velocityY = (Math.random() * 0.2 + 0.15) * (Math.random() > 0.5 ? 1 : -1)
-      
-      result.push({
-        key: index,
-        x,
-        y,
-        velocityX,
-        velocityY,
-        sizePercent
-      })
+      if (oldChar === newChar && oldChar !== null) {
+        // Characters match - keep them (unless we're past this point in transformation)
+        if (shouldTransform && Math.random() < 0.2) {
+          // Occasionally glitch even matching chars during transition
+          result += chars[Math.floor(Math.random() * chars.length)]
+        } else {
+          result += oldChar
+        }
+      } else {
+        // Characters differ or one doesn't exist
+        if (!shouldTransform) {
+          // Not transformed yet - show old char or random glitch for new positions
+          if (oldChar) {
+            result += oldChar
+          } else {
+            // New character position that doesn't exist in old text
+            // Show glitchy random characters until it's time to reveal
+            result += chars[Math.floor(Math.random() * chars.length)]
+          }
+        } else {
+          // Being transformed - gradually move toward new char
+          if (charProgress < 0.4) {
+            // Early: mostly old/random with some glitches
+            if (oldChar && Math.random() < 0.7) {
+              result += oldChar
+            } else {
+              result += chars[Math.floor(Math.random() * chars.length)]
+            }
+          } else if (charProgress < 0.8) {
+            // Middle: mix of old, new, and transition chars
+            const rand = Math.random()
+            if (rand < 0.25 && oldChar) {
+              result += oldChar
+            } else if (rand < 0.65 && newChar) {
+              result += newChar
+            } else {
+              // Transition character
+              result += chars[Math.floor(Math.random() * chars.length)]
+            }
+          } else {
+            // Late: mostly new with occasional glitches
+            if (newChar && Math.random() < 0.85) {
+              result += newChar
+            } else {
+              result += chars[Math.floor(Math.random() * chars.length)]
+            }
+          }
+        }
+      }
     }
     
     return result
-  }, [])
+  }
+
+  const handleEnter = useCallback(() => {
+    onNavigate('about')
+  }, [onNavigate])
+
+  if (!isReady) return null
 
   return (
     <div 
@@ -375,78 +343,116 @@ function Home({ onNavigate }: HomeProps) {
         height: '100vh',
         width: '100%',
         overflow: 'hidden',
+        position: 'relative',
+        background: '#000',
+        cursor: 'pointer',
       }}
+      onClick={handleEnter}
     >
-      {/* SVG filter for horizontal motion blur and grayscale */}
-      <svg style={{ position: 'absolute', width: 0, height: 0 }}>
-        <defs>
-          <filter id="horizontalMotionBlur">
-            <feGaussianBlur in="SourceGraphic" stdDeviation={`${horizontalBlur},0`} result="blur" />
-            {/* Convert to grayscale */}
-            <feColorMatrix in="blur" type="matrix" values="0.299 0.587 0.114 0 0  0.299 0.587 0.114 0 0  0.299 0.587 0.114 0 0  0 0 0 1 0" />
-          </filter>
-        </defs>
-      </svg>
-      
-      {/* Background image - beneath everything */}
-      <div 
+      {/* Background Photo with motion blur effect */}
+      <div
+        style={{
+          position: 'fixed',
+          top: '-5%',
+          left: '-5%',
+          width: '110%',
+          height: '110%',
+          zIndex: 0,
+          backgroundImage: 'url(/images/backgrounds/home-background.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.2,
+          filter: 'blur(2px) saturate(0.5)',
+          transform: 'scale(1.05)',
+          animation: 'subtleFloat 25s ease-in-out infinite',
+        }}
+      />
+
+      {/* Secondary layer for motion blur depth */}
+      <div
+        style={{
+          position: 'fixed',
+          top: '-5%',
+          left: '-5%',
+          width: '110%',
+          height: '110%',
+          zIndex: 1,
+          backgroundImage: 'url(/images/backgrounds/home-background.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.1,
+          filter: 'blur(6px) saturate(0.3)',
+          transform: 'scale(1.1)',
+          animation: 'subtleFloat 30s ease-in-out infinite reverse',
+        }}
+      />
+
+      {/* Swirling particles */}
+      <PortalScene 
+        mouseX={mousePosition.x}
+        mouseY={mousePosition.y}
+      />
+
+      {/* Dark vignette overlay */}
+      <div
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
           width: '100vw',
           height: '100vh',
-          backgroundImage: 'url(/images/backgrounds/home-background.jpg)',
-          backgroundSize: getBackgroundSize(),
-          backgroundPosition: getBackgroundPosition(),
-          backgroundRepeat: 'no-repeat',
-          opacity: backgroundLoaded ? 0.28 : 0,
-          zIndex: 0,
+          zIndex: 3,
+          background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.85) 100%)',
           pointerEvents: 'none',
-          transition: 'opacity 1.5s ease-in',
-          filter: 'url(#horizontalMotionBlur)',
         }}
       />
-      
-      {/* Black overlay to darken the image */}
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        backgroundColor: '#000000',
-        opacity: 0.10,
-        zIndex: 1,
-        pointerEvents: 'none',
-      }} />
-      
-      
-      {/* Only show bouncing squares on desktop to prevent mobile scrolling issues */}
-      {!isMobile && squares.map(square => (
-        <BouncingSquare
-          key={square.key}
-          initialX={square.x}
-          initialY={square.y}
-          velocityX={square.velocityX}
-          velocityY={square.velocityY}
-          sizePercent={square.sizePercent}
-        />
-      ))}
-      <div style={{ textAlign: 'center', padding: '0', width: '100%', maxWidth: '100vw' }}>
+
+      {/* Subtle grain texture */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          zIndex: 4,
+          opacity: 0.025,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* UI Content */}
+      <div 
+        style={{ 
+          position: 'relative',
+          zIndex: 10,
+          textAlign: 'center', 
+          padding: '0', 
+          width: '100%', 
+          maxWidth: '100vw',
+          pointerEvents: 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+        }}
+      >
+        {/* Title */}
         <h1 
           style={{ 
-            color: 'rgba(255, 255, 255, 0.9)',
-            fontSize: titleFontSize,
+            color: 'rgba(255, 255, 255, 0.92)',
+            fontSize: isMobile ? '48px' : '72px',
             fontWeight: '700',
-            letterSpacing: '-0.02em',
+            letterSpacing: '0.08em',
             fontFamily: activeFont.family,
-            marginBottom: titleMarginBottom,
+            marginBottom: '4px',
             marginTop: 0,
             display: 'inline-flex',
             alignItems: 'flex-start',
             justifyContent: 'center',
-            textShadow: '0 0 6px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2)',
+            textShadow: '0 4px 60px rgba(0, 0, 0, 0.8)',
           }}
         >
           <span style={{ display: 'inline-block', position: 'relative' }}>
@@ -454,142 +460,238 @@ function Home({ onNavigate }: HomeProps) {
             <span 
               style={{ 
                 position: 'absolute',
-                right: '-0.6em',
-                top: '0.23em',
-                opacity: showCursor ? 0.9 : 0,
+                right: '-0.45em',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                opacity: showCursor ? 1 : 0,
                 transition: displayText.length === fullText.length ? 'opacity 0.15s ease-in' : 'none',
                 display: 'inline-block',
-                width: cursorWidth,
-                height: cursorHeight,
-                backgroundColor: '#ffffff',
-                boxShadow: '0 0 6px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2)',
+                width: isMobile ? '18px' : '24px',
+                height: isMobile ? '34px' : '46px',
+                backgroundColor: WHITE,
+                boxShadow: '0 0 20px rgba(255, 255, 255, 0.2)',
               }}
             />
           </span>
         </h1>
         
-        <p 
-          style={{ 
-            color: 'rgba(255, 255, 255, 0.25)',
-            fontSize: subtitleFontSize,
-            letterSpacing: '0.05em',
-            fontFamily: activeFont.family,
-            fontWeight: '700',
-            margin: 0,
-            marginBottom: subtitleMarginBottom,
+        {/* Subtitle */}
+        <div
+          style={{
+            height: isMobile ? '28px' : '36px',
+            width: '100%',
+            marginBottom: '12px',
+            overflow: 'hidden',
             visibility: displayText.length === fullText.length ? 'visible' : 'hidden',
             opacity: displayText.length === fullText.length ? 1 : 0,
-            transition: 'opacity 2s ease-in 0.8s',
+            transition: displayText.length === fullText.length ? 'opacity 2s ease-in 0.8s' : 'none',
+            perspective: '1000px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
-          Producer // DJ // Artist
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            {/* Text that transforms intelligently */}
+            <div
+              key={`role-${roleIndex}-${showJumbled ? 'transition' : 'stable'}`}
+              style={{
+                position: 'absolute',
+                left: '50%',
+                top: 0,
+                transform: 'translateX(-50%)',
+                color: 'rgba(255, 255, 255, 0.35)',
+                fontSize: isMobile ? '16px' : '20px',
+                letterSpacing: '0.3em',
+                fontFamily: activeFont.family,
+                fontWeight: '300',
+                margin: 0,
+                whiteSpace: 'nowrap',
+                opacity: 1,
+              }}
+            >
+              {showJumbled && jumbledText ? jumbledText : roles[roleIndex]}
+            </div>
+          </div>
+        </div>
+
+        {/* Click to Enter */}
+        <p 
+          style={{
+            color: '#e63946',
+            fontSize: isMobile ? '14px' : '18px',
+            letterSpacing: '0.25em',
+            fontFamily: activeFont.family,
+            fontWeight: '900',
+            margin: 0,
+            visibility: displayText.length === fullText.length ? 'visible' : 'hidden',
+            opacity: displayText.length === fullText.length ? 1 : 0,
+            transform: displayText.length === fullText.length ? 'translateY(0)' : 'translateY(10px)',
+            transition: 'opacity 1s ease-in 1.5s, transform 1s ease-in 1.5s',
+            animation: displayText.length === fullText.length ? 'glitchyGlow 3s ease-in-out forwards, subtlePulse 4s ease-in-out 3s infinite' : 'none',
+            pointerEvents: 'auto',
+            cursor: 'pointer',
+            textShadow: `
+              0 0 10px rgba(230, 57, 70, 0.8),
+              0 0 20px rgba(230, 57, 70, 0.6),
+              0 0 30px rgba(230, 57, 70, 0.4),
+              0 0 40px rgba(230, 57, 70, 0.3),
+              0 0 60px rgba(230, 57, 70, 0.2)
+            `,
+          }}
+          onClick={handleEnter}
+        >
+          [ CLICK TO ENTER ]
         </p>
 
-        {/* Philosophical text - subtle and hidden */}
+        {/* Philosophical text */}
         <div
           style={{
             position: 'fixed',
-            bottom: philosophicalBottom,
+            bottom: isMobile ? '15px' : '25px',
             left: '50%',
             transform: 'translateX(-50%)',
-            width: getNavWidth(),
-            maxWidth: '775px',
-            height: philosophicalHeight,
-            textAlign: 'justify',
-            fontSize: philosophicalFontSize,
-            lineHeight: '1.4',
-            color: POKER_RED,
-            opacity: philosophicalText.length > 0 ? 1 : 0,
+            width: getContentWidth(),
+            maxWidth: '650px',
+            textAlign: 'center',
+            fontSize: isMobile ? '7px' : '8px',
+            lineHeight: '2',
+            color: ACCENT,
+            opacity: philosophicalText.length > 0 ? 0.45 : 0,
             fontFamily: activeFont.family,
-            letterSpacing: '0.20em',
-            fontWeight: '400',
-            textShadow: '0 0 8px rgba(230, 57, 70, 0.6), 0 0 12px rgba(230, 57, 70, 0.4)',
+            letterSpacing: '0.15em',
+            fontWeight: '300',
             pointerEvents: 'none',
-            transition: 'width 0.3s ease, height 0.3s ease, font-size 0.3s ease, bottom 0.3s ease',
-            overflow: 'hidden',
-            visibility: 'visible',
-            // Additional Safari-specific scroll prevention
-            WebkitOverflowScrolling: 'touch',
-            touchAction: 'none',
+            transition: 'opacity 1s ease',
           }}
         >
           {philosophicalText}
           {showPhilosophicalCursor && (
-            <span 
-              style={{ 
-                opacity: showPhilosophicalCursor ? 1 : 0,
-                transition: 'opacity 0.1s',
-                position: 'relative',
-                top: '-1px',
-              }}
-            >
-              █
-            </span>
+            <span style={{ opacity: 0.7 }}>▌</span>
           )}
         </div>
-
-        {/* Floating navigation links */}
-        <nav
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: navGap,
-            flexWrap: 'nowrap',
-            padding: '0 10px',
-            width: getNavWidth(),
-            maxWidth: getNavWidth(),
-            margin: '0 auto',
-          }}
-        >
-          {navLinks.map((link, index) => {
-            const isHovered = hoveredLink === link.page
-            const baseDelay = 1.2 // Base delay after typing animation
-            const staggerDelay = index * 0.25 // 250ms delay between each button (slower)
-            const isVisible = displayText.length === fullText.length
-            
-            return (
-              <button
-                key={link.page}
-                onClick={(e) => {
-                  setHoveredLink(null) // Clear hovered state immediately
-                  e.currentTarget.blur() // Remove focus state on mobile
-                  onNavigate(link.page)
-                }}
-                onMouseEnter={() => setHoveredLink(link.page)}
-                onMouseLeave={() => setHoveredLink(null)}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  outline: 'none',
-                  cursor: 'pointer',
-                  color: isHovered ? POKER_RED : WHITE,
-                  fontSize: navFontSize,
-                  fontWeight: '700',
-                  letterSpacing: '0.1em',
-                  fontFamily: activeFont.family,
-                  textTransform: 'uppercase',
-                  transition: `opacity 0.8s ease-out ${baseDelay + staggerDelay}s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) ${isVisible ? '0s' : baseDelay + staggerDelay + 's'}, color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), padding 0.3s ease`,
-                  padding: navPadding,
-                  margin: '0',
-                  flex: isMobileRange ? '1 1 0' : '0 0 auto',
-                  whiteSpace: 'nowrap',
-                  visibility: isVisible ? 'visible' : 'hidden',
-                  opacity: isVisible ? 1 : 0,
-                  transform: (isHovered && !isMobileRange)
-                    ? 'scale(1.15)' 
-                    : isVisible 
-                      ? 'translateY(0) scale(1)' 
-                      : 'translateY(0) scale(1)',
-                  filter: (isHovered && !isMobileRange) ? 'brightness(1.2)' : 'brightness(1)',
-                }}
-              >
-                {link.label}
-              </button>
-            )
-          })}
-        </nav>
       </div>
+
+      {/* Animations */}
+      <style>{`
+        @keyframes subtlePulse {
+          0%, 100% { opacity: 0.8; }
+          50% { opacity: 1; }
+        }
+        @keyframes subtleFloat {
+          0%, 100% { 
+            transform: scale(1.05) translate(0, 0);
+          }
+          25% {
+            transform: scale(1.06) translate(0.5%, -0.3%);
+          }
+          50% { 
+            transform: scale(1.05) translate(0.2%, 0.5%);
+          }
+          75% {
+            transform: scale(1.04) translate(-0.3%, 0.2%);
+          }
+        }
+        @keyframes glitchyGlow {
+          0% {
+            text-shadow: 
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0);
+          }
+          5% {
+            text-shadow: 
+              0 0 2px rgba(230, 57, 70, 0.3),
+              0 0 4px rgba(230, 57, 70, 0.2),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0);
+          }
+          8% {
+            text-shadow: 
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0);
+          }
+          12% {
+            text-shadow: 
+              0 0 5px rgba(230, 57, 70, 0.5),
+              0 0 10px rgba(230, 57, 70, 0.3),
+              0 0 15px rgba(230, 57, 70, 0.2),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0);
+          }
+          15% {
+            text-shadow: 
+              0 0 2px rgba(230, 57, 70, 0.2),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0);
+          }
+          20% {
+            text-shadow: 
+              0 0 8px rgba(230, 57, 70, 0.6),
+              0 0 15px rgba(230, 57, 70, 0.4),
+              0 0 25px rgba(230, 57, 70, 0.3),
+              0 0 35px rgba(230, 57, 70, 0.2),
+              0 0 0px rgba(230, 57, 70, 0);
+          }
+          22% {
+            text-shadow: 
+              0 0 3px rgba(230, 57, 70, 0.3),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0);
+          }
+          28% {
+            text-shadow: 
+              0 0 10px rgba(230, 57, 70, 0.7),
+              0 0 20px rgba(230, 57, 70, 0.5),
+              0 0 30px rgba(230, 57, 70, 0.4),
+              0 0 40px rgba(230, 57, 70, 0.3),
+              0 0 50px rgba(230, 57, 70, 0.15);
+          }
+          30% {
+            text-shadow: 
+              0 0 5px rgba(230, 57, 70, 0.4),
+              0 0 10px rgba(230, 57, 70, 0.2),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0),
+              0 0 0px rgba(230, 57, 70, 0);
+          }
+          35% {
+            text-shadow: 
+              0 0 10px rgba(230, 57, 70, 0.8),
+              0 0 20px rgba(230, 57, 70, 0.6),
+              0 0 30px rgba(230, 57, 70, 0.4),
+              0 0 40px rgba(230, 57, 70, 0.3),
+              0 0 60px rgba(230, 57, 70, 0.2);
+          }
+          100% {
+            text-shadow: 
+              0 0 10px rgba(230, 57, 70, 0.8),
+              0 0 20px rgba(230, 57, 70, 0.6),
+              0 0 30px rgba(230, 57, 70, 0.4),
+              0 0 40px rgba(230, 57, 70, 0.3),
+              0 0 60px rgba(230, 57, 70, 0.2);
+          }
+        }
+      `}</style>
     </div>
   )
 }

@@ -1,5 +1,11 @@
+/**
+ * Navigation - Suite 52 header navigation
+ * Elegant, responsive navigation with red accents
+ */
+
 import { useState, useEffect, useMemo } from 'react'
 import { activeFont } from '@/themes'
+import { useNavigate } from 'react-router-dom'
 
 type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'
 
@@ -11,7 +17,8 @@ interface NavigationProps {
 function Navigation({ currentPage, onNavigate }: NavigationProps) {
   const [hoveredLink, setHoveredLink] = useState<Page | null>(null)
   const [isMobile, setIsMobile] = useState(false)
-  const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
+  const [viewportWidth, setViewportWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const checkMobile = () => {
@@ -28,69 +35,38 @@ function Navigation({ currentPage, onNavigate }: NavigationProps) {
   const navLinks: { page: Page; label: string }[] = [
     { page: 'music', label: 'MUSIC' },
     { page: 'shows', label: 'SHOWS' },
-    { page: 'live-sets', label: 'LIVE_SETS' },
+    { page: 'live-sets', label: 'LIVE' },
     { page: 'about', label: 'ABOUT' },
     { page: 'contact', label: 'CONTACT' },
   ]
 
-  // Responsive font size - minimal variation, larger on mobile
+  // Responsive values
   const navFontSize = useMemo(() => {
     const minWidth = 375
     const maxWidth = 1920
-    const minSize = 15 // Much larger minimum for mobile
-    const maxSize = 16 // Less variation
+    const minSize = 13
+    const maxSize = 15
     
     const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
     const size = minSize + (maxSize - minSize) * ratio
     
     return `${size}px`
-  }, [viewportWidth, isMobile])
+  }, [viewportWidth])
 
-  // Responsive gap - very tight on mobile
   const navGap = useMemo(() => {
     const minWidth = 375
     const maxWidth = 1920
-    const minGap = 2 // Very tight spacing on mobile
-    const maxGap = 8
+    const minGap = 2
+    const maxGap = 16
     
     const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
     const gap = minGap + (maxGap - minGap) * ratio
     
     return `${gap}px`
-  }, [viewportWidth, isMobile])
-
-  // Responsive container width
-  const navWidth = useMemo(() => {
-    const minWidth = 375
-    const maxWidth = 1920
-    const minPercent = 95
-    const maxPercent = 70
-    
-    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
-    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-    const percent = minPercent + (maxPercent - minPercent) * ratio
-    
-    return `${percent}%`
   }, [viewportWidth])
 
-  // Responsive container padding
-  const containerPadding = useMemo(() => {
-    const minWidth = 375
-    const maxWidth = 1920
-    
-    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
-    const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
-    
-    // Interpolate padding
-    const vertPadding = 4 + (8 - 4) * ratio
-    const horizPadding = 8 // Keep consistent
-    
-    return `${vertPadding}px ${horizPadding}px`
-  }, [viewportWidth])
-
-  // Responsive button padding
   const buttonPadding = useMemo(() => {
     const minWidth = 375
     const maxWidth = 1920
@@ -98,88 +74,134 @@ function Navigation({ currentPage, onNavigate }: NavigationProps) {
     const clampedWidth = Math.max(minWidth, Math.min(maxWidth, viewportWidth))
     const ratio = (clampedWidth - minWidth) / (maxWidth - minWidth)
     
-    // Interpolate padding
-    const vertPadding = 6 + (8 - 6) * ratio
-    const horizPadding = 2 + (4 - 2) * ratio
+    const vertPadding = 8 + (10 - 8) * ratio
+    const horizPadding = 4 + (12 - 4) * ratio
     
     return `${vertPadding}px ${horizPadding}px`
   }, [viewportWidth])
 
-  const POKER_RED = '#e63946'
+  const handleHomeClick = () => {
+    navigate('/')
+  }
+
+  const BLOOD = '#e63946'
   const WHITE = '#ffffff'
 
   return (
     <nav
       style={{
-        backgroundColor: '#000000',
+        backgroundColor: 'rgba(0, 0, 0, 0.95)',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
         width: '100%',
-        padding: '16px 0',
+        padding: '12px 0',
         position: 'fixed',
         top: 0,
         zIndex: 100,
-        boxShadow: '0 2px 4px rgba(0,0,0,0.5)',
-        fontFamily: activeFont.family
+        borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+        fontFamily: activeFont.family,
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+      <div 
+        style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          width: '100%',
+          maxWidth: '800px',
+          margin: '0 auto',
+          padding: '0 20px',
+        }}
+      >
+        {/* Logo/Home Link */}
+        <button
+          onClick={handleHomeClick}
+          style={{
+            background: 'none',
+            border: 'none',
+            outline: 'none',
+            cursor: 'pointer',
+            color: WHITE,
+            fontSize: '18px',
+            fontWeight: '700',
+            fontFamily: activeFont.family,
+            letterSpacing: '-0.02em',
+            padding: '6px 10px 6px 0',
+          }}
+        >
+          Suite 52
+        </button>
+
+        {/* Nav Links */}
         <div 
           style={{ 
-            width: navWidth,
-            maxWidth: '1200px',
             display: 'flex',
-            justifyContent: 'space-between',
             alignItems: 'center',
-            padding: containerPadding,
             gap: navGap,
           }}
         >
           {navLinks.map((link) => {
             const isHovered = hoveredLink === link.page
-            const active = currentPage === link.page
+            const isActive = currentPage === link.page
             
             return (
-              <div
+              <button
                 key={link.page}
+                onClick={() => onNavigate(link.page)}
                 style={{
+                  background: 'none',
+                  border: 'none',
+                  outline: 'none',
+                  cursor: 'pointer',
+                  color: isActive ? BLOOD : isHovered ? WHITE : 'rgba(255, 255, 255, 0.7)',
+                  fontSize: navFontSize,
+                  fontWeight: isActive ? '700' : '500',
+                  letterSpacing: '0.08em',
+                  fontFamily: activeFont.family,
+                  textTransform: 'uppercase',
                   position: 'relative',
-                  display: 'inline-block'
+                  padding: buttonPadding,
+                  transition: 'all 0.2s ease',
+                  transform: isHovered && !isActive ? 'translateY(-1px)' : 'translateY(0)',
+                  whiteSpace: 'nowrap',
                 }}
+                onMouseEnter={() => setHoveredLink(link.page)}
+                onMouseLeave={() => setHoveredLink(null)}
               >
-                <button
-                  onClick={() => {
-                    onNavigate(link.page)
-                  }}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    outline: 'none',
-                    cursor: 'pointer',
-                    color: active ? POKER_RED : WHITE,
-                    fontSize: navFontSize,
-                    fontWeight: '700',
-                    fontStyle: active ? 'italic' : 'normal',
-                    letterSpacing: '0.1em',
-                    textDecoration: 'none',
-                    transition: 'all 0.15s ease-out',
-                    fontFamily: activeFont.family,
-                    textTransform: 'uppercase',
-                    position: 'relative',
-                    padding: buttonPadding,
-                    display: 'inline-block',
-                    borderBottom: (isHovered && !active) ? `2px solid ${WHITE}` : '2px solid transparent',
-                    transform: (isHovered && !active) ? 'translateY(-2px)' : 'translateY(0)', // Lift up on hover
-                    whiteSpace: 'nowrap',
-                  }}
-                      onMouseEnter={() => {
-                        setHoveredLink(link.page)
-                      }}
-                  onMouseLeave={() => {
-                    setHoveredLink(null)
-                  }}
-                >
-                  {link.label}
-                </button>
-              </div>
+                {link.label}
+                
+                {/* Active indicator */}
+                {isActive && (
+                  <span
+                    style={{
+                      position: 'absolute',
+                      bottom: '2px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      width: '4px',
+                      height: '4px',
+                      backgroundColor: BLOOD,
+                      borderRadius: '50%',
+                      boxShadow: '0 0 8px rgba(230, 57, 70, 0.6)',
+                    }}
+                  />
+                )}
+                
+                {/* Hover underline */}
+                {isHovered && !isActive && (
+                  <span
+                    style={{
+                      position: 'absolute',
+                      bottom: '4px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      width: '60%',
+                      height: '1px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                    }}
+                  />
+                )}
+              </button>
             )
           })}
         </div>

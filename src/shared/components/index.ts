@@ -9,3 +9,6 @@ export { default as FallingCode } from './effects/FallingCode'
 // UI components
 export * from './ui'
 
+// 3D components
+export * from './3d'
+

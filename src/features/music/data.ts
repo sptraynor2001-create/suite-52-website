@@ -21,6 +21,7 @@ export const releases: Release[] = [
     id: '3',
     artists: 'Alicia Keys',
     title: "Fallin' (Gabe Rich & Suite 52 Remix)",
+    label: 'FREE DOWNLOAD',
     coverArt: '/images/songs/fallin-remix-cover-art.jpg',
     releaseDate: '2025-07-03',
   },
