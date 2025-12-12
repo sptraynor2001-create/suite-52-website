@@ -112,7 +112,8 @@ function Navigation({ currentPage, onNavigate }: NavigationProps) {
           style={{ 
             display: 'flex', 
             justifyContent: 'space-between', 
-            alignItems: 'center', 
+            alignItems: 'center',
+            width: '100%',
             maxWidth: '800px',
             margin: '0 auto',
           }}
