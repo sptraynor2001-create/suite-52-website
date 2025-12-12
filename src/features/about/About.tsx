@@ -54,28 +54,28 @@ function About() {
 
   const sections = [
     {
-      title: '// THE_APPROACH',
+      title: 'THE_APPROACH',
       content: `Suite 52 operates at the convergence of technical mastery and artistic pursuit. 
         Technology transforms from tool to medium, crafting moments where sound transcends function 
         and becomes experience. Each track, each set, an attempt to articulate what words cannot. 
         The search for something that exists only in the space between intention and interpretation.`,
     },
     {
-      title: '// THE_SOUND',
+      title: 'THE_SOUND',
       content: `Sonic architecture built at the intersection of opposing forces. Organic textures layered 
         with digital precision. Darkness giving weight to melody. Emotion grounded by intellect. The work 
         evolves continuously, refusing to settle into predictable patterns. Creating music with enough 
         character to cut through an industry saturated with noise but devoid of voice.`,
     },
     {
-      title: '// THE_PHILOSOPHY',
+      title: 'THE_PHILOSOPHY',
       content: `Art above all. Technology unlocks infinite possibility, but human vision determines what 
         matters. The culture needs architects who understand its foundation, who recognize what separates 
         meaningful work from manufactured product. Building something that demands attention in a landscape 
         where most have chosen silence over substance.`,
     },
     {
-      title: '// THE_CREW',
+      title: 'THE_CREW',
       content: `Co-founder of UMANO, an independent label and events platform forged by five artists who 
         challenge convention daily. Genre-agnostic by design. Mind-bending by necessity. The sound shifts 
         between darkness and melody, aggression and introspection, but everything carries unmistakable 
