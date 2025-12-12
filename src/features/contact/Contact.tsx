@@ -329,7 +329,7 @@ function Contact() {
             margin: '24px auto 0',
             textAlign: 'center',
             color: 'rgba(255, 255, 255, 0.3)',
-            fontSize: '12px',
+            fontSize: viewportWidth <= 768 ? '9px' : '12px',
             fontFamily: activeFont.family,
             letterSpacing: '0.1em',
             opacity: visibleSections >= 3 ? 1 : 0,

@@ -208,7 +208,7 @@ function Shows() {
             margin: '24px auto 0',
             textAlign: 'center',
             color: 'rgba(255, 255, 255, 0.3)',
-            fontSize: '12px',
+            fontSize: viewportWidth <= 768 ? '9px' : '12px',
             fontFamily: activeFont.family,
             letterSpacing: '0.1em',
             opacity: visibleShows > 0 ? 1 : 0,
