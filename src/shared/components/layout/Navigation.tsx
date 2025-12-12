@@ -127,6 +127,13 @@ function Navigation({ currentPage, onNavigate }: NavigationProps) {
             fontFamily: activeFont.family,
             letterSpacing: '-0.02em',
             padding: '6px 10px 6px 0',
+            transition: 'color 0.2s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = BLOOD
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = WHITE
           }}
         >
           Suite 52
