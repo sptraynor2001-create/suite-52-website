@@ -54,7 +54,7 @@ function Music() {
         style={{
           position: 'relative',
           zIndex: 10,
-          paddingTop: '120px',
+          paddingTop: '90px',
           paddingBottom: '80px',
           paddingLeft: '20px',
           paddingRight: '20px',

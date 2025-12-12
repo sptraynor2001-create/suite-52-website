@@ -436,9 +436,17 @@ function Home({ onNavigate }: HomeProps) {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          minHeight: '100vh',
         }}
       >
+        {/* Main text group wrapper */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
         {/* Title */}
         <h1 
           style={{ 
@@ -552,6 +560,7 @@ function Home({ onNavigate }: HomeProps) {
         >
           [ CLICK TO ENTER ]
         </p>
+        </div>
 
         {/* Philosophical text */}
         <div
