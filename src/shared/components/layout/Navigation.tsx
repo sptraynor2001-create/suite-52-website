@@ -104,15 +104,19 @@ function Navigation({ currentPage, onNavigate }: NavigationProps) {
     >
       <div 
         style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center', 
-          width: '100%',
-          maxWidth: '800px',
-          margin: '0 auto',
           padding: '0 20px',
+          width: '100%',
         }}
       >
+        <div 
+          style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            maxWidth: '800px',
+            margin: '0 auto',
+          }}
+        >
         {/* Logo/Home Link */}
         <button
           onClick={handleHomeClick}
@@ -211,6 +215,7 @@ function Navigation({ currentPage, onNavigate }: NavigationProps) {
               </button>
             )
           })}
+        </div>
         </div>
       </div>
     </nav>
