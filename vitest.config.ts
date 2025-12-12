@@ -17,7 +17,7 @@ export default defineConfig({
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mtsx,jsx,tsx}'],
     exclude: ['node_modules', 'dist', '.git', '.cache'],
     testTimeout: 10000,
-    reporter: process.env.CI ? 'verbose' : 'default',
+    reporters: process.env.CI ? 'verbose' : 'default',
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
