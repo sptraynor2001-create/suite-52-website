@@ -6,6 +6,7 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { colors as themeColors } from '@/themes/colors'
 
 // Main particles - increased density
 const PARTICLE_COUNT = 1400 // Much denser whirlpool
@@ -421,9 +422,9 @@ export function AccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesPr
       positions[i * 3 + 2] = zOffsets[i]
       
       // Initialize colors to red (full opacity)
-      colors[i * 3] = 0.9 // R component of red
-      colors[i * 3 + 1] = 0.22 // G component of red
-      colors[i * 3 + 2] = 0.27 // B component of red
+      colors[i * 3] = themeColors.scene.particles.red.r
+      colors[i * 3 + 1] = themeColors.scene.particles.red.g
+      colors[i * 3 + 2] = themeColors.scene.particles.red.b
     }
 
     return { positions, colors, angles, startRadii, rotationSpeeds, lifetimes, zOffsets, canGlitch, sizes, glitchRates, glitchOffsets }
@@ -484,9 +485,9 @@ export function AccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesPr
           particles.glitchOffsets[i] = 0.08 + Math.random() * 0.04
           particles.sizes[i] = 0.03 + Math.random() * 0.06
           // Reset color to full opacity (red)
-          colors[i3] = 0.9
-          colors[i3 + 1] = 0.22
-          colors[i3 + 2] = 0.27
+          colors[i3] = themeColors.scene.particles.red.r
+          colors[i3 + 1] = themeColors.scene.particles.red.g
+          colors[i3 + 2] = themeColors.scene.particles.red.b
         } else {
           // Update opacity based on fade progress, combined with mouse opacity
           const fadeProgress = fadeTimers.current[i] / ACCENT_FADE_DURATION
@@ -494,9 +495,9 @@ export function AccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesPr
           const isWeb = typeof window !== 'undefined' && window.innerWidth >= 768
           const opacityMultiplier = isWeb ? 0.7 + (mouseY + 1) * 0.15 : 1.0
           const finalOpacity = fadeOpacity * opacityMultiplier
-          colors[i3] = 0.9 * finalOpacity
-          colors[i3 + 1] = 0.22 * finalOpacity
-          colors[i3 + 2] = 0.27 * finalOpacity
+          colors[i3] = themeColors.scene.particles.red.r * finalOpacity
+          colors[i3 + 1] = themeColors.scene.particles.red.g * finalOpacity
+          colors[i3 + 2] = themeColors.scene.particles.red.b * finalOpacity
         }
       }
       
@@ -781,18 +782,18 @@ export function BlueAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
           particles.glitchRates[i] = 0.002 + Math.random() * 0.005
           particles.glitchOffsets[i] = 0.08 + Math.random() * 0.04
           particles.sizes[i] = 0.03 + Math.random() * 0.06
-          colors[i3] = 0.26
-          colors[i3 + 1] = 0.65
-          colors[i3 + 2] = 0.96
+          colors[i3] = themeColors.scene.particles.blue.r
+          colors[i3 + 1] = themeColors.scene.particles.blue.g
+          colors[i3 + 2] = themeColors.scene.particles.blue.b
         } else {
           const fadeProgress = fadeTimers.current[i] / FADE_DURATION
           const fadeOpacity = 1.0 - fadeProgress
           const isWeb = typeof window !== 'undefined' && window.innerWidth >= 768
           const opacityMultiplier = isWeb ? 0.7 + (mouseY + 1) * 0.15 : 1.0
           const finalOpacity = fadeOpacity * opacityMultiplier
-          colors[i3] = 0.26 * finalOpacity
-          colors[i3 + 1] = 0.65 * finalOpacity
-          colors[i3 + 2] = 0.96 * finalOpacity
+          colors[i3] = themeColors.scene.particles.blue.r * finalOpacity
+          colors[i3 + 1] = themeColors.scene.particles.blue.g * finalOpacity
+          colors[i3 + 2] = themeColors.scene.particles.blue.b * finalOpacity
         }
       }
       
@@ -844,9 +845,9 @@ export function BlueAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
       positions[i3 + 2] = z
       
       if (fadeTimers.current[i] === 0) {
-        colors[i3] = 0.26 * opacityMultiplier
-        colors[i3 + 1] = 0.65 * opacityMultiplier
-        colors[i3 + 2] = 0.96 * opacityMultiplier
+        colors[i3] = themeColors.scene.particles.blue.r * opacityMultiplier
+        colors[i3 + 1] = themeColors.scene.particles.blue.g * opacityMultiplier
+        colors[i3 + 2] = themeColors.scene.particles.blue.b * opacityMultiplier
       }
     }
 
@@ -1055,18 +1056,18 @@ export function GreenAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolPartic
           particles.glitchRates[i] = 0.002 + Math.random() * 0.005
           particles.glitchOffsets[i] = 0.08 + Math.random() * 0.04
           particles.sizes[i] = 0.03 + Math.random() * 0.06
-          colors[i3] = 0.18
-          colors[i3 + 1] = 0.85
-          colors[i3 + 2] = 0.39
+          colors[i3] = themeColors.scene.particles.green.r
+          colors[i3 + 1] = themeColors.scene.particles.green.g
+          colors[i3 + 2] = themeColors.scene.particles.green.b
         } else {
           const fadeProgress = fadeTimers.current[i] / FADE_DURATION
           const fadeOpacity = 1.0 - fadeProgress
           const isWeb = typeof window !== 'undefined' && window.innerWidth >= 768
           const opacityMultiplier = isWeb ? 0.7 + (mouseY + 1) * 0.15 : 1.0
           const finalOpacity = fadeOpacity * opacityMultiplier
-          colors[i3] = 0.18 * finalOpacity
-          colors[i3 + 1] = 0.85 * finalOpacity
-          colors[i3 + 2] = 0.39 * finalOpacity
+          colors[i3] = themeColors.scene.particles.green.r * finalOpacity
+          colors[i3 + 1] = themeColors.scene.particles.green.g * finalOpacity
+          colors[i3 + 2] = themeColors.scene.particles.green.b * finalOpacity
         }
       }
       
@@ -1118,9 +1119,9 @@ export function GreenAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolPartic
       positions[i3 + 2] = z
       
       if (fadeTimers.current[i] === 0) {
-        colors[i3] = 0.18 * opacityMultiplier
-        colors[i3 + 1] = 0.85 * opacityMultiplier
-        colors[i3 + 2] = 0.39 * opacityMultiplier
+        colors[i3] = themeColors.scene.particles.green.r * opacityMultiplier
+        colors[i3 + 1] = themeColors.scene.particles.green.g * opacityMultiplier
+        colors[i3 + 2] = themeColors.scene.particles.green.b * opacityMultiplier
       }
     }
 
@@ -1232,34 +1233,34 @@ export function GreenAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolPartic
   )
 }
 
-// Yellow accent particles
-const YELLOW_ACCENT_COUNT = 4
-const YELLOW_ACCENT_TRAIL_COUNT = 5
-const YELLOW_ACCENT_TRAILS_PER_GLITCH = 5
+// Gold accent particles (replacing yellow - third main color)
+const GOLD_ACCENT_COUNT = 4
+const GOLD_ACCENT_TRAIL_COUNT = 5
+const GOLD_ACCENT_TRAILS_PER_GLITCH = 5
 
-export function YellowAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesProps) {
+export function GoldAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesProps) {
   const pointsRef = useRef<THREE.Points>(null)
   const trailRef = useRef<THREE.Points>(null)
-  const prevPositions = useRef<Float32Array>(new Float32Array(YELLOW_ACCENT_COUNT * 3))
-  const glitchStates = useRef<Float32Array>(new Float32Array(YELLOW_ACCENT_COUNT))
-  const trailAges = useRef<Float32Array>(new Float32Array(YELLOW_ACCENT_TRAIL_COUNT))
-  const fadeTimers = useRef<Float32Array>(new Float32Array(YELLOW_ACCENT_COUNT))
+  const prevPositions = useRef<Float32Array>(new Float32Array(GOLD_ACCENT_COUNT * 3))
+  const glitchStates = useRef<Float32Array>(new Float32Array(GOLD_ACCENT_COUNT))
+  const trailAges = useRef<Float32Array>(new Float32Array(GOLD_ACCENT_TRAIL_COUNT))
+  const fadeTimers = useRef<Float32Array>(new Float32Array(GOLD_ACCENT_COUNT))
   const FADE_DURATION = 2.5
 
   const particles = useMemo(() => {
-    const positions = new Float32Array(YELLOW_ACCENT_COUNT * 3)
-    const colors = new Float32Array(YELLOW_ACCENT_COUNT * 3)
-    const angles = new Float32Array(YELLOW_ACCENT_COUNT)
-    const startRadii = new Float32Array(YELLOW_ACCENT_COUNT)
-    const rotationSpeeds = new Float32Array(YELLOW_ACCENT_COUNT)
-    const lifetimes = new Float32Array(YELLOW_ACCENT_COUNT)
-    const zOffsets = new Float32Array(YELLOW_ACCENT_COUNT)
-    const canGlitch = new Float32Array(YELLOW_ACCENT_COUNT)
-    const sizes = new Float32Array(YELLOW_ACCENT_COUNT)
-    const glitchRates = new Float32Array(YELLOW_ACCENT_COUNT)
-    const glitchOffsets = new Float32Array(YELLOW_ACCENT_COUNT)
+    const positions = new Float32Array(GOLD_ACCENT_COUNT * 3)
+    const colors = new Float32Array(GOLD_ACCENT_COUNT * 3)
+    const angles = new Float32Array(GOLD_ACCENT_COUNT)
+    const startRadii = new Float32Array(GOLD_ACCENT_COUNT)
+    const rotationSpeeds = new Float32Array(GOLD_ACCENT_COUNT)
+    const lifetimes = new Float32Array(GOLD_ACCENT_COUNT)
+    const zOffsets = new Float32Array(GOLD_ACCENT_COUNT)
+    const canGlitch = new Float32Array(GOLD_ACCENT_COUNT)
+    const sizes = new Float32Array(GOLD_ACCENT_COUNT)
+    const glitchRates = new Float32Array(GOLD_ACCENT_COUNT)
+    const glitchOffsets = new Float32Array(GOLD_ACCENT_COUNT)
 
-    for (let i = 0; i < YELLOW_ACCENT_COUNT; i++) {
+    for (let i = 0; i < GOLD_ACCENT_COUNT; i++) {
       angles[i] = Math.random() * Math.PI * 2
       startRadii[i] = 6 + Math.random() * 8
       rotationSpeeds[i] = 0.008 + Math.random() * 0.015
@@ -1277,21 +1278,21 @@ export function YellowAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParti
       positions[i * 3 + 1] = Math.sin(angle) * radius
       positions[i * 3 + 2] = zOffsets[i]
       
-      // Initialize colors to yellow
-      colors[i * 3] = 0.98 // R
-      colors[i * 3 + 1] = 0.91 // G
-      colors[i * 3 + 2] = 0.27 // B
+      // Initialize colors to gold (subtle, technological - casino royale aesthetic)
+      colors[i * 3] = themeColors.scene.particles.gold.r
+      colors[i * 3 + 1] = themeColors.scene.particles.gold.g
+      colors[i * 3 + 2] = themeColors.scene.particles.gold.b
     }
 
     return { positions, colors, angles, startRadii, rotationSpeeds, lifetimes, zOffsets, canGlitch, sizes, glitchRates, glitchOffsets }
   }, [])
 
   const trailParticles = useMemo(() => {
-    const positions = new Float32Array(YELLOW_ACCENT_TRAIL_COUNT * 3)
-    const sourceIndices = new Uint16Array(YELLOW_ACCENT_TRAIL_COUNT)
+    const positions = new Float32Array(GOLD_ACCENT_TRAIL_COUNT * 3)
+    const sourceIndices = new Uint16Array(GOLD_ACCENT_TRAIL_COUNT)
     
-    for (let i = 0; i < YELLOW_ACCENT_TRAIL_COUNT; i++) {
-      sourceIndices[i] = Math.floor(Math.random() * YELLOW_ACCENT_COUNT)
+    for (let i = 0; i < GOLD_ACCENT_TRAIL_COUNT; i++) {
+      sourceIndices[i] = Math.floor(Math.random() * GOLD_ACCENT_COUNT)
       positions[i * 3] = 1000
       positions[i * 3 + 1] = 1000
       positions[i * 3 + 2] = 1000
@@ -1308,7 +1309,7 @@ export function YellowAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParti
     const positions = pointsRef.current.geometry.attributes.position.array as Float32Array
     const colors = pointsRef.current.geometry.attributes.color.array as Float32Array
 
-    for (let i = 0; i < YELLOW_ACCENT_COUNT; i++) {
+    for (let i = 0; i < GOLD_ACCENT_COUNT; i++) {
       const i3 = i * 3
       const startRadius = particles.startRadii[i]
       const rotationSpeed = particles.rotationSpeeds[i]
@@ -1329,18 +1330,18 @@ export function YellowAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParti
           particles.glitchRates[i] = 0.002 + Math.random() * 0.005
           particles.glitchOffsets[i] = 0.08 + Math.random() * 0.04
           particles.sizes[i] = 0.03 + Math.random() * 0.06
-          colors[i3] = 0.98
-          colors[i3 + 1] = 0.91
-          colors[i3 + 2] = 0.27
+          colors[i3] = themeColors.scene.particles.gold.r
+          colors[i3 + 1] = themeColors.scene.particles.gold.g
+          colors[i3 + 2] = themeColors.scene.particles.gold.b
         } else {
           const fadeProgress = fadeTimers.current[i] / FADE_DURATION
           const fadeOpacity = 1.0 - fadeProgress
           const isWeb = typeof window !== 'undefined' && window.innerWidth >= 768
           const opacityMultiplier = isWeb ? 0.7 + (mouseY + 1) * 0.15 : 1.0
           const finalOpacity = fadeOpacity * opacityMultiplier
-          colors[i3] = 0.98 * finalOpacity
-          colors[i3 + 1] = 0.91 * finalOpacity
-          colors[i3 + 2] = 0.27 * finalOpacity
+          colors[i3] = themeColors.scene.particles.gold.r * finalOpacity
+          colors[i3 + 1] = themeColors.scene.particles.gold.g * finalOpacity
+          colors[i3 + 2] = themeColors.scene.particles.gold.b * finalOpacity
         }
       }
       
@@ -1351,7 +1352,7 @@ export function YellowAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParti
       const isWeb = typeof window !== 'undefined' && window.innerWidth >= 768
       const opacityMultiplier = isWeb ? 0.15 + (mouseY + 1) * 0.425 : 1.0
       const pullMultiplier = isWeb ? 1 + mouseY * 0.3 : 1
-      const rotationDirection = isWeb ? mouseX * 1.2 : 1
+      const rotationDirection = isWeb ? 1 + mouseX * 0.08 : 1
       
       const cycleLength = 110
       const adjustedTime = (time + lifetime) % cycleLength
@@ -1392,9 +1393,9 @@ export function YellowAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParti
       positions[i3 + 2] = z
       
       if (fadeTimers.current[i] === 0) {
-        colors[i3] = 0.98 * opacityMultiplier
-        colors[i3 + 1] = 0.91 * opacityMultiplier
-        colors[i3 + 2] = 0.27 * opacityMultiplier
+        colors[i3] = themeColors.scene.particles.gold.r * opacityMultiplier
+        colors[i3 + 1] = themeColors.scene.particles.gold.g * opacityMultiplier
+        colors[i3 + 2] = themeColors.scene.particles.gold.b * opacityMultiplier
       }
     }
 
@@ -1406,23 +1407,23 @@ export function YellowAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParti
     if (trailRef.current) {
       const trailPositions = trailRef.current.geometry.attributes.position.array as Float32Array
       const glitchingParticles: number[] = []
-      for (let i = 0; i < YELLOW_ACCENT_COUNT; i++) {
+      for (let i = 0; i < GOLD_ACCENT_COUNT; i++) {
         if (glitchStates.current[i] > 0) {
           glitchingParticles.push(i)
         }
       }
       
       let trailIndex = 0
-      for (let i = 0; i < YELLOW_ACCENT_TRAIL_COUNT; i++) {
+      for (let i = 0; i < GOLD_ACCENT_TRAIL_COUNT; i++) {
         const i3 = i * 3
         trailAges.current[i] += deltaTime
         
-        if (glitchingParticles.length > 0 && trailIndex < glitchingParticles.length * YELLOW_ACCENT_TRAILS_PER_GLITCH) {
-          const glitchIdx = Math.floor(trailIndex / YELLOW_ACCENT_TRAILS_PER_GLITCH) % glitchingParticles.length
+        if (glitchingParticles.length > 0 && trailIndex < glitchingParticles.length * GOLD_ACCENT_TRAILS_PER_GLITCH) {
+          const glitchIdx = Math.floor(trailIndex / GOLD_ACCENT_TRAILS_PER_GLITCH) % glitchingParticles.length
           const sourceIdx = glitchingParticles[glitchIdx]
           const s3 = sourceIdx * 3
           
-          const trailOffset = (trailIndex % YELLOW_ACCENT_TRAILS_PER_GLITCH) / YELLOW_ACCENT_TRAILS_PER_GLITCH
+          const trailOffset = (trailIndex % GOLD_ACCENT_TRAILS_PER_GLITCH) / GOLD_ACCENT_TRAILS_PER_GLITCH
           const t = -0.2 + trailOffset * 1.4
           
           const dx = positions[s3] - prevPositions.current[s3]
@@ -1458,21 +1459,21 @@ export function YellowAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParti
           <bufferAttribute
             attach="attributes-position"
             args={[particles.positions, 3]}
-            count={YELLOW_ACCENT_COUNT}
+            count={GOLD_ACCENT_COUNT}
             array={particles.positions}
             itemSize={3}
           />
           <bufferAttribute
             attach="attributes-color"
             args={[particles.colors, 3]}
-            count={YELLOW_ACCENT_COUNT}
+            count={GOLD_ACCENT_COUNT}
             array={particles.colors}
             itemSize={3}
           />
         </bufferGeometry>
         <pointsMaterial
           size={0.05}
-          color={0xfae845}
+          color={themeColors.scene.particles.gold.hex}
           transparent
           opacity={0.15}
           sizeAttenuation
@@ -1487,14 +1488,14 @@ export function YellowAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParti
           <bufferAttribute
             attach="attributes-position"
             args={[trailParticles.positions, 3]}
-            count={YELLOW_ACCENT_TRAIL_COUNT}
+            count={GOLD_ACCENT_TRAIL_COUNT}
             array={trailParticles.positions}
             itemSize={3}
           />
         </bufferGeometry>
         <pointsMaterial
           size={0.05}
-          color={0xfae845}
+          color={themeColors.scene.particles.gold.hex}
           transparent
           opacity={0.13}
           sizeAttenuation

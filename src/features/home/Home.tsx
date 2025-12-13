@@ -5,6 +5,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { activeFont } from '@/themes'
+import { colors } from '@/themes/colors'
 import { PortalScene } from './components'
 
 type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'
@@ -39,9 +40,9 @@ function Home({ onNavigate }: HomeProps) {
     'DESIGNER',
   ]
 
-  // Colors
-  const ACCENT = 'rgba(230, 57, 70, 0.8)'
-  const WHITE = '#ffffff'
+  // Colors from theme
+  const ACCENT = colors.red.blood
+  const WHITE = colors.brand.secondary
 
   // Track mouse for parallax
   const handleMouseMove = useCallback((e: MouseEvent) => {
@@ -513,7 +514,7 @@ function Home({ onNavigate }: HomeProps) {
                 position: 'absolute',
                 right: '-0.45em',
                 top: '50%',
-                transform: 'translateY(-50%)',
+                transform: 'translateY(-45%)',
                 opacity: showCursor ? 1 : 0,
                 transition: displayText.length === fullText.length ? 'opacity 0.15s ease-in' : 'none',
                 display: 'inline-block',
@@ -579,7 +580,7 @@ function Home({ onNavigate }: HomeProps) {
         <p 
           className="click-to-enter"
           style={{
-            color: '#e63946',
+            color: colors.red.blood,
             fontSize: isMobile ? '14px' : '18px',
             letterSpacing: '0.25em',
             fontFamily: activeFont.family,

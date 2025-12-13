@@ -37,6 +37,30 @@ export const colors = {
     blush: '#ffb3b3',     // Subtle
   },
 
+  // Blue accent spectrum
+  blue: {
+    deep: '#1a42d4',      // Dark accent
+    primary: '#42a6f5',   // Primary (RGB: 66, 166, 245)
+    light: '#6bb8ff',     // Light
+    sky: '#8fc9ff',       // Subtle
+  },
+
+  // Green accent spectrum
+  green: {
+    deep: '#0d7a3d',      // Dark accent
+    primary: '#2ed963',   // Primary (RGB: 46, 217, 99)
+    light: '#4fe87a',     // Light
+    mint: '#7ff5a3',      // Subtle
+  },
+
+  // Gold accent spectrum (third main color - casino royale aesthetic)
+  gold: {
+    deep: '#8b6914',      // Dark accent
+    primary: '#C8A028',   // Primary (RGB: 200, 160, 40)
+    light: '#D4B850',     // Light
+    shimmer: '#E0C878',   // Subtle
+  },
+
   // Legacy neutral colors
   neutral: {
     black: '#000000',
@@ -82,6 +106,14 @@ export const colors = {
     portalRing: 0xffffff,
     portalGlow: 0xe63946,
     portalCore: 0xff6b6b,
+    // Particle accent colors (normalized RGB for vertex colors)
+    particles: {
+      red: { r: 0.9, g: 0.22, b: 0.27, hex: 0xe63946 },
+      blue: { r: 0.26, g: 0.65, b: 0.96, hex: 0x42a6f5 },
+      green: { r: 0.18, g: 0.85, b: 0.39, hex: 0x2ed963 },
+      gold: { r: 0.78, g: 0.63, b: 0.16, hex: 0xC8A028 },
+      white: { r: 1.0, g: 1.0, b: 1.0, hex: 0xffffff },
+    },
   },
 } as const
 
@@ -149,6 +181,21 @@ export const componentColors = {
       medium: 'rgba(230, 57, 70, 0.4)',
       strong: 'rgba(230, 57, 70, 0.6)',
       intense: 'rgba(230, 57, 70, 0.8)',
+    },
+    blue: {
+      subtle: 'rgba(66, 166, 245, 0.2)',
+      medium: 'rgba(66, 166, 245, 0.4)',
+      strong: 'rgba(66, 166, 245, 0.6)',
+    },
+    green: {
+      subtle: 'rgba(46, 217, 99, 0.2)',
+      medium: 'rgba(46, 217, 99, 0.4)',
+      strong: 'rgba(46, 217, 99, 0.6)',
+    },
+    gold: {
+      subtle: 'rgba(200, 160, 40, 0.2)',
+      medium: 'rgba(200, 160, 40, 0.4)',
+      strong: 'rgba(200, 160, 40, 0.6)',
     },
   },
 } as const

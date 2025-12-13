@@ -19,7 +19,7 @@ import {
   AccentParticles,
   BlueAccentParticles,
   GreenAccentParticles,
-  YellowAccentParticles,
+  GoldAccentParticles,
 } from './HomeParticles'
 
 interface PortalSceneProps {
@@ -29,7 +29,7 @@ interface PortalSceneProps {
 }
 
 function SceneContent({ mouseX = 0, mouseY = 0 }: PortalSceneProps) {
-  const { settings } = useQuality()
+  const { isMobile } = useQuality()
 
   return (
     <>
@@ -39,7 +39,7 @@ function SceneContent({ mouseX = 0, mouseY = 0 }: PortalSceneProps) {
 
       {/* Camera controller with subtle parallax */}
       <CameraController 
-        enableParallax={!settings.isMobile} 
+        enableParallax={!isMobile} 
         parallaxIntensity={0.1} 
       />
 
@@ -58,8 +58,8 @@ function SceneContent({ mouseX = 0, mouseY = 0 }: PortalSceneProps) {
       {/* Green accent particles */}
       <GreenAccentParticles mouseX={mouseX} mouseY={mouseY} />
       
-      {/* Yellow accent particles */}
-      <YellowAccentParticles mouseX={mouseX} mouseY={mouseY} />
+      {/* Gold accent particles (third main color - subtle casino royale aesthetic) */}
+      <GoldAccentParticles mouseX={mouseX} mouseY={mouseY} />
 
       {/* Subtle post processing */}
       <PostProcessing
