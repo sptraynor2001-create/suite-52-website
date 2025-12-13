@@ -2,5 +2,5 @@
  * Home page 3D components
  */
 
-export { WhirlpoolParticles, AccentParticles, HomeParticles } from './HomeParticles'
+export { WhirlpoolParticles, AccentParticles } from './HomeParticles'
 export { PortalScene } from './PortalScene'

@@ -1505,7 +1505,3 @@ export function YellowAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParti
     </>
   )
 }
-
-export const HomeParticles = WhirlpoolParticles
-
-export default WhirlpoolParticles
