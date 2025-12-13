@@ -45,9 +45,13 @@ function Home({ onNavigate }: HomeProps) {
 
   // Track mouse for parallax
   const handleMouseMove = useCallback((e: MouseEvent) => {
+    const rawY = -(e.clientY / window.innerHeight) * 2 + 1
+    // Remap vertical range: full screen (top to bottom) now maps to bottom to middle only
+    // Bottom (1) stays 1, middle (0) becomes -1, top (-1) also becomes -1
+    const remappedY = rawY <= 0 ? -1 : rawY * 2 - 1
     setMousePosition({
       x: (e.clientX / window.innerWidth) * 2 - 1,
-      y: -(e.clientY / window.innerHeight) * 2 + 1,
+      y: remappedY,
     })
   }, [])
 
