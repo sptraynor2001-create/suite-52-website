@@ -45,10 +45,11 @@ function LiveSets() {
           backgroundImage: 'url(/images/backgrounds/live-sets-background.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          opacity: 0.08,
+          opacity: 0,
           filter: 'blur(1px) saturate(0.7)',
           zIndex: 0,
           pointerEvents: 'none',
+          animation: 'fadeInBackground008 2s ease-in forwards',
         }}
       />
       {/* Content */}
@@ -186,6 +187,10 @@ function LiveSets() {
       </div>
 
       <style>{`
+        @keyframes fadeInBackground008 {
+          from { opacity: 0; }
+          to { opacity: 0.08; }
+        }
         @keyframes fadeUp {
           from {
             opacity: 0;

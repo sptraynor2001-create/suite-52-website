@@ -133,10 +133,11 @@ function Contact() {
           backgroundImage: 'url(/images/backgrounds/contact-background.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: viewportWidth >= 768 ? 'center top' : 'center',
-          opacity: 0.15,
+          opacity: 0,
           filter: 'blur(1px) saturate(0)',
           zIndex: 0,
           pointerEvents: 'none',
+          animation: 'fadeInBackground015 2s ease-in forwards',
         }}
       />
       {/* Content */}
@@ -356,6 +357,13 @@ function Contact() {
           [ THE SIGNAL SEARCHES FOR THOSE WILLING TO LISTEN ]
         </p>
       </div>
+
+      <style>{`
+        @keyframes fadeInBackground015 {
+          from { opacity: 0; }
+          to { opacity: 0.15; }
+        }
+      `}</style>
     </div>
   )
 }

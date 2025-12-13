@@ -96,10 +96,11 @@ function About() {
           backgroundImage: 'url(/images/backgrounds/about-background.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          opacity: 0.15,
+          opacity: 0,
           filter: 'blur(1px) saturate(0.7)',
           zIndex: 0,
           pointerEvents: 'none',
+          animation: 'fadeInBackground015 2s ease-in forwards',
         }}
       />
       {/* 3D Background Scene */}
@@ -222,6 +223,13 @@ function About() {
           </p>
         </div>
       </div>
+
+      <style>{`
+        @keyframes fadeInBackground015 {
+          from { opacity: 0; }
+          to { opacity: 0.15; }
+        }
+      `}</style>
     </div>
   )
 }

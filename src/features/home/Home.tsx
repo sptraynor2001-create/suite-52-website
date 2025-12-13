@@ -362,10 +362,10 @@ function Home({ onNavigate }: HomeProps) {
           backgroundImage: 'url(/images/backgrounds/home-background.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center 25%',
-          opacity: 0.25,
+          opacity: 0,
           filter: 'blur(1.5px) saturate(0.7)',
           transform: 'scale(1.05)',
-          animation: 'subtleFloat 25s ease-in-out infinite',
+          animation: 'subtleFloat 25s ease-in-out infinite, fadeInBackground025 2s ease-in forwards',
         }}
       />
 
@@ -381,10 +381,10 @@ function Home({ onNavigate }: HomeProps) {
           backgroundImage: 'url(/images/backgrounds/home-background.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center 25%',
-          opacity: 0.05,
+          opacity: 0,
           filter: 'blur(15px) saturate(0.6)',
           transform: 'scale(1.05) translateX(-20px)',
-          animation: 'subtleFloat 25s ease-in-out infinite',
+          animation: 'subtleFloat 25s ease-in-out infinite, fadeInBackground005 2s ease-in forwards',
         }}
       />
       
@@ -400,10 +400,10 @@ function Home({ onNavigate }: HomeProps) {
           backgroundImage: 'url(/images/backgrounds/home-background.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center 25%',
-          opacity: 0.05,
+          opacity: 0,
           filter: 'blur(15px) saturate(0.6)',
           transform: 'scale(1.05) translateX(20px)',
-          animation: 'subtleFloat 25s ease-in-out infinite',
+          animation: 'subtleFloat 25s ease-in-out infinite, fadeInBackground005 2s ease-in forwards',
         }}
       />
 
@@ -419,10 +419,10 @@ function Home({ onNavigate }: HomeProps) {
           backgroundImage: 'url(/images/backgrounds/home-background.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center 25%',
-          opacity: 0.10,
+          opacity: 0,
           filter: 'blur(5px) saturate(0.5)',
           transform: 'scale(1.1)',
-          animation: 'subtleFloat 30s ease-in-out infinite reverse',
+          animation: 'subtleFloat 30s ease-in-out infinite reverse, fadeInBackground010 2s ease-in forwards',
         }}
       />
 
@@ -632,6 +632,18 @@ function Home({ onNavigate }: HomeProps) {
 
       {/* Animations */}
       <style>{`
+        @keyframes fadeInBackground025 {
+          from { opacity: 0; }
+          to { opacity: 0.25; }
+        }
+        @keyframes fadeInBackground005 {
+          from { opacity: 0; }
+          to { opacity: 0.05; }
+        }
+        @keyframes fadeInBackground010 {
+          from { opacity: 0; }
+          to { opacity: 0.10; }
+        }
         @keyframes subtlePulse {
           0%, 100% { opacity: 0.8; }
           50% { opacity: 1; }

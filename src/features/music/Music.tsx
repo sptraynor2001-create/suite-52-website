@@ -60,10 +60,11 @@ function Music() {
           backgroundImage: 'url(/images/backgrounds/music-background.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          opacity: 0.15,
+          opacity: 0,
           filter: 'blur(1px) saturate(0.7)',
           zIndex: 0,
           pointerEvents: 'none',
+          animation: 'fadeInBackground015 2s ease-in forwards',
         }}
       />
       {/* Content */}
@@ -139,7 +140,7 @@ function Music() {
                   animation: `slideUp 0.5s ease-out ${index * 0.05}s both`,
                   backgroundColor: isHovered ? 'rgba(230, 57, 70, 0.08)' : cardStyles.base.backgroundColor,
                   border: isHovered ? '1px solid rgba(230, 57, 70, 0.4)' : cardStyles.base.border,
-                  boxShadow: isHovered ? '0 8px 32px rgba(230, 57, 70, 0.15)' : cardStyles.base.boxShadow,
+                  boxShadow: isHovered ? '0 8px 32px rgba(230, 57, 70, 0.15)' : 'none',
                   transition: 'all 0.2s ease',
                 }}
                 onMouseEnter={() => setHoveredId(release.id)}
@@ -274,6 +275,10 @@ function Music() {
       </div>
 
       <style>{`
+        @keyframes fadeInBackground015 {
+          from { opacity: 0; }
+          to { opacity: 0.15; }
+        }
         @keyframes slideUp {
           from {
             opacity: 0;

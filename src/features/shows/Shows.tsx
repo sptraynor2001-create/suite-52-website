@@ -86,10 +86,11 @@ function Shows() {
           backgroundImage: 'url(/images/backgrounds/shows-background.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          opacity: 0.15,
+          opacity: 0,
           filter: 'blur(1px) saturate(0.7)',
           zIndex: 0,
           pointerEvents: 'none',
+          animation: 'fadeInBackground015 2s ease-in forwards',
         }}
       />
       {/* Content */}
@@ -238,6 +239,10 @@ function Shows() {
       </div>
 
       <style>{`
+        @keyframes fadeInBackground015 {
+          from { opacity: 0; }
+          to { opacity: 0.15; }
+        }
         @keyframes slideIn {
           from {
             opacity: 0;
