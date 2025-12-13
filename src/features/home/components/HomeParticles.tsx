@@ -306,12 +306,14 @@ export function WhirlpoolParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticle
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
+            args={[particles.positions, 3]}
             count={activeParticleCount}
             array={particles.positions}
             itemSize={3}
           />
           <bufferAttribute
             attach="attributes-color"
+            args={[particles.colors, 3]}
             count={activeParticleCount}
             array={particles.colors}
             itemSize={3}
@@ -335,6 +337,7 @@ export function WhirlpoolParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticle
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
+            args={[trailParticles.positions, 3]}
               count={activeTrailCount}
             array={trailParticles.positions}
             itemSize={3}
@@ -629,12 +632,14 @@ export function AccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesPr
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
+            args={[particles.positions, 3]}
             count={activeAccentCount}
             array={particles.positions}
             itemSize={3}
           />
           <bufferAttribute
             attach="attributes-color"
+            args={[particles.colors, 3]}
             count={activeAccentCount}
             array={particles.colors}
             itemSize={3}
@@ -658,6 +663,7 @@ export function AccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesPr
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
+            args={[trailParticles.positions, 3]}
               count={activeAccentTrailCount}
             array={trailParticles.positions}
             itemSize={3}
@@ -903,12 +909,14 @@ export function BlueAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
+            args={[particles.positions, 3]}
             count={BLUE_ACCENT_COUNT}
             array={particles.positions}
             itemSize={3}
           />
           <bufferAttribute
             attach="attributes-color"
+            args={[particles.colors, 3]}
             count={BLUE_ACCENT_COUNT}
             array={particles.colors}
             itemSize={3}
@@ -930,6 +938,7 @@ export function BlueAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
+            args={[trailParticles.positions, 3]}
             count={BLUE_ACCENT_TRAIL_COUNT}
             array={trailParticles.positions}
             itemSize={3}
@@ -1174,12 +1183,14 @@ export function GreenAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolPartic
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
+            args={[particles.positions, 3]}
             count={GREEN_ACCENT_COUNT}
             array={particles.positions}
             itemSize={3}
           />
           <bufferAttribute
             attach="attributes-color"
+            args={[particles.colors, 3]}
             count={GREEN_ACCENT_COUNT}
             array={particles.colors}
             itemSize={3}
@@ -1201,6 +1212,7 @@ export function GreenAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolPartic
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
+            args={[trailParticles.positions, 3]}
             count={GREEN_ACCENT_TRAIL_COUNT}
             array={trailParticles.positions}
             itemSize={3}
@@ -1445,12 +1457,14 @@ export function YellowAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParti
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
+            args={[particles.positions, 3]}
             count={YELLOW_ACCENT_COUNT}
             array={particles.positions}
             itemSize={3}
           />
           <bufferAttribute
             attach="attributes-color"
+            args={[particles.colors, 3]}
             count={YELLOW_ACCENT_COUNT}
             array={particles.colors}
             itemSize={3}
@@ -1472,6 +1486,7 @@ export function YellowAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParti
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
+            args={[trailParticles.positions, 3]}
             count={YELLOW_ACCENT_TRAIL_COUNT}
             array={trailParticles.positions}
             itemSize={3}
