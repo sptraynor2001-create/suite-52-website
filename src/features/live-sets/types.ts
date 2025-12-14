@@ -1,7 +1,7 @@
 export interface LiveSet {
   id: string
   title: string
-  date: string
+  date?: string
   venue?: string
   city?: string
   duration?: string
@@ -12,5 +12,7 @@ export interface LiveSet {
   spotifyUrl?: string
   description?: string
   setlist?: string[]
+  type?: string
+  embedUrl?: string
 }
 

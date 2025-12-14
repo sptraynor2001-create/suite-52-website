@@ -8,25 +8,8 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useQuality } from '@/shared/components/3d'
 import { particleConfig } from '@/config/particles'
-import { breakpoints } from '@/themes/breakpoints'
-
-interface LiveSet {
-  id: string
-  title: string
-  date?: string
-  venue?: string
-  city?: string
-  duration?: string
-  thumbnail?: string
-  youtubeUrl?: string
-  soundcloudUrl?: string
-  mixcloudUrl?: string
-  spotifyUrl?: string
-  description?: string
-  setlist?: string[]
-  type?: string
-  embedUrl?: string
-}
+import { useIsMobile } from '@/shared/hooks/useIsMobile'
+import { LiveSet } from '../types'
 
 interface SoundWaveInterferenceProps {
   liveSets?: LiveSet[]
@@ -65,13 +48,8 @@ export function SoundWaveInterference({
   hoveredSetId = null,
 }: SoundWaveInterferenceProps) {
   const particlesRef = useRef<THREE.Points>(null)
-  const { settings, isMobile } = useQuality()
-  
-  // Detect mobile
-  const isMobileDevice = typeof window !== 'undefined' && (
-    window.innerWidth < breakpoints.tablet || 
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-  )
+  const { settings } = useQuality()
+  const isMobileDevice = useIsMobile()
   
   // Wave source positions
   const waveSources = useMemo(() => {
@@ -219,7 +197,7 @@ export function SoundWaveInterference({
           size={0.02}
           color={hoveredSetId ? 0xe63946 : 0xffffff}
           transparent
-          opacity={hoveredSetId ? 0.8 : 0.5}
+          opacity={hoveredSetId ? 1.0 : 0.9}
           sizeAttenuation
           depthWrite={false}
           blending={THREE.AdditiveBlending}
@@ -237,7 +215,7 @@ export function SoundWaveInterference({
             <meshBasicMaterial
               color={isHovered ? 0xe63946 : 0xffffff}
               transparent
-              opacity={isOtherHovered ? 0.2 : isHovered ? 1 : 0.5}
+              opacity={isOtherHovered ? 0.3 : isHovered ? 1 : 0.9}
             />
           </mesh>
         )

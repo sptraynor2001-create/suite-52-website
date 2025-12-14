@@ -57,7 +57,7 @@ export function AboutScene({ visibleSections = 0, hoveredSection = null }: About
         left: 0,
         width: '100vw',
         height: '100vh',
-        zIndex: 0,
+        zIndex: -1,
         pointerEvents: 'none',
       }}
     >

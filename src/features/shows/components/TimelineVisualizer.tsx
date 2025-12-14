@@ -124,7 +124,7 @@ export function TimelineVisualizer({
             emissive={bar.daysUntil < 60 ? 0xe63946 : 0xffffff}
             emissiveIntensity={0.3}
             transparent
-            opacity={0.8}
+            opacity={0.95}
           />
         </mesh>
       ))}
@@ -196,7 +196,7 @@ export function ShowConnections({ shows, radius = 2.5 }: { shows: ShowMarker[], 
           <lineBasicMaterial
             color={0xe63946}
             transparent
-            opacity={0.3}
+            opacity={0.85}
             linewidth={2}
           />
         </line>

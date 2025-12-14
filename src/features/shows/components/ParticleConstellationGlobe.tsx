@@ -488,7 +488,7 @@ export function ParticleConstellationGlobe({
           size={0.015}
           color={0xffffff}
           transparent
-          opacity={0.5}
+          opacity={0.9}
           sizeAttenuation
           depthWrite={false}
           blending={THREE.AdditiveBlending}
@@ -510,7 +510,7 @@ export function ParticleConstellationGlobe({
             size={0.03}
             color={0xe63946}
             transparent
-            opacity={0.8}
+            opacity={1.0}
             sizeAttenuation
             depthWrite={false}
             blending={THREE.AdditiveBlending}

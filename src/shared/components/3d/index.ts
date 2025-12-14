@@ -18,4 +18,10 @@ export { ParticleSystem, PortalParticles } from './ParticleSystem'
 export { PostProcessing, PortalPostProcessing, MinimalPostProcessing } from './PostProcessing'
 export { CameraController, ScrollCamera, FlyThroughCamera } from './CameraController'
 export { Fog, AnimatedFog, GradientFog } from './Fog'
+export {
+  whiteParticleMaterial,
+  redParticleMaterial,
+  connectionParticleMaterial,
+  clusterParticleMaterial,
+} from './particleMaterials'
 

@@ -8,24 +8,7 @@ import { Preload } from '@react-three/drei'
 import * as THREE from 'three'
 import { useQuality, Fog, MinimalPostProcessing } from '@/shared/components/3d'
 import { SoundWaveInterference } from './SoundWaveInterference'
-
-interface LiveSet {
-  id: string
-  title: string
-  date?: string
-  venue?: string
-  city?: string
-  duration?: string
-  thumbnail?: string
-  youtubeUrl?: string
-  soundcloudUrl?: string
-  mixcloudUrl?: string
-  spotifyUrl?: string
-  description?: string
-  setlist?: string[]
-  type?: string
-  embedUrl?: string
-}
+import { LiveSet } from '../types'
 
 interface LiveSetsSceneProps {
   liveSets?: LiveSet[]
@@ -72,7 +55,7 @@ export function LiveSetsScene({ liveSets = [], hoveredSetId = null }: LiveSetsSc
         left: 0,
         width: '100vw',
         height: '100vh',
-        zIndex: 0,
+        zIndex: -1,
         pointerEvents: 'none',
       }}
     >

@@ -58,7 +58,7 @@ export function ContactScene({ contactMethods = [], hoveredContact = null }: Con
         left: 0,
         width: '100vw',
         height: '100vh',
-        zIndex: 0,
+        zIndex: -1,
         pointerEvents: 'none',
       }}
     >

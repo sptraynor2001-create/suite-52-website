@@ -123,9 +123,8 @@ export function ShowsScene({ onEventHover, hoveredShowIndex }: ShowsSceneProps) 
         left: 0,
         width: '100vw',
         height: '100vh',
-        zIndex: 0,
-        pointerEvents: 'auto',
-        cursor: 'grab',
+        zIndex: -1,
+        pointerEvents: 'none',
       }}
     >
       <Canvas

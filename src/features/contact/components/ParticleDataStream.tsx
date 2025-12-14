@@ -8,7 +8,8 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useQuality } from '@/shared/components/3d'
 import { particleConfig } from '@/config/particles'
-import { breakpoints } from '@/themes/breakpoints'
+import { useIsMobile } from '@/shared/hooks/useIsMobile'
+import { whiteParticleMaterial, redParticleMaterial } from '@/shared/components/3d/particleMaterials'
 
 interface ContactMethod {
   id: string
@@ -59,13 +60,8 @@ export function ParticleDataStream({
   hoveredContact = null,
 }: ParticleDataStreamProps) {
   const particlesRef = useRef<THREE.Points>(null)
-  const { settings, isMobile } = useQuality()
-  
-  // Detect mobile
-  const isMobileDevice = typeof window !== 'undefined' && (
-    window.innerWidth < breakpoints.tablet || 
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-  )
+  const { settings } = useQuality()
+  const isMobileDevice = useIsMobile()
   
   // Stream source positions
   const streamSources = useMemo(() => {
@@ -220,13 +216,7 @@ export function ParticleDataStream({
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.02}
-          color={hoveredContact ? 0xe63946 : 0xffffff}
-          transparent
-          opacity={hoveredContact ? 0.8 : 0.5}
-          sizeAttenuation
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
+          {...(hoveredContact ? redParticleMaterial : whiteParticleMaterial)}
         />
       </points>
       
@@ -241,7 +231,7 @@ export function ParticleDataStream({
             <meshBasicMaterial
               color={isHovered ? 0xe63946 : 0xffffff}
               transparent
-              opacity={isOtherHovered ? 0.2 : isHovered ? 1 : 0.5}
+              opacity={isOtherHovered ? 0.3 : isHovered ? 1 : 0.9}
             />
           </mesh>
         )
@@ -253,7 +243,7 @@ export function ParticleDataStream({
         <meshBasicMaterial
           color={hoveredContact ? 0xe63946 : 0xffffff}
           transparent
-          opacity={hoveredContact ? 0.8 : 0.4}
+          opacity={hoveredContact ? 1.0 : 0.85}
         />
       </mesh>
     </group>

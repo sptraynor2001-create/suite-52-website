@@ -8,7 +8,8 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useQuality } from '@/shared/components/3d'
 import { particleConfig } from '@/config/particles'
-import { breakpoints } from '@/themes/breakpoints'
+import { useIsMobile } from '@/shared/hooks/useIsMobile'
+import { whiteParticleMaterial } from '@/shared/components/3d/particleMaterials'
 
 interface QuantumFieldProps {
   visibleSections?: number
@@ -196,15 +197,7 @@ export function QuantumField({
           itemSize={3}
         />
       </bufferGeometry>
-      <pointsMaterial
-        size={0.02}
-        color={0xffffff}
-        transparent
-        opacity={0.5}
-        sizeAttenuation
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-      />
+      <pointsMaterial {...whiteParticleMaterial} />
     </points>
   )
 }

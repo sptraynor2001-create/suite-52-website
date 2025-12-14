@@ -8,7 +8,8 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useQuality } from '@/shared/components/3d'
 import { particleConfig } from '@/config/particles'
-import { breakpoints } from '@/themes/breakpoints'
+import { useIsMobile } from '@/shared/hooks/useIsMobile'
+import { clusterParticleMaterial, connectionParticleMaterial } from '@/shared/components/3d/particleMaterials'
 import { Release } from '../types'
 
 interface FrequencyConstellationProps {
@@ -50,13 +51,8 @@ export function FrequencyConstellation({
 }: FrequencyConstellationProps) {
   const constellationRef = useRef<THREE.Group>(null)
   const connectionParticlesRef = useRef<THREE.Points>(null)
-  const { settings, isMobile } = useQuality()
-  
-  // Detect mobile
-  const isMobileDevice = typeof window !== 'undefined' && (
-    window.innerWidth < breakpoints.tablet || 
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-  )
+  const { settings } = useQuality()
+  const isMobileDevice = useIsMobile()
   
   // Release positions
   const releasePositions = useMemo(() => {
@@ -263,13 +259,8 @@ export function FrequencyConstellation({
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.03}
-          color={hoveredReleaseId ? 0xe63946 : 0xffffff}
-          transparent
-          opacity={0.7}
-          sizeAttenuation
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
+          {...clusterParticleMaterial}
+          color={hoveredReleaseId ? 0xe63946 : clusterParticleMaterial.color}
         />
       </points>
       
@@ -284,15 +275,7 @@ export function FrequencyConstellation({
               itemSize={3}
             />
           </bufferGeometry>
-          <pointsMaterial
-            size={0.015}
-            color={0xe63946}
-            transparent
-            opacity={0.4}
-            sizeAttenuation
-            depthWrite={false}
-            blending={THREE.AdditiveBlending}
-          />
+          <pointsMaterial {...connectionParticleMaterial} />
         </points>
       )}
     </group>
