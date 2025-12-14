@@ -7,7 +7,7 @@ import { Canvas } from '@react-three/fiber'
 import { Preload } from '@react-three/drei'
 import * as THREE from 'three'
 import { useQuality, Fog, MinimalPostProcessing } from '@/shared/components/3d'
-import { EventGlobe, GlobeParticles } from './EventGlobe'
+import { ParticleConstellationGlobe } from './ParticleConstellationGlobe'
 
 // Event locations (approximate coordinates)
 const eventLocations = [
@@ -25,7 +25,7 @@ const eventLocations = [
 ]
 
 interface ShowsSceneProps {
-  onEventHover?: (event: { name: string; date: string } | null) => void
+  onEventHover?: (event: { name: string; date: string; lat: number; lon: number } | null) => void
 }
 
 function SceneContent({ onEventHover }: ShowsSceneProps) {
@@ -41,15 +41,12 @@ function SceneContent({ onEventHover }: ShowsSceneProps) {
       {/* Fog */}
       <Fog color="#000000" density={0.03} />
 
-      {/* Globe */}
-      <EventGlobe 
-        events={eventLocations}
-        radius={2}
-        onEventHover={onEventHover}
+      {/* Particle Constellation Globe */}
+      <ParticleConstellationGlobe 
+        shows={eventLocations}
+        radius={2.5}
+        onShowHover={onEventHover}
       />
-
-      {/* Ambient particles */}
-      {settings.level !== 'low' && <GlobeParticles count={150} />}
 
       {/* Post processing */}
       <MinimalPostProcessing />

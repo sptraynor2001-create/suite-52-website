@@ -7,6 +7,7 @@ import { activeFont, backgrounds, breakpoints } from '@/themes'
 import { tokens } from '@/design/tokens'
 import { animations } from '@/themes/animations'
 import { cardStyles } from '@/design/cardStyles'
+import { ShowsScene } from './components/ShowsScene'
 
 const shows = [
   { date: '10_18_25', location: 'NEW_YORK_US', event: 'MUZIKA' },
@@ -75,8 +76,24 @@ function Shows() {
     return `${8 + (30 - 8) * ratio}px`
   }, [viewportWidth])
 
+  // Handle show hover from 3D scene
+  const handleShowHover = (show: { name: string; date: string; lat: number; lon: number } | null) => {
+    if (show) {
+      // Match by date (most reliable)
+      const index = shows.findIndex(s => s.date === show.date)
+      if (index !== -1) {
+        setHoveredIndex(index)
+      }
+    } else {
+      setHoveredIndex(null)
+    }
+  }
+
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
+      {/* 3D Particle Constellation Globe */}
+      <ShowsScene onEventHover={handleShowHover} />
+      
       {/* Background image */}
       <div
         style={{

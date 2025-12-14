@@ -165,5 +165,24 @@ export const particleConfig = {
       range: 0.3,
     },
   },
+
+  // Particle Constellation Globe
+  constellationGlobe: {
+    baseParticles: {
+      desktop: 4000,
+      mobile: 2000,
+    },
+    constellationParticles: {
+      desktop: 25,
+      mobile: 15,
+    },
+    waveInterval: 3.5, // seconds
+    waveSpeed: 0.8,
+    continentAttraction: {
+      base: 0.3,
+      hover: 1.2,
+    },
+    rotationSpeed: 0.001,
+  },
 } as const
 
