@@ -6,6 +6,8 @@ import { colors as _colors, componentColors as _componentColors, themes as _them
 import { fonts as _fonts, textStyles as _textStyles, fontSizes as _fontSizes, lineHeights as _lineHeights, letterSpacing as _letterSpacing } from './typography'
 import { spacing as _spacing, spacingScale as _spacingScale, spacingUtils as _spacingUtils } from './spacing'
 import { animations as _animations, animationUtils as _animationUtils } from './animations'
+import { breakpoints as _breakpoints, mediaQueries as _mediaQueries, isMobileViewport as _isMobileViewport, isTabletViewport as _isTabletViewport, isDesktopViewport as _isDesktopViewport } from './breakpoints'
+import { backgrounds as _backgrounds } from './backgrounds'
 
 export const colors = _colors
 export const componentColors = _componentColors
@@ -20,6 +22,12 @@ export const spacingScale = _spacingScale
 export const spacingUtils = _spacingUtils
 export const animations = _animations
 export const animationUtils = _animationUtils
+export const breakpoints = _breakpoints
+export const mediaQueries = _mediaQueries
+export const isMobileViewport = _isMobileViewport
+export const isTabletViewport = _isTabletViewport
+export const isDesktopViewport = _isDesktopViewport
+export const backgrounds = _backgrounds
 
 // Active theme (could be dynamic in the future)
 export const activeTheme = _themes.default

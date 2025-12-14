@@ -4,7 +4,9 @@
  */
 
 import { useState, useEffect, useMemo } from 'react'
-import { activeFont } from '@/themes'
+import { activeFont, backgrounds, breakpoints } from '@/themes'
+import { tokens } from '@/design/tokens'
+import { animations } from '@/themes/animations'
 import { AboutScene } from './components'
 import { cardStyles } from '@/design/cardStyles'
 
@@ -95,12 +97,12 @@ function About() {
           height: '100vh',
           backgroundImage: 'url(/images/backgrounds/about-background.jpg)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundPosition: backgrounds.about.position,
           opacity: 0,
-          filter: 'blur(1px) saturate(0.7)',
-          zIndex: 0,
+          filter: `blur(${backgrounds.about.blur}) saturate(${backgrounds.about.saturation})`,
+          zIndex: tokens.zIndex.background,
           pointerEvents: 'none',
-          animation: 'fadeInBackground015 2s ease-in forwards',
+          animation: `fadeInBackground015 ${animations.page.background.fadeIn} ease-in forwards`,
         }}
       />
       {/* 3D Background Scene */}
@@ -144,7 +146,7 @@ function About() {
           <p
             style={{
               color: 'rgba(255, 255, 255, 0.3)',
-              fontSize: viewportWidth <= 480 ? '11px' : viewportWidth <= 768 ? '12px' : '12px',
+              fontSize: viewportWidth <= breakpoints.mobile ? '11px' : viewportWidth <= breakpoints.tablet ? '12px' : '12px',
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',
               margin: '12px 0 0 0',
@@ -212,7 +214,7 @@ function About() {
               margin: '24px auto 0',
               textAlign: 'center',
               color: 'rgba(255, 255, 255, 0.3)',
-              fontSize: viewportWidth <= 768 ? '9px' : '12px',
+              fontSize: viewportWidth <= breakpoints.tablet ? '9px' : '12px',
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',
               opacity: visibleSections >= 2 ? 1 : 0,

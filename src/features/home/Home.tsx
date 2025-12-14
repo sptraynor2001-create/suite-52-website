@@ -4,8 +4,10 @@
  */
 
 import { useEffect, useState, useCallback } from 'react'
-import { activeFont } from '@/themes'
+import { activeFont, breakpoints, backgrounds } from '@/themes'
 import { colors } from '@/themes/colors'
+import { tokens } from '@/design/tokens'
+import { animations } from '@/themes/animations'
 import { PortalScene } from './components'
 
 type Page = 'home' | 'about' | 'music' | 'live-sets' | 'shows' | 'contact'
@@ -63,7 +65,7 @@ function Home({ onNavigate }: HomeProps) {
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768 || window.innerHeight < 768)
+      setIsMobile(window.innerWidth < breakpoints.tablet || window.innerHeight < breakpoints.tablet)
       setViewportWidth(window.innerWidth)
     }
     
@@ -363,14 +365,14 @@ function Home({ onNavigate }: HomeProps) {
           left: '-5%',
           width: '110%',
           height: '110%',
-          zIndex: 0,
+          zIndex: tokens.zIndex.background,
           backgroundImage: 'url(/images/backgrounds/home-background.jpg)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center 25%',
+          backgroundPosition: backgrounds.home.position,
           opacity: 0,
-          filter: 'blur(1.5px) saturate(0.7)',
+          filter: `blur(${backgrounds.home.blur.main}) saturate(${backgrounds.home.saturation.main})`,
           transform: 'scale(1.05)',
-          animation: 'subtleFloat 25s ease-in-out infinite, fadeInBackground025 2s ease-in forwards',
+          animation: `subtleFloat ${animations.home.background.float.duration} ease-in-out infinite, fadeInBackground025 ${animations.page.background.fadeIn} ease-in forwards`,
         }}
       />
 
@@ -382,14 +384,14 @@ function Home({ onNavigate }: HomeProps) {
           left: '-5%',
           width: '110%',
           height: '110%',
-          zIndex: 0,
+          zIndex: tokens.zIndex.background,
           backgroundImage: 'url(/images/backgrounds/home-background.jpg)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center 25%',
+          backgroundPosition: backgrounds.home.position,
           opacity: 0,
-          filter: 'blur(15px) saturate(0.6)',
+          filter: `blur(${backgrounds.home.blur.trail}) saturate(${backgrounds.home.saturation.trail})`,
           transform: 'scale(1.05) translateX(-20px)',
-          animation: 'subtleFloat 25s ease-in-out infinite, fadeInBackground005 2s ease-in forwards',
+          animation: `subtleFloat ${animations.home.background.float.duration} ease-in-out infinite, fadeInBackground005 ${animations.page.background.fadeIn} ease-in forwards`,
         }}
       />
       
@@ -401,14 +403,14 @@ function Home({ onNavigate }: HomeProps) {
           left: '-5%',
           width: '110%',
           height: '110%',
-          zIndex: 0,
+          zIndex: tokens.zIndex.background,
           backgroundImage: 'url(/images/backgrounds/home-background.jpg)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center 25%',
+          backgroundPosition: backgrounds.home.position,
           opacity: 0,
-          filter: 'blur(15px) saturate(0.6)',
+          filter: `blur(${backgrounds.home.blur.trail}) saturate(${backgrounds.home.saturation.trail})`,
           transform: 'scale(1.05) translateX(20px)',
-          animation: 'subtleFloat 25s ease-in-out infinite, fadeInBackground005 2s ease-in forwards',
+          animation: `subtleFloat ${animations.home.background.float.duration} ease-in-out infinite, fadeInBackground005 ${animations.page.background.fadeIn} ease-in forwards`,
         }}
       />
 
@@ -420,14 +422,14 @@ function Home({ onNavigate }: HomeProps) {
           left: '-5%',
           width: '110%',
           height: '110%',
-          zIndex: 1,
+          zIndex: tokens.zIndex.backgroundSecondary,
           backgroundImage: 'url(/images/backgrounds/home-background.jpg)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center 25%',
+          backgroundPosition: backgrounds.home.position,
           opacity: 0,
-          filter: 'blur(5px) saturate(0.5)',
+          filter: `blur(${backgrounds.home.blur.secondary}) saturate(${backgrounds.home.saturation.secondary})`,
           transform: 'scale(1.1)',
-          animation: 'subtleFloat 30s ease-in-out infinite reverse, fadeInBackground010 2s ease-in forwards',
+          animation: `subtleFloat ${animations.home.background.float.reverse} ease-in-out infinite reverse, fadeInBackground010 ${animations.page.background.fadeIn} ease-in forwards`,
         }}
       />
 
@@ -445,7 +447,7 @@ function Home({ onNavigate }: HomeProps) {
           left: 0,
           width: '100vw',
           height: '100vh',
-          zIndex: 3,
+          zIndex: tokens.zIndex.vignette,
           background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.7) 100%)',
           pointerEvents: 'none',
         }}
@@ -459,8 +461,8 @@ function Home({ onNavigate }: HomeProps) {
           left: 0,
           width: '100vw',
           height: '100vh',
-          zIndex: 4,
-          opacity: 0.025,
+          zIndex: tokens.zIndex.grain,
+          opacity: parseFloat(tokens.opacity.grain),
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
           pointerEvents: 'none',
         }}
@@ -470,7 +472,7 @@ function Home({ onNavigate }: HomeProps) {
       <div 
         style={{ 
           position: 'relative',
-          zIndex: 10,
+          zIndex: tokens.zIndex.content,
           textAlign: 'center', 
           padding: '0', 
           width: '100%', 
@@ -497,7 +499,7 @@ function Home({ onNavigate }: HomeProps) {
             color: 'rgba(255, 255, 255, 0.92)',
             fontSize: isMobile ? '48px' : '72px',
             fontWeight: '700',
-            letterSpacing: '0.08em',
+            letterSpacing: tokens.typography.letterSpacing.xs,
             fontFamily: activeFont.family,
             marginBottom: '4px',
             marginTop: 0,
@@ -582,7 +584,7 @@ function Home({ onNavigate }: HomeProps) {
           style={{
             color: colors.red.blood,
             fontSize: isMobile ? '14px' : '18px',
-            letterSpacing: '0.25em',
+            letterSpacing: tokens.typography.letterSpacing.lg,
             fontFamily: activeFont.family,
             fontWeight: '900',
             margin: 0,
@@ -620,9 +622,9 @@ function Home({ onNavigate }: HomeProps) {
             fontSize: isMobile ? '7px' : '8px',
             lineHeight: '2',
             color: ACCENT,
-            opacity: philosophicalText.length > 0 ? 0.45 : 0,
+            opacity: philosophicalText.length > 0 ? parseFloat(tokens.opacity.textMuted) : 0,
             fontFamily: activeFont.family,
-            letterSpacing: '0.15em',
+            letterSpacing: tokens.typography.letterSpacing.md,
             fontWeight: '300',
             pointerEvents: 'none',
             transition: 'opacity 1s ease',
@@ -639,15 +641,15 @@ function Home({ onNavigate }: HomeProps) {
       <style>{`
         @keyframes fadeInBackground025 {
           from { opacity: 0; }
-          to { opacity: 0.25; }
+          to { opacity: ${backgrounds.home.opacity.main}; }
         }
         @keyframes fadeInBackground005 {
           from { opacity: 0; }
-          to { opacity: 0.05; }
+          to { opacity: ${backgrounds.home.opacity.trailLeft}; }
         }
         @keyframes fadeInBackground010 {
           from { opacity: 0; }
-          to { opacity: 0.10; }
+          to { opacity: ${backgrounds.home.opacity.secondary}; }
         }
         @keyframes subtlePulse {
           0%, 100% { opacity: 0.8; }

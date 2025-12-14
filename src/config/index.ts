@@ -4,8 +4,9 @@
 
 import { appConfig } from './app'
 import { routes, navigation } from './routing'
+import { particleConfig } from './particles'
 
-export { appConfig, routes, navigation }
+export { appConfig, routes, navigation, particleConfig }
 
 // Configuration utilities
 export const configUtils = {

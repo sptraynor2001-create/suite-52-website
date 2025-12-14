@@ -7,17 +7,19 @@ import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { colors as themeColors } from '@/themes/colors'
+import { particleConfig } from '@/config/particles'
+import { breakpoints } from '@/themes/breakpoints'
 
-// Main particles - increased density
-const PARTICLE_COUNT = 1400 // Much denser whirlpool
+// Main particles - increased density (from config)
+const PARTICLE_COUNT = particleConfig.whirlpool.counts.desktop
 // Trail particles for motion blur effect (increased for more trails per glitch)
-const TRAIL_COUNT = 500
+const TRAIL_COUNT = particleConfig.whirlpool.trailCounts.desktop
 const TRAILS_PER_GLITCH = 5 // Multiple trail points per glitching particle
 
-// Mobile optimizations
-const PARTICLE_COUNT_MOBILE = 600 // Reduced for mobile performance
-const TRAIL_COUNT_MOBILE = 150 // Reduced trails for mobile
-const MOBILE_FRAME_SKIP = 2 // Skip every other frame on mobile
+// Mobile optimizations (from config)
+const PARTICLE_COUNT_MOBILE = particleConfig.whirlpool.counts.mobile
+const TRAIL_COUNT_MOBILE = particleConfig.whirlpool.trailCounts.mobile
+const MOBILE_FRAME_SKIP = particleConfig.animation.mobileFrameSkip
 
 interface WhirlpoolParticlesProps {
   mouseX?: number
@@ -30,7 +32,7 @@ export function WhirlpoolParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticle
   
   // Detect mobile
   const isMobile = typeof window !== 'undefined' && (
-    window.innerWidth < 768 || 
+    window.innerWidth < breakpoints.tablet || 
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
   )
   
@@ -42,7 +44,7 @@ export function WhirlpoolParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticle
   const glitchStates = useRef<Float32Array>(new Float32Array(activeParticleCount))
   const trailAges = useRef<Float32Array>(new Float32Array(activeTrailCount)) // Age of each trail particle
   const fadeTimers = useRef<Float32Array>(new Float32Array(activeParticleCount)) // Fade timer for each particle (0 = not fading, >0 = fading)
-  const FADE_DURATION = 2.5 // Fade out over 2.5 seconds
+  const FADE_DURATION = particleConfig.animation.fadeDuration // Fade out over 2.5 seconds
   const frameCounter = useRef(0) // For mobile frame skipping
 
   // Particle data with randomness
@@ -69,12 +71,12 @@ export function WhirlpoolParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticle
       // Lifetime variation: wider range
       lifetimes[i] = Math.random() * 120 // Increased from 100
       // Glitchiness variation: 15-30% can glitch with varying rates
-      const glitchChance = 0.15 + Math.random() * 0.15
+      const glitchChance = particleConfig.whirlpool.glitch.chance.min + Math.random() * (particleConfig.whirlpool.glitch.chance.max - particleConfig.whirlpool.glitch.chance.min)
       canGlitch[i] = Math.random() < glitchChance ? 1 : 0
-      glitchRates[i] = 0.002 + Math.random() * 0.004 // Varying glitch rates
-      glitchOffsets[i] = 0.06 + Math.random() * 0.04 // Varying glitch offset amounts
+      glitchRates[i] = particleConfig.whirlpool.glitch.rates.min + Math.random() * (particleConfig.whirlpool.glitch.rates.max - particleConfig.whirlpool.glitch.rates.min)
+      glitchOffsets[i] = particleConfig.whirlpool.glitch.offsets.min + Math.random() * (particleConfig.whirlpool.glitch.offsets.max - particleConfig.whirlpool.glitch.offsets.min)
       // Size variation: slightly different sizes
-      sizes[i] = 0.03 + Math.random() * 0.01 // 0.03 to 0.04
+      sizes[i] = particleConfig.whirlpool.sizes.mainMin + Math.random() * (particleConfig.whirlpool.sizes.mainMax - particleConfig.whirlpool.sizes.mainMin)
 
       const angle = angles[i]
       const radius = startRadii[i]
@@ -142,11 +144,11 @@ export function WhirlpoolParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticle
           particles.rotationSpeeds[i] = 0.015 + Math.random() * 0.02
           particles.lifetimes[i] = Math.random() * 120
           particles.zOffsets[i] = (Math.random() - 0.5) * 6
-          const glitchChance = 0.15 + Math.random() * 0.15
+          const glitchChance = particleConfig.whirlpool.glitch.chance.min + Math.random() * (particleConfig.whirlpool.glitch.chance.max - particleConfig.whirlpool.glitch.chance.min)
           particles.canGlitch[i] = Math.random() < glitchChance ? 1 : 0
-          particles.glitchRates[i] = 0.002 + Math.random() * 0.004
-          particles.glitchOffsets[i] = 0.06 + Math.random() * 0.04
-          particles.sizes[i] = 0.03 + Math.random() * 0.01
+          particles.glitchRates[i] = particleConfig.whirlpool.glitch.rates.min + Math.random() * (particleConfig.whirlpool.glitch.rates.max - particleConfig.whirlpool.glitch.rates.min)
+          particles.glitchOffsets[i] = particleConfig.whirlpool.glitch.offsets.min + Math.random() * (particleConfig.whirlpool.glitch.offsets.max - particleConfig.whirlpool.glitch.offsets.min)
+          particles.sizes[i] = particleConfig.whirlpool.sizes.mainMin + Math.random() * (particleConfig.whirlpool.sizes.mainMax - particleConfig.whirlpool.sizes.mainMin)
           // Reset color to full opacity
           colors[i3] = 1.0
           colors[i3 + 1] = 1.0
@@ -155,7 +157,7 @@ export function WhirlpoolParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticle
           // Update opacity based on fade progress, combined with mouse opacity
           const fadeProgress = fadeTimers.current[i] / FADE_DURATION
           const fadeOpacity = 1.0 - fadeProgress
-          const isWeb = typeof window !== 'undefined' && window.innerWidth >= 768
+          const isWeb = typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
           const opacityMultiplier = isWeb ? 0.7 + (mouseY + 1) * 0.15 : 1.0
           const finalOpacity = fadeOpacity * opacityMultiplier
           colors[i3] = finalOpacity
@@ -170,14 +172,14 @@ export function WhirlpoolParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticle
       prevPositions.current[i3 + 2] = positions[i3 + 2]
       
       // Mouse interaction (web only): X controls rotation direction, Y controls opacity and pull strength
-      const isWeb = !isMobile && typeof window !== 'undefined' && window.innerWidth >= 768
+      const isWeb = !isMobile && typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
       // Map mouseY (-1 to 1) to opacity - much more subtle range
-      const opacityMultiplier = isWeb ? 0.7 + (mouseY + 1) * 0.15 : 1.0 // Down = 70% opacity, Up = 100% opacity (subtle)
+      const opacityMultiplier = isWeb ? particleConfig.mouseInteraction.opacity.min + (mouseY + 1) * particleConfig.mouseInteraction.opacity.range : 1.0 // Down = 70% opacity, Up = 100% opacity (subtle)
       // Mouse Y also affects pull strength - very subtle
-      const pullMultiplier = isWeb ? 1 + mouseY * 0.05 : 1 // Up = slightly stronger pull (very subtle)
+      const pullMultiplier = isWeb ? particleConfig.mouseInteraction.pull.base + mouseY * particleConfig.mouseInteraction.pull.range : 1 // Up = slightly stronger pull (very subtle)
       // Mouse X controls rotation direction - very subtle effect
       // Left = slightly counter-clockwise, Right = slightly clockwise, Center = balanced
-      const rotationDirection = isWeb ? 1 + mouseX * 0.08 : 1 // 0.92 to 1.08 multiplier (very subtle)
+      const rotationDirection = isWeb ? particleConfig.mouseInteraction.rotation.base + mouseX * particleConfig.mouseInteraction.rotation.range : 1 // 0.92 to 1.08 multiplier (very subtle)
       
       // Calculate progress
       const cycleLength = 100 // Faster cycle for more pronounced movement
@@ -283,7 +285,7 @@ export function WhirlpoolParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticle
           trailIndex++
         } else {
           // Fade out trails
-          if (trailAges.current[i] < 0.15) {
+          if (trailAges.current[i] < particleConfig.animation.trailAge) {
             // Keep visible but fading
             trailAges.current[i] += deltaTime
           } else {
@@ -324,7 +326,7 @@ export function WhirlpoolParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticle
           size={isMobile ? 0.03 : 0.035}
           color={0xffffff}
           transparent
-          opacity={0.12}
+          opacity={parseFloat(particleConfig.whirlpool.opacities.particles.toString())}
           sizeAttenuation
           depthWrite={false}
           blending={THREE.AdditiveBlending}
@@ -348,7 +350,7 @@ export function WhirlpoolParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticle
             size={isMobile ? 0.035 : 0.04}
           color={0xffffff}
           transparent
-            opacity={0.11}
+            opacity={parseFloat(particleConfig.whirlpool.opacities.trails.toString())}
           sizeAttenuation
           depthWrite={false}
           blending={THREE.AdditiveBlending}
@@ -372,7 +374,7 @@ export function AccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesPr
   
   // Mobile detection for optimization
   const isMobile = typeof window !== 'undefined' && (
-    window.innerWidth < 768 || 
+    window.innerWidth < breakpoints.tablet || 
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
   )
   
@@ -384,7 +386,7 @@ export function AccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesPr
   const trailAges = useRef<Float32Array>(new Float32Array(activeAccentTrailCount))
   const fadeTimers = useRef<Float32Array>(new Float32Array(activeAccentCount))
   const frameCounter = useRef(0)
-  const ACCENT_FADE_DURATION = 2.5
+  const ACCENT_FADE_DURATION = particleConfig.animation.fadeDuration
 
   const particles = useMemo(() => {
     const positions = new Float32Array(activeAccentCount * 3)
@@ -403,17 +405,17 @@ export function AccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesPr
       angles[i] = Math.random() * Math.PI * 2
       startRadii[i] = 6 + Math.random() * 8
       // Speed variation
-      rotationSpeeds[i] = 0.008 + Math.random() * 0.015 // More variation
+      rotationSpeeds[i] = particleConfig.whirlpool.speeds.min + Math.random() * (particleConfig.whirlpool.speeds.max - particleConfig.whirlpool.speeds.min)
       // Lifetime variation
       lifetimes[i] = Math.random() * 120
       zOffsets[i] = (Math.random() - 0.5) * 4
       // Glitchiness variation: 20-35% can glitch
       const glitchChance = 0.2 + Math.random() * 0.15
       canGlitch[i] = Math.random() < glitchChance ? 1 : 0
-      glitchRates[i] = 0.002 + Math.random() * 0.005
-      glitchOffsets[i] = 0.08 + Math.random() * 0.04
+      glitchRates[i] = particleConfig.accent.glitch.rates.min + Math.random() * (particleConfig.accent.glitch.rates.max - particleConfig.accent.glitch.rates.min)
+      glitchOffsets[i] = particleConfig.accent.glitch.offsets.min + Math.random() * (particleConfig.accent.glitch.offsets.max - particleConfig.accent.glitch.offsets.min)
       // Size variation - much wider range
-      sizes[i] = 0.03 + Math.random() * 0.06 // 0.03 to 0.09 for more variety
+      sizes[i] = particleConfig.whirlpool.sizes.min + Math.random() * (particleConfig.whirlpool.sizes.max - particleConfig.whirlpool.sizes.min)
 
       const angle = angles[i]
       const radius = startRadii[i]
@@ -492,7 +494,7 @@ export function AccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesPr
           // Update opacity based on fade progress, combined with mouse opacity
           const fadeProgress = fadeTimers.current[i] / ACCENT_FADE_DURATION
           const fadeOpacity = 1.0 - fadeProgress
-          const isWeb = typeof window !== 'undefined' && window.innerWidth >= 768
+          const isWeb = typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
           const opacityMultiplier = isWeb ? 0.7 + (mouseY + 1) * 0.15 : 1.0
           const finalOpacity = fadeOpacity * opacityMultiplier
           colors[i3] = themeColors.scene.particles.red.r * finalOpacity
@@ -506,14 +508,14 @@ export function AccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesPr
       prevPositions.current[i3 + 2] = positions[i3 + 2]
       
       // Mouse interaction (web only): X controls rotation direction, Y controls opacity and pull
-      const isWeb = !isMobile && typeof window !== 'undefined' && window.innerWidth >= 768
+      const isWeb = !isMobile && typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
       const opacityMultiplier = isWeb ? 0.7 + (mouseY + 1) * 0.15 : 1.0
       const pullMultiplier = isWeb ? 1 + mouseY * 0.05 : 1
       // Mouse X controls rotation direction - very subtle
       const rotationDirection = isWeb ? 1 + mouseX * 0.08 : 1
       
       // Calculate progress
-      const cycleLength = 110 // Slightly faster for accent particles
+      const cycleLength = particleConfig.animation.cycleLength.accent
       const adjustedTime = (time + lifetime) % cycleLength
       const progress = adjustedTime / cycleLength
       const easedProgress = Math.pow(progress, 0.55) * pullMultiplier
@@ -610,7 +612,7 @@ export function AccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesPr
           trailIndex++
         } else {
           // Fade out trails
-          if (trailAges.current[i] < 0.15) {
+          if (trailAges.current[i] < particleConfig.animation.trailAge) {
             // Keep visible but fading
             trailAges.current[i] += deltaTime
           } else {
@@ -647,10 +649,10 @@ export function AccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesPr
           />
         </bufferGeometry>
         <pointsMaterial
-          size={isMobile ? 0.045 : 0.05}
+          size={isMobile ? particleConfig.accent.sizes.material.mobile : particleConfig.accent.sizes.material.desktop}
           color={0xe63946}
           transparent
-          opacity={0.15}
+          opacity={parseFloat(particleConfig.accent.opacities.particles.toString())}
           sizeAttenuation
           depthWrite={false}
           blending={THREE.AdditiveBlending}
@@ -671,10 +673,10 @@ export function AccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesPr
           />
         </bufferGeometry>
         <pointsMaterial
-            size={isMobile ? 0.045 : 0.05}
+            size={isMobile ? particleConfig.accent.sizes.material.mobile : particleConfig.accent.sizes.material.desktop}
           color={0xe63946}
           transparent
-            opacity={0.13}
+            opacity={parseFloat(particleConfig.accent.opacities.trails.toString())}
             sizeAttenuation
             depthWrite={false}
             blending={THREE.AdditiveBlending}
@@ -685,9 +687,9 @@ export function AccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesPr
   )
 }
 
-// Blue accent particles
-const BLUE_ACCENT_COUNT = 4 // 1/4 of red particles
-const BLUE_ACCENT_TRAIL_COUNT = 5
+// Blue accent particles (from config)
+const BLUE_ACCENT_COUNT = particleConfig.blueAccent.count
+const BLUE_ACCENT_TRAIL_COUNT = particleConfig.blueAccent.trailCount
 const BLUE_ACCENT_TRAILS_PER_GLITCH = 5
 
 export function BlueAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesProps) {
@@ -697,7 +699,7 @@ export function BlueAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
   const glitchStates = useRef<Float32Array>(new Float32Array(BLUE_ACCENT_COUNT))
   const trailAges = useRef<Float32Array>(new Float32Array(BLUE_ACCENT_TRAIL_COUNT))
   const fadeTimers = useRef<Float32Array>(new Float32Array(BLUE_ACCENT_COUNT))
-  const FADE_DURATION = 2.5
+  const FADE_DURATION = particleConfig.animation.fadeDuration
 
   const particles = useMemo(() => {
     const positions = new Float32Array(BLUE_ACCENT_COUNT * 3)
@@ -720,8 +722,8 @@ export function BlueAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
       zOffsets[i] = (Math.random() - 0.5) * 4
       const glitchChance = 0.2 + Math.random() * 0.15
       canGlitch[i] = Math.random() < glitchChance ? 1 : 0
-      glitchRates[i] = 0.002 + Math.random() * 0.005
-      glitchOffsets[i] = 0.08 + Math.random() * 0.04
+      glitchRates[i] = particleConfig.accent.glitch.rates.min + Math.random() * (particleConfig.accent.glitch.rates.max - particleConfig.accent.glitch.rates.min)
+      glitchOffsets[i] = particleConfig.accent.glitch.offsets.min + Math.random() * (particleConfig.accent.glitch.offsets.max - particleConfig.accent.glitch.offsets.min)
       sizes[i] = 0.03 + Math.random() * 0.06
 
       const angle = angles[i]
@@ -788,7 +790,7 @@ export function BlueAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
         } else {
           const fadeProgress = fadeTimers.current[i] / FADE_DURATION
           const fadeOpacity = 1.0 - fadeProgress
-          const isWeb = typeof window !== 'undefined' && window.innerWidth >= 768
+          const isWeb = typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
           const opacityMultiplier = isWeb ? 0.7 + (mouseY + 1) * 0.15 : 1.0
           const finalOpacity = fadeOpacity * opacityMultiplier
           colors[i3] = themeColors.scene.particles.blue.r * finalOpacity
@@ -801,9 +803,9 @@ export function BlueAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
       prevPositions.current[i3 + 1] = positions[i3 + 1]
       prevPositions.current[i3 + 2] = positions[i3 + 2]
       
-      const isWeb = typeof window !== 'undefined' && window.innerWidth >= 768
-      const opacityMultiplier = isWeb ? 0.15 + (mouseY + 1) * 0.425 : 1.0
-      const pullMultiplier = isWeb ? 1 + mouseY * 0.3 : 1
+      const isWeb = typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
+      const opacityMultiplier = isWeb ? particleConfig.mouseInteraction.accentOpacity.min + (mouseY + 1) * particleConfig.mouseInteraction.accentOpacity.range : 1.0
+      const pullMultiplier = isWeb ? particleConfig.mouseInteraction.accentPull.base + mouseY * particleConfig.mouseInteraction.accentPull.range : 1
       const rotationDirection = isWeb ? mouseX * 1.2 : 1
       
       const cycleLength = 110
@@ -889,7 +891,7 @@ export function BlueAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
           trailAges.current[i] = 0
           trailIndex++
         } else {
-          if (trailAges.current[i] < 0.15) {
+          if (trailAges.current[i] < particleConfig.animation.trailAge) {
             trailAges.current[i] += deltaTime
           } else {
             trailPositions[i3] = 1000
@@ -924,10 +926,10 @@ export function BlueAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.05}
+          size={particleConfig.blueAccent.sizes.material}
           color={0x43a6f5}
           transparent
-          opacity={0.15}
+          opacity={parseFloat(particleConfig.accent.opacities.particles.toString())}
           sizeAttenuation
           depthWrite={false}
           blending={THREE.AdditiveBlending}
@@ -946,10 +948,10 @@ export function BlueAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.05}
+          size={particleConfig.blueAccent.sizes.material}
           color={0x43a6f5}
           transparent
-          opacity={0.13}
+          opacity={parseFloat(particleConfig.accent.opacities.trails.toString())}
           sizeAttenuation
           depthWrite={false}
           blending={THREE.AdditiveBlending}
@@ -959,9 +961,9 @@ export function BlueAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
   )
 }
 
-// Green accent particles
-const GREEN_ACCENT_COUNT = 4
-const GREEN_ACCENT_TRAIL_COUNT = 5
+// Green accent particles (from config)
+const GREEN_ACCENT_COUNT = particleConfig.greenAccent.count
+const GREEN_ACCENT_TRAIL_COUNT = particleConfig.greenAccent.trailCount
 const GREEN_ACCENT_TRAILS_PER_GLITCH = 5
 
 export function GreenAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesProps) {
@@ -971,7 +973,7 @@ export function GreenAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolPartic
   const glitchStates = useRef<Float32Array>(new Float32Array(GREEN_ACCENT_COUNT))
   const trailAges = useRef<Float32Array>(new Float32Array(GREEN_ACCENT_TRAIL_COUNT))
   const fadeTimers = useRef<Float32Array>(new Float32Array(GREEN_ACCENT_COUNT))
-  const FADE_DURATION = 2.5
+  const FADE_DURATION = particleConfig.animation.fadeDuration
 
   const particles = useMemo(() => {
     const positions = new Float32Array(GREEN_ACCENT_COUNT * 3)
@@ -994,8 +996,8 @@ export function GreenAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolPartic
       zOffsets[i] = (Math.random() - 0.5) * 4
       const glitchChance = 0.2 + Math.random() * 0.15
       canGlitch[i] = Math.random() < glitchChance ? 1 : 0
-      glitchRates[i] = 0.002 + Math.random() * 0.005
-      glitchOffsets[i] = 0.08 + Math.random() * 0.04
+      glitchRates[i] = particleConfig.accent.glitch.rates.min + Math.random() * (particleConfig.accent.glitch.rates.max - particleConfig.accent.glitch.rates.min)
+      glitchOffsets[i] = particleConfig.accent.glitch.offsets.min + Math.random() * (particleConfig.accent.glitch.offsets.max - particleConfig.accent.glitch.offsets.min)
       sizes[i] = 0.03 + Math.random() * 0.06
 
       const angle = angles[i]
@@ -1062,7 +1064,7 @@ export function GreenAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolPartic
         } else {
           const fadeProgress = fadeTimers.current[i] / FADE_DURATION
           const fadeOpacity = 1.0 - fadeProgress
-          const isWeb = typeof window !== 'undefined' && window.innerWidth >= 768
+          const isWeb = typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
           const opacityMultiplier = isWeb ? 0.7 + (mouseY + 1) * 0.15 : 1.0
           const finalOpacity = fadeOpacity * opacityMultiplier
           colors[i3] = themeColors.scene.particles.green.r * finalOpacity
@@ -1075,9 +1077,9 @@ export function GreenAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolPartic
       prevPositions.current[i3 + 1] = positions[i3 + 1]
       prevPositions.current[i3 + 2] = positions[i3 + 2]
       
-      const isWeb = typeof window !== 'undefined' && window.innerWidth >= 768
-      const opacityMultiplier = isWeb ? 0.15 + (mouseY + 1) * 0.425 : 1.0
-      const pullMultiplier = isWeb ? 1 + mouseY * 0.3 : 1
+      const isWeb = typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
+      const opacityMultiplier = isWeb ? particleConfig.mouseInteraction.accentOpacity.min + (mouseY + 1) * particleConfig.mouseInteraction.accentOpacity.range : 1.0
+      const pullMultiplier = isWeb ? particleConfig.mouseInteraction.accentPull.base + mouseY * particleConfig.mouseInteraction.accentPull.range : 1
       const rotationDirection = isWeb ? mouseX * 1.2 : 1
       
       const cycleLength = 110
@@ -1163,7 +1165,7 @@ export function GreenAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolPartic
           trailAges.current[i] = 0
           trailIndex++
         } else {
-          if (trailAges.current[i] < 0.15) {
+          if (trailAges.current[i] < particleConfig.animation.trailAge) {
             trailAges.current[i] += deltaTime
           } else {
             trailPositions[i3] = 1000
@@ -1198,10 +1200,10 @@ export function GreenAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolPartic
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.05}
+          size={particleConfig.blueAccent.sizes.material}
           color={0x2ed963}
           transparent
-          opacity={0.15}
+          opacity={parseFloat(particleConfig.accent.opacities.particles.toString())}
           sizeAttenuation
           depthWrite={false}
           blending={THREE.AdditiveBlending}
@@ -1220,10 +1222,10 @@ export function GreenAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolPartic
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.05}
+          size={particleConfig.blueAccent.sizes.material}
           color={0x2ed963}
           transparent
-          opacity={0.13}
+          opacity={parseFloat(particleConfig.accent.opacities.trails.toString())}
           sizeAttenuation
           depthWrite={false}
           blending={THREE.AdditiveBlending}
@@ -1233,10 +1235,10 @@ export function GreenAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolPartic
   )
 }
 
-// Gold accent particles (replacing yellow - third main color)
-const GOLD_ACCENT_COUNT = 4
-const GOLD_ACCENT_TRAIL_COUNT = 5
-const GOLD_ACCENT_TRAILS_PER_GLITCH = 5
+// Gold accent particles (replacing yellow - third main color) (from config)
+const GOLD_ACCENT_COUNT = particleConfig.goldAccent.count
+const GOLD_ACCENT_TRAIL_COUNT = particleConfig.goldAccent.trailCount
+const GOLD_ACCENT_TRAILS_PER_GLITCH = particleConfig.goldAccent.trailsPerGlitch
 
 export function GoldAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesProps) {
   const pointsRef = useRef<THREE.Points>(null)
@@ -1245,7 +1247,7 @@ export function GoldAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
   const glitchStates = useRef<Float32Array>(new Float32Array(GOLD_ACCENT_COUNT))
   const trailAges = useRef<Float32Array>(new Float32Array(GOLD_ACCENT_TRAIL_COUNT))
   const fadeTimers = useRef<Float32Array>(new Float32Array(GOLD_ACCENT_COUNT))
-  const FADE_DURATION = 2.5
+  const FADE_DURATION = particleConfig.animation.fadeDuration
 
   const particles = useMemo(() => {
     const positions = new Float32Array(GOLD_ACCENT_COUNT * 3)
@@ -1268,8 +1270,8 @@ export function GoldAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
       zOffsets[i] = (Math.random() - 0.5) * 4
       const glitchChance = 0.2 + Math.random() * 0.15
       canGlitch[i] = Math.random() < glitchChance ? 1 : 0
-      glitchRates[i] = 0.002 + Math.random() * 0.005
-      glitchOffsets[i] = 0.08 + Math.random() * 0.04
+      glitchRates[i] = particleConfig.accent.glitch.rates.min + Math.random() * (particleConfig.accent.glitch.rates.max - particleConfig.accent.glitch.rates.min)
+      glitchOffsets[i] = particleConfig.accent.glitch.offsets.min + Math.random() * (particleConfig.accent.glitch.offsets.max - particleConfig.accent.glitch.offsets.min)
       sizes[i] = 0.03 + Math.random() * 0.06
 
       const angle = angles[i]
@@ -1336,7 +1338,7 @@ export function GoldAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
         } else {
           const fadeProgress = fadeTimers.current[i] / FADE_DURATION
           const fadeOpacity = 1.0 - fadeProgress
-          const isWeb = typeof window !== 'undefined' && window.innerWidth >= 768
+          const isWeb = typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
           const opacityMultiplier = isWeb ? 0.7 + (mouseY + 1) * 0.15 : 1.0
           const finalOpacity = fadeOpacity * opacityMultiplier
           colors[i3] = themeColors.scene.particles.gold.r * finalOpacity
@@ -1349,9 +1351,9 @@ export function GoldAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
       prevPositions.current[i3 + 1] = positions[i3 + 1]
       prevPositions.current[i3 + 2] = positions[i3 + 2]
       
-      const isWeb = typeof window !== 'undefined' && window.innerWidth >= 768
-      const opacityMultiplier = isWeb ? 0.15 + (mouseY + 1) * 0.425 : 1.0
-      const pullMultiplier = isWeb ? 1 + mouseY * 0.3 : 1
+      const isWeb = typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
+      const opacityMultiplier = isWeb ? particleConfig.mouseInteraction.accentOpacity.min + (mouseY + 1) * particleConfig.mouseInteraction.accentOpacity.range : 1.0
+      const pullMultiplier = isWeb ? particleConfig.mouseInteraction.accentPull.base + mouseY * particleConfig.mouseInteraction.accentPull.range : 1
       const rotationDirection = isWeb ? 1 + mouseX * 0.08 : 1
       
       const cycleLength = 110
@@ -1437,7 +1439,7 @@ export function GoldAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
           trailAges.current[i] = 0
           trailIndex++
         } else {
-          if (trailAges.current[i] < 0.15) {
+          if (trailAges.current[i] < particleConfig.animation.trailAge) {
             trailAges.current[i] += deltaTime
           } else {
             trailPositions[i3] = 1000
@@ -1472,10 +1474,10 @@ export function GoldAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.05}
+          size={particleConfig.goldAccent.sizes.material}
           color={themeColors.scene.particles.gold.hex}
           transparent
-          opacity={0.15}
+          opacity={parseFloat(particleConfig.accent.opacities.particles.toString())}
           sizeAttenuation
           depthWrite={false}
           blending={THREE.AdditiveBlending}
@@ -1494,10 +1496,10 @@ export function GoldAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.05}
+          size={particleConfig.goldAccent.sizes.material}
           color={themeColors.scene.particles.gold.hex}
           transparent
-          opacity={0.13}
+          opacity={parseFloat(particleConfig.accent.opacities.trails.toString())}
           sizeAttenuation
           depthWrite={false}
           blending={THREE.AdditiveBlending}

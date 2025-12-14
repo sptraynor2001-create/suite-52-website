@@ -84,6 +84,35 @@ export const animations = {
       delay: 0,
       duration: 'duration.slowest',
       easing: 'easing.linear',
+      fadeIn: '2s',
+    },
+  },
+
+  // Home page specific animations
+  home: {
+    title: {
+      typing: {
+        startDelay: 800,
+        characterDelays: [220, 120, 130, 100, 160, 300, 150, 125],
+        cursorBlink: 530,
+      },
+      fadeDelay: 2800,
+    },
+    subtitle: {
+      transition: 'opacity 2s ease-in 0.8s',
+    },
+    clickToEnter: {
+      transition: 'opacity 1s ease-in 1.5s, transform 1s ease-in 1.5s, font-size 0.3s ease',
+    },
+    philosophical: {
+      startDelay: 3500,
+      typingSpeed: { min: 30, max: 80 },
+    },
+    background: {
+      float: {
+        duration: '25s',
+        reverse: '30s',
+      },
     },
   },
 

@@ -3,7 +3,9 @@
  */
 
 import { useState, useEffect, useMemo } from 'react'
-import { activeFont } from '@/themes'
+import { activeFont, backgrounds, breakpoints } from '@/themes'
+import { tokens } from '@/design/tokens'
+import { animations } from '@/themes/animations'
 import { cardStyles } from '@/design/cardStyles'
 
 const shows = [
@@ -85,12 +87,12 @@ function Shows() {
           height: '100vh',
           backgroundImage: 'url(/images/backgrounds/shows-background.jpg)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundPosition: backgrounds.shows.position,
           opacity: 0,
-          filter: 'blur(1px) saturate(0.7)',
-          zIndex: 0,
+          filter: `blur(${backgrounds.shows.blur}) saturate(${backgrounds.shows.saturation})`,
+          zIndex: tokens.zIndex.background,
           pointerEvents: 'none',
-          animation: 'fadeInBackground015 2s ease-in forwards',
+          animation: `fadeInBackground015 ${animations.page.background.fadeIn} ease-in forwards`,
         }}
       />
       {/* Content */}
@@ -128,7 +130,7 @@ function Shows() {
           <p
             style={{
               color: 'rgba(255, 255, 255, 0.3)',
-              fontSize: viewportWidth <= 480 ? '11px' : viewportWidth <= 768 ? '12px' : '12px',
+              fontSize: viewportWidth <= breakpoints.mobile ? '11px' : viewportWidth <= breakpoints.tablet ? '12px' : '12px',
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',
               margin: '12px 0 0 0',
@@ -241,7 +243,7 @@ function Shows() {
       <style>{`
         @keyframes fadeInBackground015 {
           from { opacity: 0; }
-          to { opacity: 0.15; }
+          to { opacity: ${backgrounds.shows.opacity}; }
         }
         @keyframes slideIn {
           from {
