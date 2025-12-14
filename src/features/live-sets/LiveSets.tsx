@@ -7,6 +7,7 @@ import { activeFont, backgrounds, breakpoints } from '@/themes'
 import { tokens } from '@/design/tokens'
 import { animations } from '@/themes/animations'
 import { cardStyles } from '@/design/cardStyles'
+import { LiveSetsScene } from './components/LiveSetsScene'
 
 const liveSets = [
   {
@@ -19,6 +20,7 @@ const liveSets = [
 
 function LiveSets() {
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
+  const [hoveredSetId, setHoveredSetId] = useState<string | null>(null)
 
   useEffect(() => {
     const handleResize = () => setViewportWidth(window.innerWidth)
@@ -36,6 +38,9 @@ function LiveSets() {
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
+      {/* 3D Background Scene */}
+      <LiveSetsScene liveSets={liveSets} hoveredSetId={hoveredSetId} />
+      
       {/* Background image */}
       <div
         style={{
@@ -82,6 +87,7 @@ function LiveSets() {
               fontFamily: activeFont.family,
               margin: 0,
               textShadow: '0 0 30px rgba(255, 255, 255, 0.2)',
+              animation: 'slideUp 0.6s ease-out 0.1s both',
             }}
           >
             LIVE_SETS
@@ -93,6 +99,7 @@ function LiveSets() {
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',
               margin: '12px 0 0 0',
+              animation: 'slideUp 0.6s ease-out 0.2s both',
             }}
           >
             {'// ARCHIVE.stream(moment => moment.captured && moment.raw)'}
@@ -109,7 +116,10 @@ function LiveSets() {
             gap: '32px',
           }}
         >
-          {liveSets.map((set, index) => (
+          {liveSets.map((set, index) => {
+            const isHovered = hoveredSetId === set.id
+            
+            return (
             <div
               key={set.id}
               style={{
@@ -117,7 +127,13 @@ function LiveSets() {
                 padding: '24px',
                 opacity: 1,
                 animation: `fadeUp 0.6s ease-out ${index * 0.1}s both`,
+                backgroundColor: isHovered ? 'rgba(230, 57, 70, 0.08)' : cardStyles.base.backgroundColor,
+                border: isHovered ? '1px solid rgba(230, 57, 70, 0.4)' : cardStyles.base.border,
+                boxShadow: isHovered ? '0 8px 32px rgba(230, 57, 70, 0.15)' : 'none',
+                transition: 'all 0.2s ease',
               }}
+              onMouseEnter={() => setHoveredSetId(set.id)}
+              onMouseLeave={() => setHoveredSetId(null)}
             >
               {/* Title */}
               <h3
@@ -184,7 +200,8 @@ function LiveSets() {
                 />
               </div>
             </div>
-          ))}
+            )
+          })}
         </div>
       </div>
 
@@ -192,6 +209,16 @@ function LiveSets() {
         @keyframes fadeInBackground008 {
           from { opacity: 0; }
           to { opacity: ${backgrounds.liveSets.opacity}; }
+        }
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
         @keyframes fadeUp {
           from {

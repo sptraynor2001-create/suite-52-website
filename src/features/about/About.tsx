@@ -13,6 +13,7 @@ import { cardStyles } from '@/design/cardStyles'
 function About() {
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
   const [visibleSections, setVisibleSections] = useState(0)
+  const [hoveredSection, setHoveredSection] = useState<number | null>(null)
 
   useEffect(() => {
     const handleResize = () => setViewportWidth(window.innerWidth)
@@ -106,7 +107,7 @@ function About() {
         }}
       />
       {/* 3D Background Scene */}
-      <AboutScene />
+      <AboutScene visibleSections={visibleSections} hoveredSection={hoveredSection} />
 
       {/* Content */}
       <div
@@ -136,9 +137,7 @@ function About() {
               fontFamily: activeFont.family,
               margin: 0,
               textShadow: '0 0 30px rgba(255, 255, 255, 0.2)',
-              opacity: visibleSections > 0 ? 1 : 0,
-              transform: visibleSections > 0 ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
+              animation: 'slideUp 0.6s ease-out 0.1s both',
             }}
           >
             ABOUT
@@ -150,8 +149,7 @@ function About() {
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',
               margin: '12px 0 0 0',
-              opacity: visibleSections > 0 ? 1 : 0,
-              transition: 'opacity 0.8s ease-out 0.2s',
+              animation: 'slideUp 0.6s ease-out 0.2s both',
             }}
           >
             {'// ENTITY.initialize(vectors: [SOUND, CODE, VISION])'}
@@ -178,6 +176,8 @@ function About() {
                 transform: visibleSections > index ? 'translateY(0)' : 'translateY(30px)',
                 transition: `opacity 0.6s ease-out ${index * 0.1}s, transform 0.6s ease-out ${index * 0.1}s`,
               }}
+              onMouseEnter={() => setHoveredSection(index)}
+              onMouseLeave={() => setHoveredSection(null)}
             >
               <h2
                 style={{
@@ -230,6 +230,16 @@ function About() {
         @keyframes fadeInBackground015 {
           from { opacity: 0; }
           to { opacity: 0.15; }
+        }
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
       `}</style>
     </div>

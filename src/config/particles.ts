@@ -169,8 +169,8 @@ export const particleConfig = {
   // Particle Constellation Globe
   constellationGlobe: {
     baseParticles: {
-      desktop: 4000,
-      mobile: 2000,
+      desktop: 8000, // Increased for denser continents
+      mobile: 4000,
     },
     constellationParticles: {
       desktop: 25,
@@ -179,10 +179,58 @@ export const particleConfig = {
     waveInterval: 3.5, // seconds
     waveSpeed: 0.8,
     continentAttraction: {
-      base: 0.3,
-      hover: 1.2,
+      base: 1.5, // Increased for stronger clustering
+      hover: 2.5,
     },
     rotationSpeed: 0.001,
+    continentBias: 0.7, // Bias initial distribution toward continents (0-1)
+  },
+
+  // Quantum Field Visualization (About page)
+  quantumField: {
+    baseParticles: {
+      desktop: 4000,
+      mobile: 2000,
+    },
+    collapseSpeed: 0.05,
+    superpositionSpread: 0.5,
+    collapsedCluster: 0.1,
+  },
+
+  // Frequency Constellation (Music page)
+  frequencyConstellation: {
+    clusterParticles: {
+      desktop: 25,
+      mobile: 15,
+    },
+    connectionParticles: {
+      desktop: 200,
+      mobile: 100,
+    },
+    flowSpeed: 0.3,
+    pulseSpeed: 2.0,
+  },
+
+  // Sound Wave Interference (Live Sets page)
+  soundWaveInterference: {
+    waveParticles: {
+      desktop: 3000,
+      mobile: 1500,
+    },
+    waveSpeed: 0.8,
+    waveFrequency: 2.0,
+    interferenceStrength: 0.5,
+  },
+
+  // Particle Data Stream (Contact page)
+  particleDataStream: {
+    streamParticles: {
+      desktop: 2000,
+      mobile: 1000,
+    },
+    streamSpeed: 0.5,
+    streamWidth: 0.3,
+    mergeIntensity: 0.7,
   },
 } as const
 

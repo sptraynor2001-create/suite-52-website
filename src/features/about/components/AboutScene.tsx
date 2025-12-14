@@ -7,8 +7,14 @@ import { Canvas } from '@react-three/fiber'
 import { Preload } from '@react-three/drei'
 import * as THREE from 'three'
 import { useQuality, Fog, MinimalPostProcessing } from '@/shared/components/3d'
+import { QuantumField } from './QuantumField'
 
-function SceneContent() {
+interface AboutSceneProps {
+  visibleSections?: number
+  hoveredSection?: number | null
+}
+
+function SceneContent({ visibleSections = 0, hoveredSection = null }: AboutSceneProps) {
   const { settings } = useQuality()
 
   return (
@@ -21,13 +27,20 @@ function SceneContent() {
       {/* Atmospheric fog */}
       <Fog color="#000000" density={0.03} />
 
+      {/* Quantum Field Visualization */}
+      <QuantumField 
+        visibleSections={visibleSections}
+        hoveredSection={hoveredSection}
+        sectionCount={4}
+      />
+
       {/* Post processing */}
       <MinimalPostProcessing />
     </>
   )
 }
 
-export function AboutScene() {
+export function AboutScene({ visibleSections = 0, hoveredSection = null }: AboutSceneProps) {
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
@@ -60,7 +73,7 @@ export function AboutScene() {
         style={{ background: 'transparent' }}
       >
         <Suspense fallback={null}>
-          <SceneContent />
+          <SceneContent visibleSections={visibleSections} hoveredSection={hoveredSection} />
           <Preload all />
         </Suspense>
       </Canvas>

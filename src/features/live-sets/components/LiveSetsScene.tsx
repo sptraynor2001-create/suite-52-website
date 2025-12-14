@@ -7,9 +7,32 @@ import { Canvas } from '@react-three/fiber'
 import { Preload } from '@react-three/drei'
 import * as THREE from 'three'
 import { useQuality, Fog, MinimalPostProcessing } from '@/shared/components/3d'
-import { FloatingPortals, PortalAmbientParticles } from './MediaPortals'
+import { SoundWaveInterference } from './SoundWaveInterference'
 
-function SceneContent() {
+interface LiveSet {
+  id: string
+  title: string
+  date?: string
+  venue?: string
+  city?: string
+  duration?: string
+  thumbnail?: string
+  youtubeUrl?: string
+  soundcloudUrl?: string
+  mixcloudUrl?: string
+  spotifyUrl?: string
+  description?: string
+  setlist?: string[]
+  type?: string
+  embedUrl?: string
+}
+
+interface LiveSetsSceneProps {
+  liveSets?: LiveSet[]
+  hoveredSetId?: string | null
+}
+
+function SceneContent({ liveSets = [], hoveredSetId = null }: LiveSetsSceneProps) {
   const { settings } = useQuality()
 
   return (
@@ -23,11 +46,8 @@ function SceneContent() {
       {/* Fog */}
       <Fog color="#000000" density={0.03} />
 
-      {/* Floating portal rings */}
-      <FloatingPortals count={6} />
-
-      {/* Ambient particles */}
-      {settings.level !== 'low' && <PortalAmbientParticles count={250} />}
+      {/* Sound Wave Interference */}
+      <SoundWaveInterference liveSets={liveSets} hoveredSetId={hoveredSetId} />
 
       {/* Post processing */}
       <MinimalPostProcessing />
@@ -35,7 +55,7 @@ function SceneContent() {
   )
 }
 
-export function LiveSetsScene() {
+export function LiveSetsScene({ liveSets = [], hoveredSetId = null }: LiveSetsSceneProps) {
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
@@ -68,7 +88,7 @@ export function LiveSetsScene() {
         style={{ background: 'transparent' }}
       >
         <Suspense fallback={null}>
-          <SceneContent />
+          <SceneContent liveSets={liveSets} hoveredSetId={hoveredSetId} />
           <Preload all />
         </Suspense>
       </Canvas>

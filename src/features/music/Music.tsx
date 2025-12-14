@@ -8,6 +8,7 @@ import { activeFont, backgrounds, breakpoints } from '@/themes'
 import { tokens } from '@/design/tokens'
 import { animations } from '@/themes/animations'
 import { cardStyles } from '@/design/cardStyles'
+import { MusicScene } from './components/MusicScene'
 
 function Music() {
   const [visibleReleases, setVisibleReleases] = useState<number>(0)
@@ -51,6 +52,9 @@ function Music() {
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
+      {/* 3D Background Scene */}
+      <MusicScene releases={releases} hoveredReleaseId={hoveredId} />
+      
       {/* Background image */}
       <div
         style={{
@@ -97,6 +101,7 @@ function Music() {
               fontFamily: activeFont.family,
               margin: 0,
               textShadow: '0 0 30px rgba(255, 255, 255, 0.2)',
+              animation: 'slideUp 0.6s ease-out 0.1s both',
             }}
           >
             RELEASES
@@ -108,6 +113,7 @@ function Music() {
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',
               margin: '12px 0 0 0',
+              animation: 'slideUp 0.6s ease-out 0.2s both',
             }}
           >
             {'// TRANSMISSIONS.reverse().map(signal => decode(frequency))'}

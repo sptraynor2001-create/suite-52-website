@@ -91,8 +91,8 @@ function Shows() {
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
-      {/* 3D Particle Constellation Globe */}
-      <ShowsScene onEventHover={handleShowHover} />
+      {/* 3D Particle Constellation Globe with Timeline Visualizer */}
+      <ShowsScene onEventHover={handleShowHover} hoveredShowIndex={hoveredIndex} />
       
       {/* Background image */}
       <div
@@ -140,6 +140,7 @@ function Shows() {
               fontFamily: activeFont.family,
               margin: 0,
               textShadow: '0 0 30px rgba(255, 255, 255, 0.2)',
+              animation: 'slideIn 0.5s ease-out 0.1s both',
             }}
           >
             UPCOMING_SHOWS
@@ -151,6 +152,7 @@ function Shows() {
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',
               margin: '12px 0 0 0',
+              animation: 'slideIn 0.5s ease-out 0.2s both',
             }}
           >
             {'// TIMELINE.query(t => t.status === PENDING && t.coordinates !== NULL)'}
@@ -166,6 +168,7 @@ function Shows() {
             flexDirection: 'column',
             gap: '12px',
             pointerEvents: 'auto',
+            position: 'relative',
           }}
         >
           {shows.slice(0, visibleShows).map((show, index) => {
@@ -192,15 +195,34 @@ function Shows() {
                   letterSpacing: '0.08em',
                   opacity: 1,
                   animation: `slideIn 0.5s ease-out ${index * 0.03}s both`,
-                  backgroundColor: isHovered ? 'rgba(230, 57, 70, 0.08)' : cardStyles.base.backgroundColor,
-                  border: isHovered ? '1px solid rgba(230, 57, 70, 0.4)' : cardStyles.base.border,
-                  boxShadow: isHovered ? '0 4px 20px rgba(230, 57, 70, 0.15)' : 'none',
-                  transform: isHovered ? 'translateX(8px)' : 'translateX(0)',
-                  transition: 'all 0.2s ease',
+                  backgroundColor: isHovered ? 'rgba(230, 57, 70, 0.12)' : cardStyles.base.backgroundColor,
+                  border: isHovered ? '1px solid rgba(230, 57, 70, 0.5)' : cardStyles.base.border,
+                  boxShadow: isHovered 
+                    ? '0 4px 20px rgba(230, 57, 70, 0.25), 0 0 40px rgba(230, 57, 70, 0.1)' 
+                    : 'none',
+                  transform: isHovered ? 'translateX(8px) scale(1.02)' : 'translateX(0) scale(1)',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  position: 'relative',
                 }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
+                {/* Glow effect on hover */}
+                {isHovered && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: 'radial-gradient(circle at left center, rgba(230, 57, 70, 0.15), transparent 70%)',
+                      pointerEvents: 'none',
+                      borderRadius: 'inherit',
+                      animation: 'pulseGlow 2s ease-in-out infinite',
+                    }}
+                  />
+                )}
                 <span 
                   style={{ 
                     flex: '0 0 auto',
@@ -270,6 +292,14 @@ function Shows() {
           to {
             opacity: 1;
             transform: translateY(0);
+          }
+        }
+        @keyframes pulseGlow {
+          0%, 100% {
+            opacity: 0.5;
+          }
+          50% {
+            opacity: 1;
           }
         }
       `}</style>

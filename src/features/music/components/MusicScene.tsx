@@ -7,9 +7,15 @@ import { Canvas } from '@react-three/fiber'
 import { Preload } from '@react-three/drei'
 import * as THREE from 'three'
 import { useQuality, Fog, MinimalPostProcessing } from '@/shared/components/3d'
-import { AudioVisualizer, AudioParticles, WaveformRing } from './AudioVisualizer'
+import { FrequencyConstellation } from './FrequencyConstellation'
+import { Release } from '../types'
 
-function SceneContent() {
+interface MusicSceneProps {
+  releases?: Release[]
+  hoveredReleaseId?: string | null
+}
+
+function SceneContent({ releases = [], hoveredReleaseId = null }: MusicSceneProps) {
   const { settings } = useQuality()
 
   return (
@@ -23,14 +29,8 @@ function SceneContent() {
       {/* Fog */}
       <Fog color="#000000" density={0.04} />
 
-      {/* Audio Visualizer */}
-      <AudioVisualizer barCount={64} radius={3.5} height={2.5} />
-
-      {/* Waveform ring */}
-      <WaveformRing segments={96} />
-
-      {/* Particles */}
-      {settings.level !== 'low' && <AudioParticles count={400} />}
+      {/* Frequency Constellation */}
+      <FrequencyConstellation releases={releases} hoveredReleaseId={hoveredReleaseId} />
 
       {/* Post processing */}
       <MinimalPostProcessing />
@@ -38,7 +38,7 @@ function SceneContent() {
   )
 }
 
-export function MusicScene() {
+export function MusicScene({ releases = [], hoveredReleaseId = null }: MusicSceneProps) {
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export function MusicScene() {
         style={{ background: 'transparent' }}
       >
         <Suspense fallback={null}>
-          <SceneContent />
+          <SceneContent releases={releases} hoveredReleaseId={hoveredReleaseId} />
           <Preload all />
         </Suspense>
       </Canvas>

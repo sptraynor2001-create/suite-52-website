@@ -107,7 +107,7 @@ export function ParticleConstellationGlobe({
     }))
   }, [shows, radius])
   
-  // Base particles - distributed on sphere surface
+  // Base particles - distributed on sphere surface with bias toward continents
   const baseParticles = useMemo(() => {
     const positions = new Float32Array(baseParticleCount * 3)
     const velocities = new Float32Array(baseParticleCount * 3)
@@ -115,12 +115,37 @@ export function ParticleConstellationGlobe({
     const phases = new Float32Array(baseParticleCount)
     const densities = new Float32Array(baseParticleCount)
     
+    const continentBias = particleConfig.constellationGlobe.continentBias || 0.7
+    
     for (let i = 0; i < baseParticleCount; i++) {
       const i3 = i * 3
       
-      // Distribute evenly on sphere surface
-      const theta = Math.random() * Math.PI * 2
-      const phi = Math.acos(2 * Math.random() - 1)
+      let theta, phi, lat, lon, density
+      let attempts = 0
+      
+      // Bias distribution toward continents
+      do {
+        // Distribute on sphere surface
+        theta = Math.random() * Math.PI * 2
+        phi = Math.acos(2 * Math.random() - 1)
+        
+        const x = radius * Math.sin(phi) * Math.cos(theta)
+        const y = radius * Math.cos(phi)
+        const z = radius * Math.sin(phi) * Math.sin(theta)
+        
+        // Get continent density for this position
+        const pos = new THREE.Vector3(x, y, z)
+        const coords = positionToLatLon(pos)
+        lat = coords.lat
+        lon = coords.lon
+        density = getContinentDensity(lat, lon)
+        
+        attempts++
+        // Accept position if it's in a continent area, or randomly based on bias
+        if (density > 0.5 || Math.random() > continentBias || attempts > 50) {
+          break
+        }
+      } while (true)
       
       const x = radius * Math.sin(phi) * Math.cos(theta)
       const y = radius * Math.cos(phi)
@@ -134,14 +159,13 @@ export function ParticleConstellationGlobe({
       basePositions[i3 + 1] = y
       basePositions[i3 + 2] = z
       
-      // Get continent density for this position
-      const { lat, lon } = positionToLatLon(new THREE.Vector3(x, y, z))
-      densities[i] = getContinentDensity(lat, lon)
+      densities[i] = density
       
-      // Initial velocities (small random)
-      velocities[i3] = (Math.random() - 0.5) * 0.001
-      velocities[i3 + 1] = (Math.random() - 0.5) * 0.001
-      velocities[i3 + 2] = (Math.random() - 0.5) * 0.001
+      // Initial velocities (small random, slower in continents for stability)
+      const speed = density > 0.5 ? 0.0003 : 0.001
+      velocities[i3] = (Math.random() - 0.5) * speed
+      velocities[i3 + 1] = (Math.random() - 0.5) * speed
+      velocities[i3 + 2] = (Math.random() - 0.5) * speed
       
       phases[i] = Math.random() * Math.PI * 2
     }
@@ -248,8 +272,8 @@ export function ParticleConstellationGlobe({
     const time = state.clock.getElapsedTime()
     const delta = state.clock.getDelta()
     
-    // Auto-rotate globe
-    globeRef.current.rotation.y += particleConfig.constellationGlobe.rotationSpeed
+    // Auto-rotate globe (slower)
+    globeRef.current.rotation.y += particleConfig.constellationGlobe.rotationSpeed * 0.5
     
     // Get mouse position in 3D space (projected onto sphere)
     const mouse3D = new THREE.Vector3(
@@ -313,10 +337,23 @@ export function ParticleConstellationGlobe({
       const targetDensity = getContinentDensity(lat, lon)
       const densityDiff = targetDensity - 0.5 // Center around 0.5
       
-      // Apply attraction force based on density
-      const force = densityDiff * attractionStrength * 0.01
-      const direction = basePos.clone().normalize()
-      pos.addScaledVector(direction, force)
+      // Much stronger attraction for continent areas to create dense pixel-like clusters
+      if (targetDensity > 0.5) {
+        // Strong attraction toward continent center - creates dense clustering
+        const force = densityDiff * attractionStrength * 0.08
+        const direction = basePos.clone().normalize()
+        pos.addScaledVector(direction, force)
+        
+        // Additional inward pull to create tighter clusters (like dense pixels)
+        const inwardForce = targetDensity * attractionStrength * 0.03
+        pos.addScaledVector(direction, inwardForce)
+      } else {
+        // Ocean particles - push away from continents, spread out more
+        const force = Math.abs(densityDiff) * attractionStrength * 0.02
+        const direction = basePos.clone().normalize()
+        // Push ocean particles slightly outward
+        pos.addScaledVector(direction, -force * 0.5)
+      }
       
       // Mouse interaction - particles near mouse cluster more
       if (!isMobileDevice) {
@@ -349,13 +386,14 @@ export function ParticleConstellationGlobe({
       // Keep particles on sphere surface
       pos.normalize().multiplyScalar(radius)
       
-      // Add subtle drift
+      // Add subtle drift (less in continents for stability)
       const phase = baseParticles.phases[i]
+      const driftAmount = density > 0.5 ? 0.0003 : 0.001
       pos.addScaledVector(
         new THREE.Vector3(
-          Math.sin(time * 0.5 + phase) * 0.001,
-          Math.cos(time * 0.7 + phase) * 0.001,
-          Math.sin(time * 0.3 + phase) * 0.001
+          Math.sin(time * 0.5 + phase) * driftAmount,
+          Math.cos(time * 0.7 + phase) * driftAmount,
+          Math.sin(time * 0.3 + phase) * driftAmount
         ),
         1
       )
@@ -447,10 +485,10 @@ export function ParticleConstellationGlobe({
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.02}
+          size={0.015}
           color={0xffffff}
           transparent
-          opacity={0.4}
+          opacity={0.5}
           sizeAttenuation
           depthWrite={false}
           blending={THREE.AdditiveBlending}

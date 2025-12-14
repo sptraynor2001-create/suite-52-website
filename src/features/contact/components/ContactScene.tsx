@@ -7,9 +7,21 @@ import { Canvas } from '@react-three/fiber'
 import { Preload } from '@react-three/drei'
 import * as THREE from 'three'
 import { Fog, MinimalPostProcessing } from '@/shared/components/3d'
-import { SignalNetwork } from './SignalNetwork'
+import { ParticleDataStream } from './ParticleDataStream'
 
-function SceneContent() {
+interface ContactMethod {
+  id: string
+  label: string
+  value: string
+  type: 'email' | 'social'
+}
+
+interface ContactSceneProps {
+  contactMethods?: ContactMethod[]
+  hoveredContact?: string | null
+}
+
+function SceneContent({ contactMethods = [], hoveredContact = null }: ContactSceneProps) {
   return (
     <>
       {/* Lighting */}
@@ -20,8 +32,8 @@ function SceneContent() {
       {/* Fog */}
       <Fog color="#000000" density={0.04} />
 
-      {/* Signal Network */}
-      <SignalNetwork />
+      {/* Particle Data Stream */}
+      <ParticleDataStream contactMethods={contactMethods} hoveredContact={hoveredContact} />
 
       {/* Post processing */}
       <MinimalPostProcessing />
@@ -29,7 +41,7 @@ function SceneContent() {
   )
 }
 
-export function ContactScene() {
+export function ContactScene({ contactMethods = [], hoveredContact = null }: ContactSceneProps) {
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
@@ -62,7 +74,7 @@ export function ContactScene() {
         style={{ background: 'transparent' }}
       >
         <Suspense fallback={null}>
-          <SceneContent />
+          <SceneContent contactMethods={contactMethods} hoveredContact={hoveredContact} />
           <Preload all />
         </Suspense>
       </Canvas>

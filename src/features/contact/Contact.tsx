@@ -18,6 +18,7 @@ import {
   FaTwitter
 } from 'react-icons/fa'
 import { socialLinks as socialLinksData } from './data'
+import { ContactScene } from './components/ContactScene'
 
 // Social platform configurations with brand colors and icons
 const socialPlatforms = [
@@ -90,6 +91,26 @@ function Contact() {
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
   const [visibleSections, setVisibleSections] = useState(0)
   const [hoveredLink, setHoveredLink] = useState<string | null>(null)
+  const [hoveredContact, setHoveredContact] = useState<string | null>(null)
+  
+  // Combine contact methods for 3D scene
+  const contactMethods = useMemo(() => {
+    const methods = [
+      ...contactInfo.map(info => ({
+        id: `email-${info.label.toLowerCase().replace(/\s+/g, '-')}`,
+        label: info.label,
+        value: info.value,
+        type: 'email' as const,
+      })),
+      ...socialPlatforms.map(platform => ({
+        id: `social-${platform.name.toLowerCase()}`,
+        label: platform.name,
+        value: socialLinksData[platform.key] as string,
+        type: 'social' as const,
+      })),
+    ]
+    return methods
+  }, [])
 
   useEffect(() => {
     const handleResize = () => setViewportWidth(window.innerWidth)
@@ -124,6 +145,9 @@ function Contact() {
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
+      {/* 3D Background Scene */}
+      <ContactScene contactMethods={contactMethods} hoveredContact={hoveredContact} />
+      
       {/* Background image */}
       <div
         style={{
@@ -170,9 +194,7 @@ function Contact() {
               fontFamily: activeFont.family,
               margin: 0,
               textShadow: '0 0 30px rgba(255, 255, 255, 0.2)',
-              opacity: visibleSections > 0 ? 1 : 0,
-              transform: visibleSections > 0 ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
+              animation: 'slideUp 0.6s ease-out 0.1s both',
             }}
           >
             CONTACT
@@ -184,8 +206,7 @@ function Contact() {
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',
               margin: '12px 0 0 0',
-              opacity: visibleSections > 0 ? 1 : 0,
-              transition: 'opacity 0.8s ease-out 0.2s',
+              animation: 'slideUp 0.6s ease-out 0.2s both',
             }}
           >
             {'// OPEN_CHANNEL :: protocol.establish(signal => response)'}
@@ -241,9 +262,11 @@ function Contact() {
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.color = '#e63946'
+                      setHoveredContact(`email-${info.label.toLowerCase().replace(/\s+/g, '-')}`)
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.color = '#ffffff'
+                      setHoveredContact(null)
                     }}
                   >
                     {info.value}
@@ -303,8 +326,14 @@ function Contact() {
                       : '0 2px 4px rgba(0, 0, 0, 0.2)',
                     overflow: 'hidden',
                   }}
-                  onMouseEnter={() => setHoveredLink(platform.name)}
-                  onMouseLeave={() => setHoveredLink(null)}
+                  onMouseEnter={() => {
+                    setHoveredLink(platform.name)
+                    setHoveredContact(`social-${platform.name.toLowerCase()}`)
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredLink(null)
+                    setHoveredContact(null)
+                  }}
                 >
                   {/* Background gradient effect on hover */}
                   <div
@@ -364,6 +393,16 @@ function Contact() {
         @keyframes fadeInBackground015 {
           from { opacity: 0; }
           to { opacity: ${backgrounds.contact.opacity}; }
+        }
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
       `}</style>
     </div>
