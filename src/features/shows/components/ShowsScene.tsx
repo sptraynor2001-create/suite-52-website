@@ -28,25 +28,11 @@ const eventLocations = [
 interface ShowsSceneProps {
 }
 
-function latLonToPosition(lat: number, lon: number, radius: number): THREE.Vector3 {
-  const phi = (90 - lat) * (Math.PI / 180)
-  const theta = (lon + 180) * (Math.PI / 180)
-  
-  return new THREE.Vector3(
-    -radius * Math.sin(phi) * Math.cos(theta),
-    radius * Math.cos(phi),
-    radius * Math.sin(phi) * Math.sin(theta)
-  )
-}
-
-function SceneContent({ onEventHover, hoveredShowIndex }: ShowsSceneProps) {
+function SceneContent({}: ShowsSceneProps) {
   const { settings } = useQuality()
 
   return (
     <>
-      {/* Camera controller */}
-      <CameraController hoveredShowIndex={hoveredShowIndex} />
-
       {/* Lighting */}
       <ambientLight intensity={0.15} />
       <pointLight position={[10, 10, 10]} intensity={0.4} color={0xffffff} />
@@ -59,7 +45,6 @@ function SceneContent({ onEventHover, hoveredShowIndex }: ShowsSceneProps) {
       <ParticleConstellationGlobe 
         shows={eventLocations}
         radius={2.5}
-        onShowHover={onEventHover}
       />
 
       {/* Connection arcs between shows */}

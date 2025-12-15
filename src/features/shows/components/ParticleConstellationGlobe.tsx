@@ -275,7 +275,7 @@ export function ParticleConstellationGlobe({
   
   // Animation frame
   useFrame((state) => {
-    if (!globeRef.current || !baseParticlesRef.current || !constellationParticlesRef.current || !plasmaParticlesRef.current) return
+    if (!globeRef.current || !baseParticlesRef.current || !plasmaParticlesRef.current) return
     
     const time = state.clock.getElapsedTime()
     const delta = state.clock.getDelta()
@@ -355,9 +355,10 @@ export function ParticleConstellationGlobe({
     baseParticlesRef.current.geometry.attributes.position.needsUpdate = true
     
     // Update constellation particles (red clusters)
-    const constellationPositions = constellationParticlesRef.current.geometry.attributes.position.array as Float32Array
-    
-    for (let i = 0; i < constellationParticles.totalCount; i++) {
+    if (constellationParticlesRef.current && constellationParticles.totalCount > 0) {
+      const constellationPositions = constellationParticlesRef.current.geometry.attributes.position.array as Float32Array
+      
+      for (let i = 0; i < constellationParticles.totalCount; i++) {
       const i3 = i * 3
       const showIndex = constellationParticles.showIndices[i]
       const show = showPositions[showIndex]
@@ -389,12 +390,13 @@ export function ParticleConstellationGlobe({
       
       const finalPos = show.position.clone().add(rotatedOffset)
       
-      constellationPositions[i3] = finalPos.x
-      constellationPositions[i3 + 1] = finalPos.y
-      constellationPositions[i3 + 2] = finalPos.z
+        constellationPositions[i3] = finalPos.x
+        constellationPositions[i3 + 1] = finalPos.y
+        constellationPositions[i3 + 2] = finalPos.z
+      }
+      
+      constellationParticlesRef.current.geometry.attributes.position.needsUpdate = true
     }
-    
-    constellationParticlesRef.current.geometry.attributes.position.needsUpdate = true
     
     // Update plasma particles
     const plasmaPositions = plasmaParticlesRef.current.geometry.attributes.position.array as Float32Array
