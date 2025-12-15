@@ -68,11 +68,14 @@ export function SoundWaveInterference({
     return Math.min(target, settings.particleCount)
   }, [settings.particleCount, isMobileDevice])
   
-  // Initialize particles in a grid
+  // Initialize particles in a grid - mostly still positions
   const particles = useMemo(() => {
     const positions = new Float32Array(particleCount * 3)
     const basePositions = new Float32Array(particleCount * 3)
-    const velocities = new Float32Array(particleCount * 3)
+    const glitchPhases = new Float32Array(particleCount) // When to glitch
+    const flashPhases = new Float32Array(particleCount) // When to flash
+    const glitchIntensities = new Float32Array(particleCount) // How much to glitch
+    const flashIntensities = new Float32Array(particleCount) // Flash intensity
     
     // Create a grid of particles
     const gridSize = Math.ceil(Math.sqrt(particleCount))
@@ -81,7 +84,7 @@ export function SoundWaveInterference({
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3
       
-      // Grid position
+      // Grid position - mostly static
       const x = (i % gridSize - gridSize / 2) * spacing
       const z = (Math.floor(i / gridSize) - gridSize / 2) * spacing
       const y = (Math.random() - 0.5) * 2
@@ -94,21 +97,26 @@ export function SoundWaveInterference({
       basePositions[i3 + 1] = y
       basePositions[i3 + 2] = z
       
-      // Random velocity for initial motion
-      velocities[i3] = (Math.random() - 0.5) * 0.01
-      velocities[i3 + 1] = (Math.random() - 0.5) * 0.01
-      velocities[i3 + 2] = (Math.random() - 0.5) * 0.01
+      // Random glitch/flash timing
+      glitchPhases[i] = Math.random() * Math.PI * 2
+      flashPhases[i] = Math.random() * Math.PI * 2
+      glitchIntensities[i] = 0.05 + Math.random() * 0.1 // Glitch distance
+      flashIntensities[i] = 0.3 + Math.random() * 0.7 // Flash intensity
     }
     
-    return { positions, basePositions, velocities }
+    return { positions, basePositions, glitchPhases, flashPhases, glitchIntensities, flashIntensities }
   }, [particleCount])
   
-  // Animation frame
+  // Animation frame - glitch and flash effects
   useFrame((state) => {
     if (!particlesRef.current) return
     
     const time = state.clock.getElapsedTime()
     const positions = particlesRef.current.geometry.attributes.position.array as Float32Array
+    const material = particlesRef.current.material as THREE.PointsMaterial
+    
+    // Create opacity array for flashing
+    const opacities = new Float32Array(particleCount)
     
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3
@@ -119,71 +127,83 @@ export function SoundWaveInterference({
         particles.basePositions[i3 + 2]
       )
       
-      // Calculate total wave displacement from all sources
-      let totalDisplacement = 0
-      let maxAmplitude = 0
+      // Glitch effect - sudden position jumps (more frequent and random)
+      const glitchFrequency = 2.0 + Math.random() * 4.0
+      const glitchTrigger = Math.sin(time * glitchFrequency + particles.glitchPhases[i])
       
-      waveSources.forEach((source) => {
-        const isHovered = hoveredSetId === source.set.id
-        const isOtherHovered = hoveredSetId !== null && hoveredSetId !== source.set.id
-        
-        // If hovering, fade out other waves
-        if (isOtherHovered) {
-          return // Skip this source
-        }
-        
-        const displacement = calculateWaveDisplacement(
-          basePos,
-          source.position,
-          time,
-          particleConfig.soundWaveInterference.waveFrequency,
-          particleConfig.soundWaveInterference.waveSpeed
+      // Glitch when trigger crosses threshold (sudden jumps)
+      let glitchOffset = new THREE.Vector3(0, 0, 0)
+      if (Math.abs(glitchTrigger) > 0.85 || Math.random() > 0.98) {
+        // Sudden glitch displacement - more pronounced
+        const glitchAmount = particles.glitchIntensities[i] * 1.5
+        glitchOffset.set(
+          (Math.random() - 0.5) * glitchAmount,
+          (Math.random() - 0.5) * glitchAmount,
+          (Math.random() - 0.5) * glitchAmount
         )
-        
-        // Interference: add waves together
-        totalDisplacement += displacement
-        maxAmplitude = Math.max(maxAmplitude, Math.abs(displacement))
-      })
+      }
       
-      // Apply interference strength
-      const interference = totalDisplacement * particleConfig.soundWaveInterference.interferenceStrength
+      // Flash effect - rapid opacity changes
+      const flashSpeed = 8.0 + Math.random() * 6.0
+      const flash = Math.sin(time * flashSpeed + particles.flashPhases[i])
+      const flashIntensity = particles.flashIntensities[i]
       
-      // Calculate displacement direction (toward/away from sources)
-      const displacementVector = new THREE.Vector3()
-      waveSources.forEach((source) => {
-        if (hoveredSetId !== null && hoveredSetId !== source.set.id) {
-          return // Skip non-hovered sources
-        }
-        
-        const direction = basePos.clone().sub(source.position).normalize()
-        const distance = basePos.distanceTo(source.position)
-        const waveStrength = Math.sin(
-          (distance / particleConfig.soundWaveInterference.waveSpeed - time) *
-          particleConfig.soundWaveInterference.waveFrequency * Math.PI * 2
-        ) / (1 + distance * 0.3)
-        
-        displacementVector.addScaledVector(direction, waveStrength * 0.5)
-      })
+      // Flash when crossing threshold - more dramatic
+      if (flash > 0.8) {
+        opacities[i] = 0.1 + flashIntensity * 1.0 // Bright flash
+      } else if (flash < -0.8) {
+        opacities[i] = 0.05 + flashIntensity * 0.2 // Dim flash
+      } else {
+        opacities[i] = 0.3 + flashIntensity * 0.4 // Normal
+      }
       
-      // Final position = base + displacement
-      const finalPos = basePos.clone().add(displacementVector.multiplyScalar(interference))
+      // Random extra flashes
+      if (Math.random() > 0.97) {
+        opacities[i] = Math.min(1.0, opacities[i] * 2.0)
+      }
       
-      // Add some vertical oscillation for wave effect
-      finalPos.y += Math.sin(time * particleConfig.soundWaveInterference.waveFrequency + basePos.x * 0.5) * 0.1
+      // Hover effect - particles near hovered set flash more intensely
+      if (hoveredSetId) {
+        waveSources.forEach((source) => {
+          if (hoveredSetId === source.set.id) {
+            const distToSource = basePos.distanceTo(source.position)
+            if (distToSource < 2.5) {
+              // Increase flash intensity near source
+              opacities[i] = Math.min(1.0, opacities[i] * 1.8)
+              // More frequent glitches near source
+              if (Math.random() > 0.92) {
+                glitchOffset.multiplyScalar(2.0)
+              }
+            }
+          }
+        })
+      }
+      
+      // Final position = base + glitch offset
+      const finalPos = basePos.clone().add(glitchOffset)
       
       positions[i3] = finalPos.x
       positions[i3 + 1] = finalPos.y
       positions[i3 + 2] = finalPos.z
     }
     
+    // Update positions
     particlesRef.current.geometry.attributes.position.needsUpdate = true
+    
+    // Update opacity - use max for more dramatic flashing effect
+    const maxOpacity = Math.max(...Array.from(opacities))
+    const avgOpacity = opacities.reduce((a, b) => a + b, 0) / particleCount
+    // Blend max and avg for visible flashing
+    material.opacity = hoveredSetId 
+      ? Math.min(1.0, (maxOpacity * 0.6 + avgOpacity * 0.4) * 1.3)
+      : Math.min(0.9, maxOpacity * 0.5 + avgOpacity * 0.5)
   })
   
   if (waveSources.length === 0) return null
   
   return (
     <group>
-      {/* Wave particles */}
+      {/* Glitch particles */}
       <points ref={particlesRef}>
         <bufferGeometry>
           <bufferAttribute
@@ -194,10 +214,10 @@ export function SoundWaveInterference({
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.02}
+          size={0.015}
           color={hoveredSetId ? 0xe63946 : 0xffffff}
           transparent
-          opacity={hoveredSetId ? 1.0 : 0.9}
+          opacity={hoveredSetId ? 0.9 : 0.6}
           sizeAttenuation
           depthWrite={false}
           blending={THREE.AdditiveBlending}
