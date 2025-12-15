@@ -288,14 +288,56 @@ function Contact() {
             transition: 'opacity 0.6s ease-out 0.1s, transform 0.6s ease-out 0.1s',
           }}
         >
+          {/* Liquid glass background */}
           <div
             style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '16px',
-              justifyContent: 'center',
+              position: 'relative',
+              padding: '32px 40px',
+              borderRadius: '20px',
+              background: 'rgba(255, 255, 255, 0.05)',
+              backdropFilter: 'blur(20px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+              overflow: 'hidden',
             }}
           >
+            {/* Animated liquid glass effect */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '-50%',
+                left: '-50%',
+                width: '200%',
+                height: '200%',
+                background: 'radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)',
+                animation: 'liquidGlassFlow 8s ease-in-out infinite',
+                pointerEvents: 'none',
+              }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                top: '-50%',
+                right: '-50%',
+                width: '200%',
+                height: '200%',
+                background: 'radial-gradient(circle at 70% 70%, rgba(230, 57, 70, 0.08) 0%, transparent 50%)',
+                animation: 'liquidGlassFlow 12s ease-in-out infinite reverse',
+                pointerEvents: 'none',
+              }}
+            />
+            
+            <div
+              style={{
+                position: 'relative',
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '16px',
+                justifyContent: 'center',
+                zIndex: 1,
+              }}
+            >
             {socialPlatforms.map((platform) => {
               const isHovered = hoveredLink === platform.name
               const Icon = platform.icon
@@ -368,6 +410,7 @@ function Contact() {
                 </a>
               )
             })}
+            </div>
           </div>
         </div>
 
@@ -402,6 +445,24 @@ function Contact() {
           to {
             opacity: 1;
             transform: translateY(0);
+          }
+        }
+        @keyframes liquidGlassFlow {
+          0%, 100% {
+            transform: translate(0, 0) scale(1);
+            opacity: 0.3;
+          }
+          25% {
+            transform: translate(10%, -10%) scale(1.1);
+            opacity: 0.5;
+          }
+          50% {
+            transform: translate(-5%, 5%) scale(0.9);
+            opacity: 0.4;
+          }
+          75% {
+            transform: translate(-10%, 10%) scale(1.05);
+            opacity: 0.45;
           }
         }
       `}</style>
