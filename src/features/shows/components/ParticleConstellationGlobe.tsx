@@ -8,7 +8,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useQuality } from '@/shared/components/3d'
 import { particleConfig } from '@/config/particles'
-import { breakpoints } from '@/themes/breakpoints'
+import { useIsMobile } from '@/shared/hooks/useIsMobile'
 
 interface ShowMarker {
   name: string
@@ -73,17 +73,12 @@ export function ParticleConstellationGlobe({
   const globeRef = useRef<THREE.Group>(null)
   const baseParticlesRef = useRef<THREE.Points>(null)
   const constellationParticlesRef = useRef<THREE.Points>(null)
-  const { settings, isMobile } = useQuality()
+  const { settings } = useQuality()
   const { pointer } = useThree()
+  const isMobileDevice = useIsMobile()
   
   const [mouseHover, setMouseHover] = useState(false)
   const [hoveredShow, setHoveredShow] = useState<number | null>(null)
-  
-  // Detect mobile
-  const isMobileDevice = typeof window !== 'undefined' && (
-    window.innerWidth < breakpoints.tablet || 
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-  )
   
   // Particle counts based on quality
   const baseParticleCount = useMemo(() => {
