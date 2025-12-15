@@ -78,17 +78,21 @@ export function SoundWaveInterference({
     const glitchIntensities = new Float32Array(particleCount) // How much to glitch
     const flashIntensities = new Float32Array(particleCount) // Flash intensity
     
-    // Create a grid of particles - more spread out
+    // Create a grid of particles spread across entire XY plane
     const gridSize = Math.ceil(Math.sqrt(particleCount))
     const spacing = 0.5 // Increased spacing for less density
+    const planeWidth = (gridSize - 1) * spacing // Total width of plane
+    const planeHeight = (gridSize - 1) * spacing // Total height of plane
     
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3
       
-      // Grid position - mostly static
-      const x = (i % gridSize - gridSize / 2) * spacing
-      const z = (Math.floor(i / gridSize) - gridSize / 2) * spacing
-      const y = (Math.random() - 0.5) * 2
+      // Grid position spread across XY plane (Z is depth)
+      const gridX = i % gridSize
+      const gridY = Math.floor(i / gridSize)
+      const x = (gridX - gridSize / 2) * spacing
+      const y = (gridY - gridSize / 2) * spacing
+      const z = (Math.random() - 0.5) * 1.5 // Small depth variation
       
       positions[i3] = x
       positions[i3 + 1] = y
