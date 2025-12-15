@@ -23,13 +23,8 @@ export function QuantumField({
   sectionCount = 4,
 }: QuantumFieldProps) {
   const particlesRef = useRef<THREE.Points>(null)
-  const { settings, isMobile } = useQuality()
-  
-  // Detect mobile
-  const isMobileDevice = typeof window !== 'undefined' && (
-    window.innerWidth < breakpoints.tablet || 
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-  )
+  const { settings } = useQuality()
+  const isMobileDevice = useIsMobile()
   
   // Particle count based on quality
   const particleCount = useMemo(() => {
