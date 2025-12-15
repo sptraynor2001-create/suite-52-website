@@ -108,7 +108,8 @@ export function SoundWaveInterference({
       flashPhases[i] = Math.random() * Math.PI * 2
       glitchIntensities[i] = 0.05 + Math.random() * 0.1 // Glitch distance
       flashIntensities[i] = 0.3 + Math.random() * 0.7 // Flash intensity
-      sizes[i] = 0.01 + Math.random() * 0.02 // Random size between 0.01 and 0.03
+      // Much more size variation - from very small to quite large
+      sizes[i] = 0.005 + Math.random() * 0.04 // Random size between 0.005 and 0.045 (9x variation)
     }
     
     return { positions, basePositions, glitchPhases, flashPhases, glitchIntensities, flashIntensities, sizes }
