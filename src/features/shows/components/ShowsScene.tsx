@@ -8,7 +8,6 @@ import { Preload } from '@react-three/drei'
 import * as THREE from 'three'
 import { useQuality, Fog, MinimalPostProcessing } from '@/shared/components/3d'
 import { ParticleConstellationGlobe } from './ParticleConstellationGlobe'
-import { ShowConnections } from './TimelineVisualizer'
 
 // Event locations (approximate coordinates)
 const eventLocations = [
@@ -46,9 +45,6 @@ function SceneContent({}: ShowsSceneProps) {
         shows={eventLocations}
         radius={2.5}
       />
-
-      {/* Connection arcs between shows */}
-      <ShowConnections shows={eventLocations} radius={2.5} />
 
       {/* Post processing */}
       <MinimalPostProcessing />
