@@ -115,9 +115,6 @@ function Music() {
               letterSpacing: '0.1em',
               margin: '6px auto 0',
               animation: 'slideUp 0.6s ease-out 0.2s both',
-              backgroundColor: '#000000',
-              padding: '4px 8px',
-              borderRadius: '4px',
               maxWidth: '800px',
               display: 'block',
             }}
