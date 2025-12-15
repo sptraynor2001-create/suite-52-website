@@ -60,12 +60,13 @@ export function SoundWaveInterference({
     }))
   }, [liveSets])
   
-  // Particle count
+  // Particle count - less dense
   const particleCount = useMemo(() => {
     const target = isMobileDevice
       ? particleConfig.soundWaveInterference.waveParticles.mobile
       : particleConfig.soundWaveInterference.waveParticles.desktop
-    return Math.min(target, settings.particleCount)
+    // Reduce density by 60%
+    return Math.min(Math.floor(target * 0.4), Math.floor(settings.particleCount * 0.4))
   }, [settings.particleCount, isMobileDevice])
   
   // Initialize particles in a grid - mostly still positions
@@ -77,9 +78,9 @@ export function SoundWaveInterference({
     const glitchIntensities = new Float32Array(particleCount) // How much to glitch
     const flashIntensities = new Float32Array(particleCount) // Flash intensity
     
-    // Create a grid of particles
+    // Create a grid of particles - more spread out
     const gridSize = Math.ceil(Math.sqrt(particleCount))
-    const spacing = 0.3
+    const spacing = 0.5 // Increased spacing for less density
     
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3
@@ -127,52 +128,66 @@ export function SoundWaveInterference({
         particles.basePositions[i3 + 2]
       )
       
-      // Glitch effect - sudden position jumps (more frequent and random)
-      const glitchFrequency = 2.0 + Math.random() * 4.0
-      const glitchTrigger = Math.sin(time * glitchFrequency + particles.glitchPhases[i])
+      // Glitch effect - slower, more random sudden position jumps
+      // Use stored phase for consistent but random timing per particle
+      const baseGlitchSpeed = 0.3 + particles.glitchPhases[i] * 0.2 // Slower base speed
+      const randomVariation = Math.sin(time * 0.1 + i) * 0.15 // Slow random variation
+      const glitchFrequency = baseGlitchSpeed + randomVariation
+      const glitchTrigger = Math.sin(time * glitchFrequency + particles.glitchPhases[i] * Math.PI)
       
-      // Glitch when trigger crosses threshold (sudden jumps)
+      // More random glitch timing - less frequent
+      const randomGlitchChance = Math.random()
+      const shouldGlitch = Math.abs(glitchTrigger) > 0.95 && randomGlitchChance > 0.85
+      
       let glitchOffset = new THREE.Vector3(0, 0, 0)
-      if (Math.abs(glitchTrigger) > 0.85 || Math.random() > 0.98) {
-        // Sudden glitch displacement - more pronounced
-        const glitchAmount = particles.glitchIntensities[i] * 1.5
-        glitchOffset.set(
-          (Math.random() - 0.5) * glitchAmount,
-          (Math.random() - 0.5) * glitchAmount,
-          (Math.random() - 0.5) * glitchAmount
-        )
+      if (shouldGlitch) {
+        // Sudden glitch displacement - random direction and intensity
+        const glitchAmount = particles.glitchIntensities[i] * (0.8 + Math.random() * 0.8)
+        const randomDir = new THREE.Vector3(
+          Math.random() - 0.5,
+          Math.random() - 0.5,
+          Math.random() - 0.5
+        ).normalize()
+        glitchOffset = randomDir.multiplyScalar(glitchAmount)
       }
       
-      // Flash effect - rapid opacity changes
-      const flashSpeed = 8.0 + Math.random() * 6.0
-      const flash = Math.sin(time * flashSpeed + particles.flashPhases[i])
+      // Flash effect - slower, more random opacity changes
+      const baseFlashSpeed = 1.5 + particles.flashPhases[i] * 0.5 // Much slower
+      const flashVariation = Math.sin(time * 0.08 + i * 0.1) * 0.3
+      const flashSpeed = baseFlashSpeed + flashVariation
+      const flash = Math.sin(time * flashSpeed + particles.flashPhases[i] * Math.PI)
       const flashIntensity = particles.flashIntensities[i]
       
-      // Flash when crossing threshold - more dramatic
-      if (flash > 0.8) {
-        opacities[i] = 0.1 + flashIntensity * 1.0 // Bright flash
-      } else if (flash < -0.8) {
-        opacities[i] = 0.05 + flashIntensity * 0.2 // Dim flash
+      // More random flash timing
+      const randomFlashMod = Math.random() * 0.3 - 0.15
+      const flashThreshold = 0.7 + randomFlashMod
+      
+      if (flash > flashThreshold) {
+        opacities[i] = 0.15 + flashIntensity * 0.7 // Bright flash
+      } else if (flash < -flashThreshold) {
+        opacities[i] = 0.1 + flashIntensity * 0.15 // Dim flash
       } else {
-        opacities[i] = 0.3 + flashIntensity * 0.4 // Normal
+        opacities[i] = 0.25 + flashIntensity * 0.3 // Normal
       }
       
-      // Random extra flashes
-      if (Math.random() > 0.97) {
-        opacities[i] = Math.min(1.0, opacities[i] * 2.0)
+      // Very rare random extra flashes (much less frequent)
+      if (Math.random() > 0.995) {
+        opacities[i] = Math.min(1.0, opacities[i] * (1.5 + Math.random() * 0.5))
       }
       
-      // Hover effect - particles near hovered set flash more intensely
+      // Hover effect - particles near hovered set flash more intensely (but still random)
       if (hoveredSetId) {
         waveSources.forEach((source) => {
           if (hoveredSetId === source.set.id) {
             const distToSource = basePos.distanceTo(source.position)
-            if (distToSource < 2.5) {
-              // Increase flash intensity near source
-              opacities[i] = Math.min(1.0, opacities[i] * 1.8)
-              // More frequent glitches near source
-              if (Math.random() > 0.92) {
-                glitchOffset.multiplyScalar(2.0)
+            if (distToSource < 3.0) {
+              // Increase flash intensity near source (randomly)
+              if (Math.random() > 0.7) {
+                opacities[i] = Math.min(1.0, opacities[i] * (1.3 + Math.random() * 0.4))
+              }
+              // Occasional glitches near source (less frequent)
+              if (Math.random() > 0.96) {
+                glitchOffset.multiplyScalar(1.5 + Math.random() * 0.5)
               }
             }
           }
@@ -190,13 +205,13 @@ export function SoundWaveInterference({
     // Update positions
     particlesRef.current.geometry.attributes.position.needsUpdate = true
     
-    // Update opacity - use max for more dramatic flashing effect
+    // Update opacity - more subtle overall
     const maxOpacity = Math.max(...Array.from(opacities))
     const avgOpacity = opacities.reduce((a, b) => a + b, 0) / particleCount
-    // Blend max and avg for visible flashing
+    // More subtle flashing - blend max and avg
     material.opacity = hoveredSetId 
-      ? Math.min(1.0, (maxOpacity * 0.6 + avgOpacity * 0.4) * 1.3)
-      : Math.min(0.9, maxOpacity * 0.5 + avgOpacity * 0.5)
+      ? Math.min(0.85, (maxOpacity * 0.4 + avgOpacity * 0.6) * 1.2)
+      : Math.min(0.7, maxOpacity * 0.3 + avgOpacity * 0.7)
   })
   
   if (waveSources.length === 0) return null
