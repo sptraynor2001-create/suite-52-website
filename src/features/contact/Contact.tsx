@@ -182,8 +182,13 @@ function Contact() {
               fontSize: viewportWidth <= breakpoints.mobile ? '11px' : viewportWidth <= breakpoints.tablet ? '12px' : '12px',
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',
-              margin: '12px 0 0 0',
+              margin: '6px auto 0',
               animation: 'slideUp 0.6s ease-out 0.2s both',
+              backgroundColor: '#000000',
+              padding: '4px 8px',
+              borderRadius: '4px',
+              maxWidth: '700px',
+              display: 'block',
             }}
           >
             {'// OPEN_CHANNEL :: protocol.establish(signal => response)'}
@@ -367,22 +372,6 @@ function Contact() {
           })}
         </div>
 
-        {/* Footer note */}
-        <p
-          style={{
-            maxWidth: '700px',
-            margin: '24px auto 0',
-            textAlign: 'center',
-            color: 'rgba(255, 255, 255, 0.3)',
-            fontSize: viewportWidth <= 768 ? '9px' : '12px',
-            fontFamily: activeFont.family,
-            letterSpacing: '0.1em',
-            opacity: visibleSections >= 3 ? 1 : 0,
-            transition: 'opacity 1s ease-out 2s',
-          }}
-        >
-          [ THE SIGNAL SEARCHES FOR THOSE WILLING TO LISTEN ]
-        </p>
       </div>
 
       <style>{`

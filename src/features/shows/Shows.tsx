@@ -139,8 +139,13 @@ function Shows() {
               fontSize: viewportWidth <= breakpoints.mobile ? '11px' : viewportWidth <= breakpoints.tablet ? '12px' : '12px',
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',
-              margin: '12px 0 0 0',
+              margin: '6px auto 0',
               animation: 'slideIn 0.5s ease-out 0.2s both',
+              backgroundColor: '#000000',
+              padding: '4px 8px',
+              borderRadius: '4px',
+              maxWidth: '800px',
+              display: 'block',
             }}
           >
             {'// TIMELINE.query(t => t.status === PENDING && t.coordinates !== NULL)'}
@@ -247,23 +252,6 @@ function Shows() {
             )
           })}
         </div>
-
-        {/* Footer note */}
-        <p
-          style={{
-            maxWidth: '800px',
-            margin: '24px auto 0',
-            textAlign: 'center',
-            color: 'rgba(255, 255, 255, 0.3)',
-            fontSize: viewportWidth <= 768 ? '9px' : '12px',
-            fontFamily: activeFont.family,
-            letterSpacing: '0.1em',
-            opacity: visibleShows > 0 ? 1 : 0,
-            transition: 'opacity 1s ease-out 2s',
-          }}
-        >
-          [ WHERE THE FREQUENCIES CONVERGE, WE GATHER ]
-        </p>
 
       </div>
 

@@ -173,8 +173,8 @@ export const particleConfig = {
       mobile: 4000,
     },
     constellationParticles: {
-      desktop: 25,
-      mobile: 15,
+      desktop: 40,
+      mobile: 25,
     },
     waveInterval: 3.5, // seconds
     waveSpeed: 0.8,

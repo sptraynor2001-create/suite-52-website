@@ -170,16 +170,41 @@ export function ParticleConstellationGlobe({
     const baseOffsets = new Float32Array(totalConstellationParticles * 3)
     const phases = new Float32Array(totalConstellationParticles)
     const showIndices = new Uint16Array(totalConstellationParticles)
+    const sizes = new Float32Array(totalConstellationParticles)
+    const pulseSpeeds = new Float32Array(totalConstellationParticles)
+    const orbitalSpeeds = new Float32Array(totalConstellationParticles)
+    const pulseAmplitudes = new Float32Array(totalConstellationParticles)
     
     let particleIndex = 0
     showPositions.forEach((show, showIndex) => {
       for (let i = 0; i < constellationParticleCount; i++) {
         const i3 = particleIndex * 3
         
-        // Distribute particles in small sphere around show location
-        const theta = Math.random() * Math.PI * 2
-        const phi = Math.acos(2 * Math.random() - 1)
-        const r = 0.15 * Math.random() // Small radius around show
+        // Much more variation in distribution - mix of patterns
+        const patternType = Math.random()
+        let r, theta, phi
+        
+        if (patternType < 0.3) {
+          // Tight cluster
+          r = 0.1 + Math.random() * 0.2
+          theta = Math.random() * Math.PI * 2
+          phi = Math.acos(2 * Math.random() - 1)
+        } else if (patternType < 0.6) {
+          // Medium spread
+          r = 0.2 + Math.random() * 0.3
+          theta = Math.random() * Math.PI * 2
+          phi = Math.acos(2 * Math.random() - 1)
+        } else if (patternType < 0.85) {
+          // Wide spread
+          r = 0.3 + Math.random() * 0.4
+          theta = Math.random() * Math.PI * 2
+          phi = Math.acos(2 * Math.random() - 1)
+        } else {
+          // Very wide outliers
+          r = 0.5 + Math.random() * 0.5
+          theta = Math.random() * Math.PI * 2
+          phi = Math.acos(2 * Math.random() - 1)
+        }
         
         const offset = new THREE.Vector3(
           r * Math.sin(phi) * Math.cos(theta),
@@ -211,16 +236,38 @@ export function ParticleConstellationGlobe({
         phases[particleIndex] = Math.random() * Math.PI * 2
         showIndices[particleIndex] = showIndex
         
+        // Much more size variation - from small to large
+        sizes[particleIndex] = 0.04 + Math.random() * 0.12 // 0.04 to 0.16 (4x variation)
+        
+        // Variation in pulse speeds
+        pulseSpeeds[particleIndex] = 1.0 + Math.random() * 3.0 // 1.0 to 4.0
+        
+        // Variation in orbital speeds
+        orbitalSpeeds[particleIndex] = 0.1 + Math.random() * 0.6 // 0.1 to 0.7
+        
+        // Variation in pulse amplitude
+        pulseAmplitudes[particleIndex] = 0.15 + Math.random() * 0.35 // 0.15 to 0.5
+        
         particleIndex++
       }
     })
     
-    return { positions, baseOffsets, phases, showIndices, totalCount: totalConstellationParticles }
+    return { 
+      positions, 
+      baseOffsets, 
+      phases, 
+      showIndices, 
+      sizes,
+      pulseSpeeds,
+      orbitalSpeeds,
+      pulseAmplitudes,
+      totalCount: totalConstellationParticles 
+    }
   }, [showPositions, constellationParticleCount])
   
   // Plasma particles - spin out from globe like solar flares
   const plasmaParticleCount = useMemo(() => {
-    return isMobileDevice ? 150 : 300
+    return isMobileDevice ? 300 : 600
   }, [isMobileDevice])
 
   const plasmaParticles = useMemo(() => {
@@ -261,8 +308,8 @@ export function ParticleConstellationGlobe({
       velocities[i3 + 1] = direction.y * speed
       velocities[i3 + 2] = direction.z * speed
       
-      // Max distance (some go far, some stay closer)
-      maxDistances[i] = radius * (1.2 + Math.random() * 0.8) // 1.2x to 2x radius
+      // Max distance (some go far, some stay closer) - closer but still varied
+      maxDistances[i] = radius * (1.1 + Math.random() * 0.5) // 1.1x to 1.6x radius (closer, but varied)
       
       // 60% return, 40% permanent
       returnTypes[i] = Math.random() < 0.6 ? 1 : 0
@@ -372,17 +419,20 @@ export function ParticleConstellationGlobe({
         constellationParticles.baseOffsets[i3 + 2]
       )
       
-      // Pulse animation (breathing effect)
-      const pulse = 0.8 + Math.sin(time * 2 + constellationParticles.phases[i]) * 0.2
+      // Pulse animation (breathing effect) - varied per particle
+      const pulseSpeed = constellationParticles.pulseSpeeds[i]
+      const pulseAmp = constellationParticles.pulseAmplitudes[i]
+      const pulse = 0.7 + Math.sin(time * pulseSpeed + constellationParticles.phases[i]) * pulseAmp
       const scaledOffset = baseOffset.clone().multiplyScalar(pulse)
       
-      // Rotate offset around show position (orbital motion)
+      // Rotate offset around show position (orbital motion) - varied per particle
       const showDir = show.position.clone().normalize()
       const up = new THREE.Vector3(0, 1, 0)
       const right = new THREE.Vector3().crossVectors(up, showDir).normalize()
       const localUp = new THREE.Vector3().crossVectors(showDir, right).normalize()
       
-      const angle = time * 0.3 + constellationParticles.phases[i]
+      const orbitalSpeed = constellationParticles.orbitalSpeeds[i]
+      const angle = time * orbitalSpeed + constellationParticles.phases[i]
       const rotatedOffset = new THREE.Vector3()
         .addScaledVector(right, scaledOffset.x * Math.cos(angle))
         .addScaledVector(localUp, scaledOffset.y)
@@ -503,13 +553,40 @@ export function ParticleConstellationGlobe({
               array={constellationParticles.positions}
               itemSize={3}
             />
+            <bufferAttribute
+              attach="attributes-size"
+              count={constellationParticles.totalCount}
+              array={constellationParticles.sizes}
+              itemSize={1}
+            />
           </bufferGeometry>
-          <pointsMaterial
-            size={0.03}
-            color={0xe63946}
+          <shaderMaterial
+            vertexShader={`
+              attribute float size;
+              varying vec3 vColor;
+              
+              void main() {
+                vColor = vec3(1.0, 0.227, 0.278); // Red color
+                vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+                gl_PointSize = size * (300.0 / -mvPosition.z);
+                gl_Position = projectionMatrix * mvPosition;
+              }
+            `}
+            fragmentShader={`
+              uniform vec3 color;
+              varying vec3 vColor;
+              
+              void main() {
+                float distanceToCenter = distance(gl_PointCoord, vec2(0.5));
+                float alpha = 1.0 - smoothstep(0.0, 0.5, distanceToCenter);
+                gl_FragColor = vec4(vColor, alpha);
+              }
+            `}
+            uniforms={{
+              color: { value: new THREE.Color(0xe63946) }
+            }}
             transparent
             opacity={1.0}
-            sizeAttenuation
             depthWrite={false}
             blending={THREE.AdditiveBlending}
           />

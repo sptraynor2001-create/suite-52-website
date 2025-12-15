@@ -149,8 +149,13 @@ function About() {
               fontSize: viewportWidth <= breakpoints.mobile ? '11px' : viewportWidth <= breakpoints.tablet ? '12px' : '12px',
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',
-              margin: '12px 0 0 0',
+              margin: '6px auto 0',
               animation: 'slideUp 0.6s ease-out 0.2s both',
+              backgroundColor: '#000000',
+              padding: '4px 8px',
+              borderRadius: '4px',
+              maxWidth: '800px',
+              display: 'block',
             }}
           >
             {'// ENTITY.initialize(vectors: [SOUND, CODE, VISION])'}
@@ -208,22 +213,6 @@ function About() {
           </div>
           ))}
 
-          {/* Footer note */}
-          <p
-            style={{
-              maxWidth: '700px',
-              margin: '24px auto 0',
-              textAlign: 'center',
-              color: 'rgba(255, 255, 255, 0.3)',
-              fontSize: viewportWidth <= breakpoints.tablet ? '9px' : '12px',
-              fontFamily: activeFont.family,
-              letterSpacing: '0.1em',
-              opacity: visibleSections >= 2 ? 1 : 0,
-              transition: 'opacity 1s ease-out 2s',
-            }}
-          >
-            [ THE ARCHITECT BEHIND THE FREQUENCIES ]
-          </p>
         </div>
       </div>
 

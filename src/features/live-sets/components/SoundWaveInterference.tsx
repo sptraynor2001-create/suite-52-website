@@ -109,7 +109,7 @@ export function SoundWaveInterference({
       glitchIntensities[i] = 0.05 + Math.random() * 0.1 // Glitch distance
       flashIntensities[i] = 0.3 + Math.random() * 0.7 // Flash intensity
       // Much more size variation - from very small to quite large
-      sizes[i] = 0.005 + Math.random() * 0.04 // Random size between 0.005 and 0.045 (9x variation)
+      sizes[i] = 0.01 + Math.random() * 0.06 // Random size between 0.01 and 0.07 (larger and more visible)
     }
     
     return { positions, basePositions, glitchPhases, flashPhases, glitchIntensities, flashIntensities, sizes }
@@ -170,11 +170,11 @@ export function SoundWaveInterference({
       const flashThreshold = 0.7 + randomFlashMod
       
       if (flash > flashThreshold) {
-        opacities[i] = 0.15 + flashIntensity * 0.7 // Bright flash
+        opacities[i] = 0.4 + flashIntensity * 0.6 // Bright flash (more visible)
       } else if (flash < -flashThreshold) {
-        opacities[i] = 0.1 + flashIntensity * 0.15 // Dim flash
+        opacities[i] = 0.2 + flashIntensity * 0.3 // Dim flash (more visible)
       } else {
-        opacities[i] = 0.25 + flashIntensity * 0.3 // Normal
+        opacities[i] = 0.35 + flashIntensity * 0.45 // Normal (more visible)
       }
       
       // Very rare random extra flashes (much less frequent)
@@ -212,13 +212,13 @@ export function SoundWaveInterference({
     // Update positions
     particlesRef.current.geometry.attributes.position.needsUpdate = true
     
-    // Update opacity - more subtle overall
+    // Update opacity - make more visible
     const maxOpacity = Math.max(...Array.from(opacities))
     const avgOpacity = opacities.reduce((a, b) => a + b, 0) / particleCount
-    // More subtle flashing - blend max and avg
+    // More visible flashing - blend max and avg with higher base
     const finalOpacity = hoveredSetId 
-      ? Math.min(0.85, (maxOpacity * 0.4 + avgOpacity * 0.6) * 1.2)
-      : Math.min(0.7, maxOpacity * 0.3 + avgOpacity * 0.7)
+      ? Math.min(1.0, (maxOpacity * 0.5 + avgOpacity * 0.5) * 1.3)
+      : Math.min(0.95, maxOpacity * 0.4 + avgOpacity * 0.6)
     material.opacity = finalOpacity
     
     // Update color based on hover
@@ -271,7 +271,7 @@ export function SoundWaveInterference({
             color: { value: new THREE.Color(hoveredSetId ? 0xe63946 : 0xffffff) }
           }}
           transparent
-          opacity={hoveredSetId ? 0.9 : 0.6}
+          opacity={hoveredSetId ? 1.0 : 0.85}
           depthWrite={false}
           blending={THREE.AdditiveBlending}
         />

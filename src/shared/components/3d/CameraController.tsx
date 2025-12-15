@@ -43,21 +43,26 @@ export function CameraController({
     initialPosition.current.copy(camera.position)
   }, [camera])
 
-  // Parallax effect - camera follows cursor slightly
+  // Parallax effect - camera follows cursor slightly (constrained to stay near center)
   useFrame((state) => {
     if (!enableParallax || isMobile) return
 
     const mouse = state.pointer
     
-    // Calculate target offset based on mouse position
+    // Clamp mouse position to prevent extreme values (limit to ~70% of screen)
+    const clampedX = Math.max(-0.7, Math.min(0.7, mouse.x))
+    const clampedY = Math.max(-0.7, Math.min(0.7, mouse.y))
+    
+    // Calculate target offset based on clamped mouse position (reduced intensity)
+    const reducedIntensity = parallaxIntensity * 0.6 // Make it more subtle
     targetPosition.current.set(
-      mouse.x * parallaxIntensity,
-      mouse.y * parallaxIntensity * 0.5,
+      clampedX * reducedIntensity,
+      clampedY * reducedIntensity * 0.5,
       0
     )
 
-    // Smoothly interpolate current offset
-    currentOffset.current.lerp(targetPosition.current, 0.05)
+    // Smoothly interpolate current offset (slower lerp for more subtle movement)
+    currentOffset.current.lerp(targetPosition.current, 0.03)
 
     // Apply offset to camera
     camera.position.x = initialPosition.current.x + currentOffset.current.x

@@ -158,7 +158,7 @@ export function WhirlpoolParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticle
           const fadeProgress = fadeTimers.current[i] / FADE_DURATION
           const fadeOpacity = 1.0 - fadeProgress
           const isWeb = typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
-          const opacityMultiplier = isWeb ? 0.7 + (mouseY + 1) * 0.15 : 1.0
+          const opacityMultiplier = isWeb ? 1.0 + mouseY * 0.15 : 1.0
           const finalOpacity = fadeOpacity * opacityMultiplier
           colors[i3] = finalOpacity
           colors[i3 + 1] = finalOpacity
@@ -173,13 +173,13 @@ export function WhirlpoolParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticle
       
       // Mouse interaction (web only): X controls rotation direction, Y controls opacity and pull strength
       const isWeb = !isMobile && typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
-      // Map mouseY (-1 to 1) to opacity - much more subtle range
-      const opacityMultiplier = isWeb ? particleConfig.mouseInteraction.opacity.min + (mouseY + 1) * particleConfig.mouseInteraction.opacity.range : 1.0 // Down = 70% opacity, Up = 100% opacity (subtle)
-      // Mouse Y also affects pull strength - very subtle
-      const pullMultiplier = isWeb ? particleConfig.mouseInteraction.pull.base + mouseY * particleConfig.mouseInteraction.pull.range : 1 // Up = slightly stronger pull (very subtle)
-      // Mouse X controls rotation direction - very subtle effect
-      // Left = slightly counter-clockwise, Right = slightly clockwise, Center = balanced
-      const rotationDirection = isWeb ? particleConfig.mouseInteraction.rotation.base + mouseX * particleConfig.mouseInteraction.rotation.range : 1 // 0.92 to 1.08 multiplier (very subtle)
+      // Map mouseY (-0.5 to 0.5) to opacity - centered around 1.0, subtle range
+      // Center (0) = 1.0, edges = 0.85 to 1.0 (subtle)
+      const opacityMultiplier = isWeb ? 1.0 + mouseY * 0.15 : 1.0
+      // Mouse Y also affects pull strength - very subtle, centered around 1.0
+      const pullMultiplier = isWeb ? 1.0 + mouseY * 0.02 : 1.0
+      // Mouse X controls rotation direction - very subtle effect, centered around 1.0
+      const rotationDirection = isWeb ? 1.0 + mouseX * 0.04 : 1.0
       
       // Calculate progress
       const cycleLength = 100 // Faster cycle for more pronounced movement
@@ -509,10 +509,10 @@ export function AccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticlesPr
       
       // Mouse interaction (web only): X controls rotation direction, Y controls opacity and pull
       const isWeb = !isMobile && typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
-      const opacityMultiplier = isWeb ? 0.7 + (mouseY + 1) * 0.15 : 1.0
-      const pullMultiplier = isWeb ? 1 + mouseY * 0.05 : 1
+      const opacityMultiplier = isWeb ? 1.0 + mouseY * 0.15 : 1.0
+      const pullMultiplier = isWeb ? 1.0 + mouseY * 0.02 : 1.0
       // Mouse X controls rotation direction - very subtle
-      const rotationDirection = isWeb ? 1 + mouseX * 0.08 : 1
+      const rotationDirection = isWeb ? 1.0 + mouseX * 0.04 : 1.0
       
       // Calculate progress
       const cycleLength = particleConfig.animation.cycleLength.accent
@@ -791,7 +791,7 @@ export function BlueAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
           const fadeProgress = fadeTimers.current[i] / FADE_DURATION
           const fadeOpacity = 1.0 - fadeProgress
           const isWeb = typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
-          const opacityMultiplier = isWeb ? 0.7 + (mouseY + 1) * 0.15 : 1.0
+          const opacityMultiplier = isWeb ? 1.0 + mouseY * 0.15 : 1.0
           const finalOpacity = fadeOpacity * opacityMultiplier
           colors[i3] = themeColors.scene.particles.blue.r * finalOpacity
           colors[i3 + 1] = themeColors.scene.particles.blue.g * finalOpacity
@@ -804,9 +804,9 @@ export function BlueAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
       prevPositions.current[i3 + 2] = positions[i3 + 2]
       
       const isWeb = typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
-      const opacityMultiplier = isWeb ? particleConfig.mouseInteraction.accentOpacity.min + (mouseY + 1) * particleConfig.mouseInteraction.accentOpacity.range : 1.0
-      const pullMultiplier = isWeb ? particleConfig.mouseInteraction.accentPull.base + mouseY * particleConfig.mouseInteraction.accentPull.range : 1
-      const rotationDirection = isWeb ? mouseX * 1.2 : 1
+      const opacityMultiplier = isWeb ? 1.0 + mouseY * 0.15 : 1.0
+      const pullMultiplier = isWeb ? 1.0 + mouseY * 0.02 : 1.0
+      const rotationDirection = isWeb ? 1.0 + mouseX * 0.04 : 1.0
       
       const cycleLength = 110
       const adjustedTime = (time + lifetime) % cycleLength
@@ -1065,7 +1065,7 @@ export function GreenAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolPartic
           const fadeProgress = fadeTimers.current[i] / FADE_DURATION
           const fadeOpacity = 1.0 - fadeProgress
           const isWeb = typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
-          const opacityMultiplier = isWeb ? 0.7 + (mouseY + 1) * 0.15 : 1.0
+          const opacityMultiplier = isWeb ? 1.0 + mouseY * 0.15 : 1.0
           const finalOpacity = fadeOpacity * opacityMultiplier
           colors[i3] = themeColors.scene.particles.green.r * finalOpacity
           colors[i3 + 1] = themeColors.scene.particles.green.g * finalOpacity
@@ -1078,9 +1078,9 @@ export function GreenAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolPartic
       prevPositions.current[i3 + 2] = positions[i3 + 2]
       
       const isWeb = typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
-      const opacityMultiplier = isWeb ? particleConfig.mouseInteraction.accentOpacity.min + (mouseY + 1) * particleConfig.mouseInteraction.accentOpacity.range : 1.0
-      const pullMultiplier = isWeb ? particleConfig.mouseInteraction.accentPull.base + mouseY * particleConfig.mouseInteraction.accentPull.range : 1
-      const rotationDirection = isWeb ? mouseX * 1.2 : 1
+      const opacityMultiplier = isWeb ? 1.0 + mouseY * 0.15 : 1.0
+      const pullMultiplier = isWeb ? 1.0 + mouseY * 0.02 : 1.0
+      const rotationDirection = isWeb ? 1.0 + mouseX * 0.04 : 1.0
       
       const cycleLength = 110
       const adjustedTime = (time + lifetime) % cycleLength
@@ -1339,7 +1339,7 @@ export function GoldAccentParticles({ mouseX = 0, mouseY = 0 }: WhirlpoolParticl
           const fadeProgress = fadeTimers.current[i] / FADE_DURATION
           const fadeOpacity = 1.0 - fadeProgress
           const isWeb = typeof window !== 'undefined' && window.innerWidth >= breakpoints.tablet
-          const opacityMultiplier = isWeb ? 0.7 + (mouseY + 1) * 0.15 : 1.0
+          const opacityMultiplier = isWeb ? 1.0 + mouseY * 0.15 : 1.0
           const finalOpacity = fadeOpacity * opacityMultiplier
           colors[i3] = themeColors.scene.particles.gold.r * finalOpacity
           colors[i3 + 1] = themeColors.scene.particles.gold.g * finalOpacity

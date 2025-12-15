@@ -46,15 +46,20 @@ function Home({ onNavigate }: HomeProps) {
   const ACCENT = colors.red.blood
   const WHITE = colors.brand.secondary
 
-  // Track mouse for parallax
+  // Track mouse for parallax - subtle effects centered around 0
   const handleMouseMove = useCallback((e: MouseEvent) => {
+    // Normalize mouse position to -1 to 1 range
+    const rawX = (e.clientX / window.innerWidth) * 2 - 1
     const rawY = -(e.clientY / window.innerHeight) * 2 + 1
-    // Remap vertical range: full screen (top to bottom) now maps to bottom to middle only
-    // Bottom (1) stays 1, middle (0) becomes -1, top (-1) also becomes -1
-    const remappedY = rawY <= 0 ? -1 : rawY * 2 - 1
+    
+    // Clamp and scale to a smaller, centered range for subtler effects
+    // Center (0,0) = no effect, edges = subtle effect
+    const clampedX = Math.max(-0.5, Math.min(0.5, rawX))
+    const clampedY = Math.max(-0.5, Math.min(0.5, rawY))
+    
     setMousePosition({
-      x: (e.clientX / window.innerWidth) * 2 - 1,
-      y: remappedY,
+      x: clampedX,
+      y: clampedY,
     })
   }, [])
 

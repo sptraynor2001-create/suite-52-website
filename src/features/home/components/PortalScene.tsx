@@ -40,7 +40,7 @@ function SceneContent({ mouseX = 0, mouseY = 0 }: PortalSceneProps) {
       {/* Camera controller with subtle parallax */}
       <CameraController 
         enableParallax={!isMobile} 
-        parallaxIntensity={0.1} 
+        parallaxIntensity={0.05} 
       />
 
       {/* Atmospheric fog */}

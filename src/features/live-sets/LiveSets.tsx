@@ -99,8 +99,13 @@ function LiveSets() {
               fontSize: viewportWidth <= breakpoints.mobile ? '11px' : viewportWidth <= breakpoints.tablet ? '12px' : '12px',
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',
-              margin: '12px 0 0 0',
+              margin: '6px auto 0',
               animation: 'slideUp 0.6s ease-out 0.2s both',
+              backgroundColor: '#000000',
+              padding: '4px 8px',
+              borderRadius: '4px',
+              maxWidth: '800px',
+              display: 'block',
             }}
           >
             {'// ARCHIVE.stream(moment => moment.captured && moment.raw)'}
@@ -243,26 +248,6 @@ function LiveSets() {
       `}</style>
 
       {/* Footer note */}
-      <p
-        style={{
-          position: 'absolute',
-          bottom: '60px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '100%',
-          maxWidth: '800px',
-          textAlign: 'center',
-          color: 'rgba(255, 255, 255, 0.3)',
-          fontSize: viewportWidth <= 768 ? '9px' : '12px',
-          fontFamily: activeFont.family,
-          letterSpacing: '0.1em',
-          padding: '0 20px',
-          margin: 0,
-          animation: 'fadeIn 1s ease-out 2s both',
-        }}
-      >
-        [ MOMENTS CAPTURED IN THE SPACE BETWEEN BEATS ]
-      </p>
     </div>
   )
 }
