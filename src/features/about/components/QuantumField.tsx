@@ -55,6 +55,7 @@ export function QuantumField({
   // Particle data - superposition positions and collapse targets
   const particles = useMemo(() => {
     const positions = new Float32Array(particleCount * 3)
+    const baseSuperPositions = new Float32Array(particleCount * 3) // Base superposition positions
     const targetPositions = new Float32Array(particleCount * 3) // Collapsed positions
     const collapseStates = new Float32Array(particleCount) // 0 = superposition, 1 = collapsed
     const sectionAssignments = new Uint8Array(particleCount) // Which section region
@@ -69,12 +70,12 @@ export function QuantumField({
       sectionAssignments[i] = sectionIndex
       const region = sectionRegions[sectionIndex]
       
-      // Superposition position - spread out in probability cloud
+      // Superposition position - start in a central cloud
       const spread = particleConfig.quantumField.superpositionSpread
       const superpositionPos = new THREE.Vector3(
-        (Math.random() - 0.5) * spread * 6,
-        (Math.random() - 0.5) * spread * 6,
-        (Math.random() - 0.5) * spread * 6
+        (Math.random() - 0.5) * spread * 4,
+        (Math.random() - 0.5) * spread * 3,
+        (Math.random() - 0.5) * spread * 4
       )
       
       // Collapsed position - clustered near section center
@@ -91,6 +92,12 @@ export function QuantumField({
       positions[i3 + 1] = superpositionPos.y
       positions[i3 + 2] = superpositionPos.z
       
+      // Store base superposition position
+      baseSuperPositions[i3] = superpositionPos.x
+      baseSuperPositions[i3 + 1] = superpositionPos.y
+      baseSuperPositions[i3 + 2] = superpositionPos.z
+      
+      // Store collapsed target position
       targetPositions[i3] = collapsedPos.x
       targetPositions[i3 + 1] = collapsedPos.y
       targetPositions[i3 + 2] = collapsedPos.z
@@ -100,7 +107,7 @@ export function QuantumField({
       phases[i] = Math.random() * Math.PI * 2
     }
     
-    return { positions, targetPositions, collapseStates, sectionAssignments, phases, collapseProgress }
+    return { positions, baseSuperPositions, targetPositions, collapseStates, sectionAssignments, phases, collapseProgress }
   }, [particleCount, sectionRegions, sectionCount])
   
   // Animation frame
@@ -113,6 +120,7 @@ export function QuantumField({
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3
       const sectionIndex = particles.sectionAssignments[i]
+      // Section is visible if visibleSections count includes this section (0-indexed)
       const isSectionVisible = visibleSections > sectionIndex
       const isHovered = hoveredSection === sectionIndex
       
@@ -130,30 +138,33 @@ export function QuantumField({
       
       // Collapse when section becomes visible
       if (isSectionVisible) {
-        // Increase collapse progress
-        particles.collapseProgress[i] = Math.min(1, particles.collapseProgress[i] + particleConfig.quantumField.collapseSpeed)
-        particles.collapseStates[i] = particles.collapseProgress[i]
-        
-        // Lerp toward collapsed position
-        const collapsedPos = currentPos.clone().lerp(targetPos, particles.collapseProgress[i])
-        
-        // Add subtle clustering force when collapsed
-        if (particles.collapseProgress[i] > 0.5) {
-          const region = sectionRegions[sectionIndex]
-          const distToCenter = collapsedPos.distanceTo(region.center)
-          if (distToCenter > 0.2) {
-            const clusterForce = 0.02
-            const direction = region.center.clone().sub(collapsedPos).normalize()
-            collapsedPos.addScaledVector(direction, clusterForce)
-          }
+        // Increase collapse progress smoothly
+        if (particles.collapseProgress[i] < 1) {
+          particles.collapseProgress[i] = Math.min(1, particles.collapseProgress[i] + particleConfig.quantumField.collapseSpeed)
         }
         
-        // Hover enhancement - tighter clustering
+        // Smooth lerp toward collapsed position
+        const t = particles.collapseProgress[i]
+        const collapsedPos = currentPos.clone().lerp(targetPos, t * 0.1) // Smooth transition
+        
+        // Add clustering force toward region center
+        const region = sectionRegions[sectionIndex]
+        const distToCenter = collapsedPos.distanceTo(region.center)
+        if (distToCenter > 0.3) {
+          const clusterForce = 0.03 * t
+          const direction = region.center.clone().sub(collapsedPos).normalize()
+          collapsedPos.addScaledVector(direction, clusterForce)
+        }
+        
+        // Hover enhancement - tighter clustering and slight pulse
         if (isHovered) {
-          const region = sectionRegions[sectionIndex]
-          const hoverForce = 0.03
+          const hoverForce = 0.04
           const direction = region.center.clone().sub(collapsedPos).normalize()
           collapsedPos.addScaledVector(direction, hoverForce)
+          
+          // Subtle pulse effect
+          const pulse = Math.sin(time * 3) * 0.05
+          collapsedPos.addScaledVector(direction, pulse)
         }
         
         positions[i3] = collapsedPos.x
@@ -161,21 +172,39 @@ export function QuantumField({
         positions[i3 + 2] = collapsedPos.z
       } else {
         // Superposition - particles exist in probability cloud
-        // Add quantum uncertainty (Heisenberg uncertainty principle)
+        // Get base superposition position
+        const baseSuperPos = new THREE.Vector3(
+          particles.baseSuperPositions[i3],
+          particles.baseSuperPositions[i3 + 1],
+          particles.baseSuperPositions[i3 + 2]
+        )
+        
         const phase = particles.phases[i]
         const uncertainty = particleConfig.quantumField.superpositionSpread
         
-        // Quantum fluctuation - particles "jump" between possible positions
-        const fluctuation = Math.sin(time * 2 + phase) * uncertainty * 0.3
+        // Quantum fluctuation - gentle movement in probability cloud
+        const fluctuation = uncertainty * 0.25
         const quantumPos = new THREE.Vector3(
-          currentPos.x + Math.sin(time * 1.5 + phase) * fluctuation,
-          currentPos.y + Math.cos(time * 1.7 + phase) * fluctuation,
-          currentPos.z + Math.sin(time * 1.3 + phase * 0.7) * fluctuation
+          baseSuperPos.x + Math.sin(time * 1.2 + phase) * fluctuation,
+          baseSuperPos.y + Math.cos(time * 1.4 + phase) * fluctuation,
+          baseSuperPos.z + Math.sin(time * 1.1 + phase * 0.8) * fluctuation
         )
         
-        positions[i3] = quantumPos.x
-        positions[i3 + 1] = quantumPos.y
-        positions[i3 + 2] = quantumPos.z
+        // Reset collapse progress when section becomes invisible
+        if (particles.collapseProgress[i] > 0) {
+          particles.collapseProgress[i] = Math.max(0, particles.collapseProgress[i] - 0.03)
+          // Smoothly return toward superposition
+          const t = particles.collapseProgress[i]
+          const returnPos = currentPos.clone().lerp(quantumPos, 0.15)
+          positions[i3] = returnPos.x
+          positions[i3 + 1] = returnPos.y
+          positions[i3 + 2] = returnPos.z
+        } else {
+          // Fully in superposition - use quantum position
+          positions[i3] = quantumPos.x
+          positions[i3 + 1] = quantumPos.y
+          positions[i3 + 2] = quantumPos.z
+        }
       }
     }
     

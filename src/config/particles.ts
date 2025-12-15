@@ -189,12 +189,12 @@ export const particleConfig = {
   // Quantum Field Visualization (About page)
   quantumField: {
     baseParticles: {
-      desktop: 4000,
-      mobile: 2000,
+      desktop: 3000,
+      mobile: 1500,
     },
-    collapseSpeed: 0.05,
-    superpositionSpread: 0.5,
-    collapsedCluster: 0.1,
+    collapseSpeed: 0.08,
+    superpositionSpread: 0.6,
+    collapsedCluster: 0.15,
   },
 
   // Frequency Constellation (Music page)
