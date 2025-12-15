@@ -77,6 +77,7 @@ export function SoundWaveInterference({
     const flashPhases = new Float32Array(particleCount) // When to flash
     const glitchIntensities = new Float32Array(particleCount) // How much to glitch
     const flashIntensities = new Float32Array(particleCount) // Flash intensity
+    const sizes = new Float32Array(particleCount) // Random sizes
     
     // Create a grid of particles spread across entire XY plane
     const gridSize = Math.ceil(Math.sqrt(particleCount))
@@ -107,9 +108,10 @@ export function SoundWaveInterference({
       flashPhases[i] = Math.random() * Math.PI * 2
       glitchIntensities[i] = 0.05 + Math.random() * 0.1 // Glitch distance
       flashIntensities[i] = 0.3 + Math.random() * 0.7 // Flash intensity
+      sizes[i] = 0.01 + Math.random() * 0.02 // Random size between 0.01 and 0.03
     }
     
-    return { positions, basePositions, glitchPhases, flashPhases, glitchIntensities, flashIntensities }
+    return { positions, basePositions, glitchPhases, flashPhases, glitchIntensities, flashIntensities, sizes }
   }, [particleCount])
   
   // Animation frame - glitch and flash effects
@@ -118,7 +120,7 @@ export function SoundWaveInterference({
     
     const time = state.clock.getElapsedTime()
     const positions = particlesRef.current.geometry.attributes.position.array as Float32Array
-    const material = particlesRef.current.material as THREE.PointsMaterial
+    const material = particlesRef.current.material as THREE.ShaderMaterial
     
     // Create opacity array for flashing
     const opacities = new Float32Array(particleCount)
@@ -213,9 +215,13 @@ export function SoundWaveInterference({
     const maxOpacity = Math.max(...Array.from(opacities))
     const avgOpacity = opacities.reduce((a, b) => a + b, 0) / particleCount
     // More subtle flashing - blend max and avg
-    material.opacity = hoveredSetId 
+    const finalOpacity = hoveredSetId 
       ? Math.min(0.85, (maxOpacity * 0.4 + avgOpacity * 0.6) * 1.2)
       : Math.min(0.7, maxOpacity * 0.3 + avgOpacity * 0.7)
+    material.opacity = finalOpacity
+    
+    // Update color based on hover
+    material.uniforms.color.value.setHex(hoveredSetId ? 0xe63946 : 0xffffff)
   })
   
   if (waveSources.length === 0) return null
@@ -231,13 +237,40 @@ export function SoundWaveInterference({
             array={particles.positions}
             itemSize={3}
           />
+          <bufferAttribute
+            attach="attributes-size"
+            count={particleCount}
+            array={particles.sizes}
+            itemSize={1}
+          />
         </bufferGeometry>
-        <pointsMaterial
-          size={0.015}
-          color={hoveredSetId ? 0xe63946 : 0xffffff}
+        <shaderMaterial
+          vertexShader={`
+            attribute float size;
+            varying vec3 vColor;
+            
+            void main() {
+              vColor = vec3(1.0);
+              vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+              gl_PointSize = size * (300.0 / -mvPosition.z);
+              gl_Position = projectionMatrix * mvPosition;
+            }
+          `}
+          fragmentShader={`
+            uniform vec3 color;
+            varying vec3 vColor;
+            
+            void main() {
+              float distanceToCenter = distance(gl_PointCoord, vec2(0.5));
+              float alpha = 1.0 - smoothstep(0.0, 0.5, distanceToCenter);
+              gl_FragColor = vec4(color * vColor, alpha);
+            }
+          `}
+          uniforms={{
+            color: { value: new THREE.Color(hoveredSetId ? 0xe63946 : 0xffffff) }
+          }}
           transparent
           opacity={hoveredSetId ? 0.9 : 0.6}
-          sizeAttenuation
           depthWrite={false}
           blending={THREE.AdditiveBlending}
         />
