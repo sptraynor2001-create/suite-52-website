@@ -7,6 +7,7 @@ import { activeFont, backgrounds, breakpoints } from '@/themes'
 import { tokens } from '@/design/tokens'
 import { animations } from '@/themes/animations'
 import { cardStyles } from '@/design/cardStyles'
+import { colors } from '@/design/colors'
 import { LiveSetsScene } from './components/LiveSetsScene'
 
 const liveSets = [
@@ -94,7 +95,7 @@ function LiveSets() {
           </h1>
           <p
             style={{
-              color: 'rgba(255, 255, 255, 0.3)',
+              color: colors.gold.casino,
               fontSize: viewportWidth <= breakpoints.mobile ? '11px' : viewportWidth <= breakpoints.tablet ? '12px' : '12px',
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',

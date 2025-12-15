@@ -7,6 +7,7 @@ import { activeFont, backgrounds, breakpoints } from '@/themes'
 import { tokens } from '@/design/tokens'
 import { animations } from '@/themes/animations'
 import { cardStyles } from '@/design/cardStyles'
+import { colors } from '@/design/colors'
 import { 
   FaInstagram, 
   FaSpotify, 
@@ -201,7 +202,7 @@ function Contact() {
           </h1>
           <p
             style={{
-              color: 'rgba(255, 255, 255, 0.3)',
+              color: colors.gold.casino,
               fontSize: viewportWidth <= breakpoints.mobile ? '11px' : viewportWidth <= breakpoints.tablet ? '12px' : '12px',
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',
@@ -281,6 +282,8 @@ function Contact() {
         <div
           style={{
             display: 'flex',
+            flexWrap: 'wrap',
+            gap: '16px',
             justifyContent: 'center',
             margin: '0 auto',
             opacity: visibleSections >= 2 ? 1 : 0,
@@ -288,130 +291,108 @@ function Contact() {
             transition: 'opacity 0.6s ease-out 0.1s, transform 0.6s ease-out 0.1s',
           }}
         >
-          {/* Liquid glass background */}
-          <div
-            style={{
-              position: 'relative',
-              padding: '32px 40px',
-              borderRadius: '20px',
-              background: 'rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(20px) saturate(180%)',
-              WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-              overflow: 'hidden',
-            }}
-          >
-            {/* Animated liquid glass effect */}
-            <div
-              style={{
-                position: 'absolute',
-                top: '-50%',
-                left: '-50%',
-                width: '200%',
-                height: '200%',
-                background: 'radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)',
-                animation: 'liquidGlassFlow 8s ease-in-out infinite',
-                pointerEvents: 'none',
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                top: '-50%',
-                right: '-50%',
-                width: '200%',
-                height: '200%',
-                background: 'radial-gradient(circle at 70% 70%, rgba(230, 57, 70, 0.08) 0%, transparent 50%)',
-                animation: 'liquidGlassFlow 12s ease-in-out infinite reverse',
-                pointerEvents: 'none',
-              }}
-            />
-            
-            <div
-              style={{
-                position: 'relative',
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '16px',
-                justifyContent: 'center',
-                zIndex: 1,
-              }}
-            >
-            {socialPlatforms.map((platform) => {
-              const isHovered = hoveredLink === platform.name
-              const Icon = platform.icon
-              const url = socialLinksData[platform.key] as string
+          {socialPlatforms.map((platform) => {
+            const isHovered = hoveredLink === platform.name
+            const Icon = platform.icon
+            const url = socialLinksData[platform.key] as string
 
-              return (
-                <a
-                  key={platform.name}
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={platform.name}
+            return (
+              <a
+                key={platform.name}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={platform.name}
+                style={{
+                  position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '44px',
+                  height: '44px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  backdropFilter: 'blur(20px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                  border: `1px solid ${isHovered ? platform.color : 'rgba(255, 255, 255, 0.1)'}`,
+                  borderRadius: '10px',
+                  textDecoration: 'none',
+                  transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                  transform: isHovered ? 'translateY(-3px) scale(1.08)' : 'translateY(0) scale(1)',
+                  boxShadow: isHovered 
+                    ? `0 4px 16px ${platform.color}50, 0 0 24px ${platform.color}30, inset 0 1px 0 rgba(255, 255, 255, 0.1)` 
+                    : '0 2px 4px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                  overflow: 'hidden',
+                }}
+                onMouseEnter={() => {
+                  setHoveredLink(platform.name)
+                  setHoveredContact(`social-${platform.name.toLowerCase()}`)
+                }}
+                onMouseLeave={() => {
+                  setHoveredLink(null)
+                  setHoveredContact(null)
+                }}
+              >
+                {/* Animated liquid glass effect */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '-50%',
+                    left: '-50%',
+                    width: '200%',
+                    height: '200%',
+                    background: 'radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)',
+                    animation: 'liquidGlassFlow 8s ease-in-out infinite',
+                    pointerEvents: 'none',
+                  }}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '-50%',
+                    right: '-50%',
+                    width: '200%',
+                    height: '200%',
+                    background: 'radial-gradient(circle at 70% 70%, rgba(230, 57, 70, 0.08) 0%, transparent 50%)',
+                    animation: 'liquidGlassFlow 12s ease-in-out infinite reverse',
+                    pointerEvents: 'none',
+                  }}
+                />
+                
+                {/* Background gradient effect on hover */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: platform.gradient,
+                    opacity: isHovered ? 0.15 : 0,
+                    transition: 'opacity 0.25s ease',
+                    pointerEvents: 'none',
+                    zIndex: 1,
+                  }}
+                />
+                
+                {/* Icon */}
+                <div
                   style={{
                     position: 'relative',
+                    fontSize: '20px',
+                    color: isHovered ? platform.color : 'rgba(255, 255, 255, 0.7)',
+                    transition: 'all 0.25s ease',
+                    filter: isHovered ? `drop-shadow(0 0 8px ${platform.color})` : 'none',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    width: '44px',
-                    height: '44px',
-                    backgroundColor: isHovered ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.03)',
-                    border: `1px solid ${isHovered ? platform.color : 'rgba(255, 255, 255, 0.15)'}`,
-                    borderRadius: '10px',
-                    textDecoration: 'none',
-                    transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-                    transform: isHovered ? 'translateY(-3px) scale(1.08)' : 'translateY(0) scale(1)',
-                    boxShadow: isHovered 
-                      ? `0 4px 16px ${platform.color}50, 0 0 24px ${platform.color}30` 
-                      : '0 2px 4px rgba(0, 0, 0, 0.2)',
-                    overflow: 'hidden',
-                  }}
-                  onMouseEnter={() => {
-                    setHoveredLink(platform.name)
-                    setHoveredContact(`social-${platform.name.toLowerCase()}`)
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredLink(null)
-                    setHoveredContact(null)
+                    zIndex: 2,
                   }}
                 >
-                  {/* Background gradient effect on hover */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      background: platform.gradient,
-                      opacity: isHovered ? 0.15 : 0,
-                      transition: 'opacity 0.25s ease',
-                      pointerEvents: 'none',
-                    }}
-                  />
-                  
-                  {/* Icon */}
-                  <div
-                    style={{
-                      position: 'relative',
-                      fontSize: '20px',
-                      color: isHovered ? platform.color : 'rgba(255, 255, 255, 0.7)',
-                      transition: 'all 0.25s ease',
-                      filter: isHovered ? `drop-shadow(0 0 8px ${platform.color})` : 'none',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Icon />
-                  </div>
-                </a>
-              )
-            })}
-            </div>
-          </div>
+                  <Icon />
+                </div>
+              </a>
+            )
+          })}
         </div>
 
         {/* Footer note */}

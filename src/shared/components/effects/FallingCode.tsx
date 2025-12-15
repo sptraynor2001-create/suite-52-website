@@ -36,46 +36,46 @@ function FallingCode() {
       
       if (rowVariation < 0.14) {
         // Group 1: Subtle but visible
-        mean = 0.08
-        stdDev = 0.05
-        minVal = 0.03
-        maxVal = 0.15
+        mean = 0.06
+        stdDev = 0.04
+        minVal = 0.02
+        maxVal = 0.10
       } else if (rowVariation < 0.28) {
         // Group 2: Medium-low
-        mean = 0.10
-        stdDev = 0.06
-        minVal = 0.04
-        maxVal = 0.18
+        mean = 0.07
+        stdDev = 0.05
+        minVal = 0.03
+        maxVal = 0.12
       } else if (rowVariation < 0.42) {
         // Group 3: Medium
-        mean = 0.12
-        stdDev = 0.07
-        minVal = 0.05
-        maxVal = 0.22
+        mean = 0.08
+        stdDev = 0.05
+        minVal = 0.04
+        maxVal = 0.14
       } else if (rowVariation < 0.57) {
         // Group 4: Medium-high
-        mean = 0.14
-        stdDev = 0.08
-        minVal = 0.06
-        maxVal = 0.25
+        mean = 0.09
+        stdDev = 0.06
+        minVal = 0.05
+        maxVal = 0.16
       } else if (rowVariation < 0.71) {
         // Group 5: Higher
-        mean = 0.16
-        stdDev = 0.09
-        minVal = 0.07
-        maxVal = 0.28
+        mean = 0.10
+        stdDev = 0.06
+        minVal = 0.06
+        maxVal = 0.18
       } else if (rowVariation < 0.85) {
         // Group 6: High
-        mean = 0.18
-        stdDev = 0.10
-        minVal = 0.08
-        maxVal = 0.32
+        mean = 0.11
+        stdDev = 0.07
+        minVal = 0.07
+        maxVal = 0.20
       } else {
-        // Group 7: Highest
-        mean = 0.20
-        stdDev = 0.11
-        minVal = 0.09
-        maxVal = 0.35
+        // Group 7: Highest (but more transparent)
+        mean = 0.12
+        stdDev = 0.07
+        minVal = 0.08
+        maxVal = 0.22
       }
       
       // Box-Muller transform for normal distribution

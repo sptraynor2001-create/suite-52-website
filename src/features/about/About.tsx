@@ -9,6 +9,7 @@ import { tokens } from '@/design/tokens'
 import { animations } from '@/themes/animations'
 import { AboutScene } from './components'
 import { cardStyles } from '@/design/cardStyles'
+import { colors } from '@/design/colors'
 
 function About() {
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
@@ -144,7 +145,7 @@ function About() {
           </h1>
           <p
             style={{
-              color: 'rgba(255, 255, 255, 0.3)',
+              color: colors.gold.casino,
               fontSize: viewportWidth <= breakpoints.mobile ? '11px' : viewportWidth <= breakpoints.tablet ? '12px' : '12px',
               fontFamily: activeFont.family,
               letterSpacing: '0.1em',

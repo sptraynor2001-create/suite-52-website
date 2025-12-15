@@ -27,6 +27,14 @@ export const colors = {
   flame: '#ff8585',     // Light accent
   blush: '#ffb3b3',     // Subtle tints
 
+  // Gold accent palette - Casino Royale chrome gold
+  gold: {
+    dark: '#B8860B',        // Dark gold
+    casino: '#D4AF37',      // Casino Royale chrome gold
+    light: '#F4D03F',       // Light gold
+    subtle: '#FFD700',      // Bright gold
+  },
+
   // Legacy grayscale (for backwards compatibility)
   gray: {
     50: '#fafafa',
@@ -63,6 +71,7 @@ export const colors = {
     dark: '#8b2635',      // rust
     light: '#ff8585',     // flame
     subtle: '#ffb3b3',    // blush
+    gold: '#D4AF37',      // Casino Royale chrome gold
   },
 
   // Semantic text colors
