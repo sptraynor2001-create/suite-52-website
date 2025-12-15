@@ -471,7 +471,7 @@ export function ParticleConstellationGlobe({
   })
   
   return (
-    <group ref={globeRef}>
+    <group ref={globeRef} scale={[0.75, 0.75, 0.75]}>
       {/* Base particles (white, forming globe and continents) */}
       <points ref={baseParticlesRef}>
         <bufferGeometry>

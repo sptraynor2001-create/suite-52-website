@@ -7,7 +7,7 @@ import { Canvas } from '@react-three/fiber'
 import { Preload } from '@react-three/drei'
 import * as THREE from 'three'
 import { useQuality, Fog, MinimalPostProcessing } from '@/shared/components/3d'
-import { FrequencyConstellation } from './FrequencyConstellation'
+import { SoundWaves } from './SoundWaves'
 import { Release } from '../types'
 
 interface MusicSceneProps {
@@ -29,8 +29,8 @@ function SceneContent({ releases = [], hoveredReleaseId = null }: MusicSceneProp
       {/* Fog */}
       <Fog color="#000000" density={0.04} />
 
-      {/* Frequency Constellation */}
-      <FrequencyConstellation releases={releases} hoveredReleaseId={hoveredReleaseId} />
+      {/* Sound Waves */}
+      <SoundWaves releases={releases} hoveredReleaseId={hoveredReleaseId} />
 
       {/* Post processing */}
       <MinimalPostProcessing />
