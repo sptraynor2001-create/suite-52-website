@@ -57,6 +57,7 @@ export const colors = {
   gold: {
     deep: '#8b6914',      // Dark accent
     primary: '#C8A028',   // Primary (RGB: 200, 160, 40)
+    casino: '#D4AF37',    // Casino Royale chrome gold
     light: '#D4B850',     // Light
     shimmer: '#E0C878',   // Subtle
   },

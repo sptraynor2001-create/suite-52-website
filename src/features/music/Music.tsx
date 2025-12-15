@@ -8,7 +8,7 @@ import { activeFont, backgrounds, breakpoints } from '@/themes'
 import { tokens } from '@/design/tokens'
 import { animations } from '@/themes/animations'
 import { cardStyles } from '@/design/cardStyles'
-import { colors } from '@/design/colors'
+import { colors } from '@/themes/colors'
 import { MusicScene } from './components/MusicScene'
 
 function Music() {

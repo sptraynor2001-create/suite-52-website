@@ -3,36 +3,43 @@
  * SUITE 52: Where Nature Meets the Machine
  * 
  * Grayscale foundation with red accents
+ * 
+ * NOTE: This file re-exports from @/themes/colors for consistency.
+ * All color definitions are in @/themes/colors.ts
  */
 
+// Re-export from themes (single source of truth)
+import { colors as themeColors, componentColors as themeComponentColors } from '@/themes/colors'
+
+// Create backwards-compatible flat structure for design/colors
 export const colors = {
-  // Core grayscale palette - Named for atmosphere
-  void: '#000000',      // Deep backgrounds - absolute black
-  carbon: '#0a0a0a',    // Elevated surfaces
-  ash: '#1a1a1a',       // Cards, containers
-  smoke: '#2a2a2a',     // Borders, dividers
-  charcoal: '#3a3a3a',  // Subtle highlights
-  fog: '#4a4a4a',       // Muted text
-  slate: '#6a6a6a',     // Disabled states
-  silver: '#8a8a8a',    // Secondary text
-  cloud: '#b4b4b4',     // Tertiary text
-  bone: '#d4d4d4',      // Primary text
-  snow: '#ebebeb',      // Light highlights
-  white: '#ffffff',     // Pure white - headlines, emphasis
+  // Core grayscale palette - mapped from themes
+  void: themeColors.atmosphere.void,
+  carbon: themeColors.atmosphere.carbon,
+  ash: themeColors.atmosphere.ash,
+  smoke: themeColors.atmosphere.smoke,
+  charcoal: themeColors.atmosphere.charcoal,
+  fog: themeColors.atmosphere.fog,
+  slate: themeColors.atmosphere.slate,
+  silver: themeColors.atmosphere.silver,
+  cloud: themeColors.atmosphere.cloud,
+  bone: themeColors.atmosphere.bone,
+  snow: themeColors.atmosphere.snow,
+  white: themeColors.atmosphere.white,
 
-  // Red accent palette - Named for intensity
-  rust: '#8b2635',      // Dark accent - shadows, depth
-  blood: '#e63946',     // Primary accent - POKER_RED
-  ember: '#ff6b6b',     // Hover states, glows
-  flame: '#ff8585',     // Light accent
-  blush: '#ffb3b3',     // Subtle tints
+  // Red accent palette - mapped from themes
+  rust: themeColors.red.rust,
+  blood: themeColors.red.blood,
+  ember: themeColors.red.ember,
+  flame: themeColors.red.flame,
+  blush: themeColors.red.blush,
 
-  // Gold accent palette - Casino Royale chrome gold
+  // Gold accent palette - mapped from themes
   gold: {
-    dark: '#B8860B',        // Dark gold
-    casino: '#D4AF37',      // Casino Royale chrome gold
-    light: '#F4D03F',       // Light gold
-    subtle: '#FFD700',      // Bright gold
+    dark: themeColors.gold.deep,
+    casino: themeColors.gold.casino,
+    light: themeColors.gold.light,
+    subtle: themeColors.gold.shimmer,
   },
 
   // Legacy grayscale (for backwards compatibility)
@@ -64,124 +71,75 @@ export const colors = {
     900: '#5a5a5a',
   },
 
-  // Semantic accent mapping
+  // Semantic accent mapping - mapped from themes
   accent: {
-    primary: '#e63946',   // blood
-    hover: '#ff6b6b',     // ember
-    dark: '#8b2635',      // rust
-    light: '#ff8585',     // flame
-    subtle: '#ffb3b3',    // blush
-    gold: '#D4AF37',      // Casino Royale chrome gold
+    primary: themeColors.red.blood,
+    hover: themeColors.red.ember,
+    dark: themeColors.red.rust,
+    light: themeColors.red.flame,
+    subtle: themeColors.red.blush,
+    gold: themeColors.gold.casino,
   },
 
   // Semantic text colors
   text: {
-    primary: '#ffffff',
+    primary: themeColors.brand.secondary,
     secondary: 'rgba(255, 255, 255, 0.8)',
     tertiary: 'rgba(255, 255, 255, 0.6)',
     muted: 'rgba(255, 255, 255, 0.4)',
     disabled: 'rgba(255, 255, 255, 0.25)',
     inverse: '#000000',
-    accent: '#e63946',
+    accent: themeColors.red.blood,
   },
 
-  // Background layers
+  // Background layers - mapped from themes
   background: {
-    base: '#000000',
-    elevated: '#0a0a0a',
-    card: 'rgba(26, 26, 26, 0.6)',
-    cardHover: 'rgba(42, 42, 42, 0.8)',
+    base: themeColors.atmosphere.void,
+    elevated: themeColors.atmosphere.carbon,
+    card: themeColors.componentColors.card.background,
+    cardHover: themeColors.componentColors.card.backgroundHover,
     overlay: 'rgba(0, 0, 0, 0.85)',
     glass: 'rgba(10, 10, 10, 0.7)',
   },
 
-  // Borders
+  // Borders - mapped from themes
   border: {
     subtle: 'rgba(255, 255, 255, 0.05)',
-    default: 'rgba(255, 255, 255, 0.1)',
-    strong: 'rgba(255, 255, 255, 0.2)',
-    highlight: '#ffffff',
-    accent: '#e63946',
+    default: themeColors.componentColors.card.border,
+    strong: themeColors.componentColors.card.borderHover,
+    highlight: themeColors.brand.secondary,
+    accent: themeColors.red.blood,
     accentSubtle: 'rgba(230, 57, 70, 0.3)',
   },
 
-  // Glow effects for 3D elements
+  // Glow effects - mapped from themes
   glow: {
-    white: {
-      subtle: 'rgba(255, 255, 255, 0.1)',
-      medium: 'rgba(255, 255, 255, 0.2)',
-      strong: 'rgba(255, 255, 255, 0.4)',
-    },
-    red: {
-      subtle: 'rgba(230, 57, 70, 0.2)',
-      medium: 'rgba(230, 57, 70, 0.4)',
-      strong: 'rgba(230, 57, 70, 0.6)',
-      intense: 'rgba(230, 57, 70, 0.8)',
-    },
+    white: themeColors.componentColors.glow.white,
+    red: themeColors.componentColors.glow.red,
+    blue: themeColors.componentColors.glow.blue,
+    green: themeColors.componentColors.glow.green,
+    gold: themeColors.componentColors.glow.gold,
   },
 
-  // 3D Scene colors (for Three.js)
+  // 3D Scene colors - mapped from themes
   scene: {
-    background: 0x000000,
-    fog: 0x0a0a0a,
-    ambient: 0x1a1a1a,
+    background: themeColors.scene.background,
+    fog: themeColors.scene.fog,
+    ambient: themeColors.scene.ambient,
     particle: {
-      organic: 0xffffff,
-      digital: 0xe63946,
+      organic: themeColors.scene.particleOrganic,
+      digital: themeColors.scene.particleDigital,
     },
     portal: {
-      ring: 0xffffff,
-      glow: 0xe63946,
-      core: 0xff6b6b,
+      ring: themeColors.scene.portalRing,
+      glow: themeColors.scene.portalGlow,
+      core: themeColors.scene.portalCore,
     },
   },
 } as const
 
-// Component-specific color mappings
-export const componentColors = {
-  card: {
-    background: 'rgba(26, 26, 26, 0.6)',
-    backgroundHover: 'rgba(42, 42, 42, 0.8)',
-    border: 'rgba(255, 255, 255, 0.1)',
-    borderHover: 'rgba(255, 255, 255, 0.25)',
-    shadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
-  },
-  button: {
-    primary: {
-      background: '#e63946',
-      backgroundHover: '#ff6b6b',
-      text: '#ffffff',
-      border: 'transparent',
-    },
-    secondary: {
-      background: 'transparent',
-      backgroundHover: 'rgba(255, 255, 255, 0.1)',
-      text: '#ffffff',
-      border: 'rgba(255, 255, 255, 0.2)',
-    },
-    ghost: {
-      background: 'transparent',
-      backgroundHover: 'rgba(255, 255, 255, 0.05)',
-      text: 'rgba(255, 255, 255, 0.8)',
-      border: 'transparent',
-    },
-  },
-  navigation: {
-    background: 'rgba(0, 0, 0, 0.9)',
-    text: '#ffffff',
-    textActive: '#e63946',
-    textHover: 'rgba(255, 255, 255, 0.8)',
-    indicator: '#e63946',
-  },
-  input: {
-    background: 'rgba(26, 26, 26, 0.6)',
-    backgroundFocus: 'rgba(42, 42, 42, 0.8)',
-    border: 'rgba(255, 255, 255, 0.1)',
-    borderFocus: '#e63946',
-    text: '#ffffff',
-    placeholder: 'rgba(255, 255, 255, 0.4)',
-  },
-}
+// Re-export componentColors from themes
+export const componentColors = themeComponentColors
 
 export type ColorPalette = typeof colors
 export type ComponentColors = typeof componentColors

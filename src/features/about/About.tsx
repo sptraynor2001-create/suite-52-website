@@ -9,7 +9,7 @@ import { tokens } from '@/design/tokens'
 import { animations } from '@/themes/animations'
 import { AboutScene } from './components'
 import { cardStyles } from '@/design/cardStyles'
-import { colors } from '@/design/colors'
+import { colors } from '@/themes/colors'
 
 function About() {
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
@@ -131,13 +131,21 @@ function About() {
         >
           <h1
             style={{
-              color: '#ffffff',
+              color: colors.atmosphere.snow,
               fontSize: titleSize,
               fontWeight: '700',
               letterSpacing: '-0.02em',
               fontFamily: activeFont.family,
               margin: 0,
-              textShadow: '0 0 30px rgba(255, 255, 255, 0.2)',
+              background: `linear-gradient(135deg, ${colors.atmosphere.snow} 0%, ${colors.atmosphere.bone} 100%)`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textShadow: `
+                0 2px 8px rgba(235, 235, 235, 0.15),
+                0 4px 16px rgba(212, 212, 212, 0.1),
+                0 0 40px rgba(255, 255, 255, 0.05)
+              `,
               animation: 'slideUp 0.6s ease-out 0.1s both',
             }}
           >
