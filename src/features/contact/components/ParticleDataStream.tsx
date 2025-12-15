@@ -83,14 +83,15 @@ export function ParticleDataStream({
     return Math.min(target, settings.particleCount)
   }, [settings.particleCount, isMobileDevice])
   
-  // Initialize particles
+  // Initialize particles - simpler distribution
   const particles = useMemo(() => {
     const positions = new Float32Array(particleCount * 3)
     const progress = new Float32Array(particleCount) // 0-1 progress along stream
     const streamIndices = new Uint16Array(particleCount) // Which stream this particle belongs to
     const speeds = new Float32Array(particleCount) // Individual particle speeds
+    const phases = new Float32Array(particleCount) // For variation
     
-    // Distribute particles across streams
+    // Distribute particles across streams evenly
     let particleIndex = 0
     streamSources.forEach((source, sourceIndex) => {
       const particlesPerStream = Math.ceil(particleCount / streamSources.length)
@@ -98,24 +99,26 @@ export function ParticleDataStream({
       for (let i = 0; i < particlesPerStream && particleIndex < particleCount; i++) {
         const i3 = particleIndex * 3
         
-        // Start at source position
+        // Start at source position with slight offset
+        const offset = (i / particlesPerStream) * 2 - 1 // -1 to 1
         positions[i3] = source.position.x
         positions[i3 + 1] = source.position.y
         positions[i3 + 2] = source.position.z
         
-        // Random starting progress
+        // Random starting progress along stream
         progress[particleIndex] = Math.random()
         streamIndices[particleIndex] = sourceIndex
-        speeds[particleIndex] = particleConfig.particleDataStream.streamSpeed * (0.8 + Math.random() * 0.4)
+        speeds[particleIndex] = particleConfig.particleDataStream.streamSpeed * (0.7 + Math.random() * 0.6)
+        phases[particleIndex] = Math.random() * Math.PI * 2
         
         particleIndex++
       }
     })
     
-    return { positions, progress, streamIndices, speeds, totalCount: particleIndex }
+    return { positions, progress, streamIndices, speeds, phases, totalCount: particleIndex }
   }, [particleCount, streamSources])
   
-  // Animation frame
+  // Animation frame - simplified stream flow
   useFrame((state) => {
     if (!particlesRef.current || streamSources.length === 0) return
     
@@ -131,71 +134,51 @@ export function ParticleDataStream({
       
       // Skip non-hovered streams if another is hovered
       if (isOtherHovered) {
-        // Fade out particles in non-hovered streams
         continue
       }
       
       // Update progress along stream
-      particles.progress[i] += particles.speeds[i] * 0.01
+      const speedMultiplier = isHovered ? 1.8 : 1.0
+      particles.progress[i] += particles.speeds[i] * 0.01 * speedMultiplier
       
       // Reset when reaching end
       if (particles.progress[i] > 1) {
         particles.progress[i] = 0
       }
       
-      // Calculate position along stream path
+      // Simple stream: particles flow from source toward center (hub)
       const startPos = source.position
       const endPos = hubPosition
+      const t = particles.progress[i]
       
-      // First part: from source to hub
-      let currentPos: THREE.Vector3
-      if (particles.progress[i] < particleConfig.particleDataStream.mergeIntensity) {
-        // Before merge point
-        const t = particles.progress[i] / particleConfig.particleDataStream.mergeIntensity
-        currentPos = getStreamPoint(startPos, endPos, t, 0.3)
-      } else {
-        // After merge point - particles flow together
-        const t = (particles.progress[i] - particleConfig.particleDataStream.mergeIntensity) / 
-                  (1 - particleConfig.particleDataStream.mergeIntensity)
-        
-        // Flow from hub outward (or to another destination)
-        const mergedPos = endPos.clone()
-        const flowDirection = new THREE.Vector3(
-          Math.sin(time * 0.5 + streamIndex),
-          Math.cos(time * 0.3 + streamIndex),
-          Math.sin(time * 0.4 + streamIndex)
-        ).normalize()
-        
-        currentPos = mergedPos.clone().addScaledVector(flowDirection, t * 2)
-      }
+      // Create curved stream path
+      const streamPos = getStreamPoint(startPos, endPos, t, 0.4)
       
-      // Hover enhancement - particles move faster and cluster tighter
-      if (isHovered) {
-        const hoverBoost = 1.5
-        particles.progress[i] += particles.speeds[i] * 0.01 * (hoverBoost - 1)
-        
-        // Tighter stream width
-        const streamWidth = particleConfig.particleDataStream.streamWidth * 0.5
-        const perpendicular = new THREE.Vector3(
-          Math.sin(time + i),
-          Math.cos(time + i * 0.7),
-          Math.sin(time * 0.5 + i)
-        ).normalize()
-        currentPos.addScaledVector(perpendicular, (Math.random() - 0.5) * streamWidth)
-      } else {
-        // Normal stream width
-        const streamWidth = particleConfig.particleDataStream.streamWidth
-        const perpendicular = new THREE.Vector3(
-          Math.sin(time + i),
-          Math.cos(time + i * 0.7),
-          Math.sin(time * 0.5 + i)
-        ).normalize()
-        currentPos.addScaledVector(perpendicular, (Math.random() - 0.5) * streamWidth)
-      }
+      // Add stream width variation (perpendicular to flow)
+      const streamWidth = isHovered 
+        ? particleConfig.particleDataStream.streamWidth * 0.4
+        : particleConfig.particleDataStream.streamWidth
       
-      positions[i3] = currentPos.x
-      positions[i3 + 1] = currentPos.y
-      positions[i3 + 2] = currentPos.z
+      // Perpendicular direction (perpendicular to stream direction)
+      const streamDir = endPos.clone().sub(startPos).normalize()
+      const perp1 = new THREE.Vector3(-streamDir.z, 0, streamDir.x).normalize()
+      const perp2 = new THREE.Vector3(0, 1, 0)
+      
+      // Combine perpendiculars with phase for smooth variation
+      const phase = particles.phases[i]
+      const perpOffset = perp1.clone().multiplyScalar(
+        Math.sin(time * 0.5 + phase) * streamWidth
+      ).add(
+        perp2.clone().multiplyScalar(
+          Math.cos(time * 0.7 + phase) * streamWidth * 0.5
+        )
+      )
+      
+      const finalPos = streamPos.clone().add(perpOffset)
+      
+      positions[i3] = finalPos.x
+      positions[i3 + 1] = finalPos.y
+      positions[i3 + 2] = finalPos.z
     }
     
     particlesRef.current.geometry.attributes.position.needsUpdate = true
