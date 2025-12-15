@@ -2,8 +2,8 @@
  * ShowsScene - 3D globe background for Shows page
  */
 
-import { Suspense, useState, useEffect, useRef } from 'react'
-import { Canvas, useThree, useFrame } from '@react-three/fiber'
+import { Suspense, useState, useEffect } from 'react'
+import { Canvas } from '@react-three/fiber'
 import { Preload } from '@react-three/drei'
 import * as THREE from 'three'
 import { useQuality, Fog, MinimalPostProcessing } from '@/shared/components/3d'
@@ -26,41 +26,6 @@ const eventLocations = [
 ]
 
 interface ShowsSceneProps {
-  onEventHover?: (event: { name: string; date: string; lat: number; lon: number } | null) => void
-  hoveredShowIndex?: number | null
-}
-
-// Camera controller that focuses on hovered show
-function CameraController({ hoveredShowIndex }: { hoveredShowIndex?: number | null }) {
-  const { camera } = useThree()
-  const targetPosition = useRef(new THREE.Vector3(0, 0, 6))
-  const targetLookAt = useRef(new THREE.Vector3(0, 0, 0))
-
-  useEffect(() => {
-    if (hoveredShowIndex !== null && hoveredShowIndex !== undefined && eventLocations[hoveredShowIndex]) {
-      const show = eventLocations[hoveredShowIndex]
-      const showPos = latLonToPosition(show.lat, show.lon, 2.5)
-      
-      // Shorter, subtler camera movement - just slightly offset toward show
-      const offset = showPos.clone().normalize().multiplyScalar(1.5) // Much shorter offset
-      targetPosition.current.set(offset.x * 0.3, offset.y * 0.3, 6 + offset.z * 0.2) // Subtle movement
-      targetLookAt.current.copy(showPos.multiplyScalar(0.3)) // Look slightly toward show
-    } else {
-      // Default position
-      targetPosition.current.set(0, 0, 6)
-      targetLookAt.current.set(0, 0, 0)
-    }
-  }, [hoveredShowIndex])
-
-  useFrame(() => {
-    // Slower, shorter camera movement (reduced lerp speed)
-    camera.position.lerp(targetPosition.current, 0.02)
-    
-    const lookAt = new THREE.Vector3().lerp(targetLookAt.current, 0.02)
-    camera.lookAt(lookAt)
-  })
-
-  return null
 }
 
 function latLonToPosition(lat: number, lon: number, radius: number): THREE.Vector3 {
@@ -106,7 +71,7 @@ function SceneContent({ onEventHover, hoveredShowIndex }: ShowsSceneProps) {
   )
 }
 
-export function ShowsScene({ onEventHover, hoveredShowIndex }: ShowsSceneProps) {
+export function ShowsScene({}: ShowsSceneProps) {
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
@@ -139,7 +104,7 @@ export function ShowsScene({ onEventHover, hoveredShowIndex }: ShowsSceneProps) 
         style={{ background: 'transparent' }}
       >
         <Suspense fallback={null}>
-          <SceneContent onEventHover={onEventHover} hoveredShowIndex={hoveredShowIndex} />
+          <SceneContent />
           <Preload all />
         </Suspense>
       </Canvas>

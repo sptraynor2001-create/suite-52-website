@@ -77,23 +77,10 @@ function Shows() {
     return `${8 + (30 - 8) * ratio}px`
   }, [viewportWidth])
 
-  // Handle show hover from 3D scene
-  const handleShowHover = (show: { name: string; date: string; lat: number; lon: number } | null) => {
-    if (show) {
-      // Match by date (most reliable)
-      const index = shows.findIndex(s => s.date === show.date)
-      if (index !== -1) {
-        setHoveredIndex(index)
-      }
-    } else {
-      setHoveredIndex(null)
-    }
-  }
-
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
-      {/* 3D Particle Constellation Globe with Timeline Visualizer */}
-      <ShowsScene onEventHover={handleShowHover} hoveredShowIndex={hoveredIndex} />
+      {/* 3D Particle Constellation Globe */}
+      <ShowsScene />
       
       {/* Background image */}
       <div

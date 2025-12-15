@@ -3,8 +3,8 @@
  * Original implementation: Entire globe is particles that cluster to form continents
  */
 
-import { useRef, useMemo, useState, useEffect } from 'react'
-import { useFrame, useThree } from '@react-three/fiber'
+import { useRef, useMemo } from 'react'
+import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useQuality } from '@/shared/components/3d'
 import { particleConfig } from '@/config/particles'
@@ -20,7 +20,6 @@ interface ShowMarker {
 interface ParticleConstellationGlobeProps {
   shows?: ShowMarker[]
   radius?: number
-  onShowHover?: (show: ShowMarker | null) => void
 }
 
 // Convert lat/lon to 3D position on sphere
@@ -68,17 +67,13 @@ function positionToLatLon(pos: THREE.Vector3): { lat: number; lon: number } {
 export function ParticleConstellationGlobe({
   shows = [],
   radius = 2.5,
-  onShowHover,
 }: ParticleConstellationGlobeProps) {
   const globeRef = useRef<THREE.Group>(null)
   const baseParticlesRef = useRef<THREE.Points>(null)
   const constellationParticlesRef = useRef<THREE.Points>(null)
+  const plasmaParticlesRef = useRef<THREE.Points>(null)
   const { settings } = useQuality()
-  const { pointer } = useThree()
   const isMobileDevice = useIsMobile()
-  
-  const [mouseHover, setMouseHover] = useState(false)
-  const [hoveredShow, setHoveredShow] = useState<number | null>(null)
   
   // Particle counts based on quality
   const baseParticleCount = useMemo(() => {
@@ -223,84 +218,70 @@ export function ParticleConstellationGlobe({
     return { positions, baseOffsets, phases, showIndices, totalCount: totalConstellationParticles }
   }, [showPositions, constellationParticleCount])
   
-  // Wave system - track active waves
-  const wavesRef = useRef<Array<{
-    showIndex: number
-    startTime: number
-    radius: number
-  }>>([])
-  
-  const lastWaveTimeRef = useRef<number>(0)
-  
-  // Initialize waves
-  useEffect(() => {
-    const interval = particleConfig.constellationGlobe.waveInterval * 1000
-    let waveIndex = 0
+  // Plasma particles - spin out from globe like solar flares
+  const plasmaParticleCount = useMemo(() => {
+    return isMobileDevice ? 150 : 300
+  }, [isMobileDevice])
+
+  const plasmaParticles = useMemo(() => {
+    const positions = new Float32Array(plasmaParticleCount * 3)
+    const velocities = new Float32Array(plasmaParticleCount * 3)
+    const startPositions = new Float32Array(plasmaParticleCount * 3)
+    const phases = new Float32Array(plasmaParticleCount)
+    const speeds = new Float32Array(plasmaParticleCount)
+    const maxDistances = new Float32Array(plasmaParticleCount)
+    const returnTypes = new Uint8Array(plasmaParticleCount) // 0 = permanent, 1 = returns
     
-    const startWave = () => {
-      if (showPositions.length > 0) {
-        wavesRef.current.push({
-          showIndex: waveIndex % showPositions.length,
-          startTime: Date.now(),
-          radius: 0,
-        })
-        waveIndex++
-      }
+    for (let i = 0; i < plasmaParticleCount; i++) {
+      const i3 = i * 3
+      
+      // Start on sphere surface
+      const theta = Math.random() * Math.PI * 2
+      const phi = Math.acos(2 * Math.random() - 1)
+      
+      const startX = radius * Math.sin(phi) * Math.cos(theta)
+      const startY = radius * Math.cos(phi)
+      const startZ = radius * Math.sin(phi) * Math.sin(theta)
+      
+      startPositions[i3] = startX
+      startPositions[i3 + 1] = startY
+      startPositions[i3 + 2] = startZ
+      
+      // Initial position (start at surface)
+      positions[i3] = startX
+      positions[i3 + 1] = startY
+      positions[i3 + 2] = startZ
+      
+      // Velocity direction (outward from surface)
+      const direction = new THREE.Vector3(startX, startY, startZ).normalize()
+      const speed = 0.01 + Math.random() * 0.02
+      speeds[i] = speed
+      
+      velocities[i3] = direction.x * speed
+      velocities[i3 + 1] = direction.y * speed
+      velocities[i3 + 2] = direction.z * speed
+      
+      // Max distance (some go far, some stay closer)
+      maxDistances[i] = radius * (1.2 + Math.random() * 0.8) // 1.2x to 2x radius
+      
+      // 60% return, 40% permanent
+      returnTypes[i] = Math.random() < 0.6 ? 1 : 0
+      
+      phases[i] = Math.random() * Math.PI * 2
     }
     
-    // Start first wave after delay
-    const initialTimeout = setTimeout(() => {
-      startWave()
-      const intervalId = setInterval(startWave, interval)
-      return () => clearInterval(intervalId)
-    }, 2000)
-    
-    return () => {
-      clearTimeout(initialTimeout)
-    }
-  }, [showPositions.length])
+    return { positions, velocities, startPositions, phases, speeds, maxDistances, returnTypes }
+  }, [plasmaParticleCount, radius])
   
   // Animation frame
   useFrame((state) => {
-    if (!globeRef.current || !baseParticlesRef.current || !constellationParticlesRef.current) return
+    if (!globeRef.current || !baseParticlesRef.current || !constellationParticlesRef.current || !plasmaParticlesRef.current) return
     
     const time = state.clock.getElapsedTime()
     const delta = state.clock.getDelta()
     
-    // Auto-rotate globe (slower)
-    globeRef.current.rotation.y += particleConfig.constellationGlobe.rotationSpeed * 0.5
-    
-    // Get mouse position in 3D space (projected onto sphere)
-    const mouse3D = new THREE.Vector3(
-      pointer.x * 5,
-      pointer.y * 5,
-      6
-    ).normalize().multiplyScalar(radius)
-    
-    // Check hover over show constellations
-    if (!isMobileDevice) {
-      let closestShow: number | null = null
-      let closestDist = Infinity
-      
-      showPositions.forEach((show, index) => {
-        const dist = mouse3D.distanceTo(show.position)
-        if (dist < 0.8 && dist < closestDist) {
-          closestDist = dist
-          closestShow = index
-        }
-      })
-      
-      if (closestShow !== hoveredShow) {
-        setHoveredShow(closestShow)
-        onShowHover?.(closestShow !== null ? shows[closestShow] : null)
-      }
-      
-      // Update mouse hover state based on pointer movement
-      const mouseMoving = Math.abs(pointer.x) > 0.01 || Math.abs(pointer.y) > 0.01
-      if (mouseMoving && !mouseHover) {
-        setMouseHover(true)
-      }
-    }
+    // Continuous rotation
+    globeRef.current.rotation.y += particleConfig.constellationGlobe.rotationSpeed
     
     // Update base particles
     const basePositions = baseParticlesRef.current.geometry.attributes.position.array as Float32Array
@@ -323,9 +304,7 @@ export function ParticleConstellationGlobe({
       
       // Continent attraction - particles cluster based on density
       const density = baseParticles.densities[i]
-      const attractionStrength = mouseHover 
-        ? particleConfig.constellationGlobe.continentAttraction.hover
-        : particleConfig.constellationGlobe.continentAttraction.base
+      const attractionStrength = particleConfig.constellationGlobe.continentAttraction.base
       
       // Attract particles toward continent areas
       const { lat, lon } = positionToLatLon(basePos)
@@ -349,34 +328,6 @@ export function ParticleConstellationGlobe({
         // Push ocean particles slightly outward
         pos.addScaledVector(direction, -force * 0.5)
       }
-      
-      // Mouse interaction - particles near mouse cluster more
-      if (!isMobileDevice) {
-        const mouseDist = pos.distanceTo(mouse3D)
-        if (mouseDist < radius * 0.5) {
-          const mouseForce = (1 - mouseDist / (radius * 0.5)) * 0.02
-          const mouseDir = pos.clone().sub(mouse3D).normalize()
-          pos.addScaledVector(mouseDir, -mouseForce) // Attract toward mouse
-        }
-      }
-      
-      // Wave effects - particles pushed outward by waves
-      wavesRef.current.forEach((wave) => {
-        const waveAge = (Date.now() - wave.startTime) / 1000
-        const waveRadius = waveAge * particleConfig.constellationGlobe.waveSpeed
-        const wavePos = showPositions[wave.showIndex]?.position
-        
-        if (wavePos) {
-          const distToWave = pos.distanceTo(wavePos)
-          const waveDist = Math.abs(distToWave - waveRadius)
-          
-          if (waveDist < 0.3 && waveAge < 5) {
-            const waveStrength = (1 - waveAge / 5) * (1 - waveDist / 0.3) * 0.05
-            const waveDir = pos.clone().sub(wavePos).normalize()
-            pos.addScaledVector(waveDir, waveStrength)
-          }
-        }
-      })
       
       // Keep particles on sphere surface
       pos.normalize().multiplyScalar(radius)
@@ -445,30 +396,80 @@ export function ParticleConstellationGlobe({
     
     constellationParticlesRef.current.geometry.attributes.position.needsUpdate = true
     
-    // Clean up old waves
-    wavesRef.current = wavesRef.current.filter(
-      wave => (Date.now() - wave.startTime) / 1000 < 5
-    )
+    // Update plasma particles
+    const plasmaPositions = plasmaParticlesRef.current.geometry.attributes.position.array as Float32Array
+    
+    for (let i = 0; i < plasmaParticleCount; i++) {
+      const i3 = i * 3
+      
+      const pos = new THREE.Vector3(
+        plasmaPositions[i3],
+        plasmaPositions[i3 + 1],
+        plasmaPositions[i3 + 2]
+      )
+      
+      const startPos = new THREE.Vector3(
+        plasmaParticles.startPositions[i3],
+        plasmaParticles.startPositions[i3 + 1],
+        plasmaParticles.startPositions[i3 + 2]
+      )
+      
+      const velocity = new THREE.Vector3(
+        plasmaParticles.velocities[i3],
+        plasmaParticles.velocities[i3 + 1],
+        plasmaParticles.velocities[i3 + 2]
+      )
+      
+      const maxDist = plasmaParticles.maxDistances[i]
+      const returnType = plasmaParticles.returnTypes[i]
+      const currentDist = pos.length()
+      
+      if (returnType === 0) {
+        // Permanent - keep going out
+        if (currentDist < maxDist) {
+          pos.add(velocity.clone().multiplyScalar(delta * 60))
+        }
+        // Slow down as it reaches max distance
+        if (currentDist >= maxDist * 0.9) {
+          velocity.multiplyScalar(0.98)
+        }
+      } else {
+        // Returns - go out then come back
+        const phase = (time * 0.3 + plasmaParticles.phases[i]) % (Math.PI * 2)
+        const distance = radius + (maxDist - radius) * Math.sin(phase)
+        
+        const direction = startPos.clone().normalize()
+        const basePos = direction.clone().multiplyScalar(distance)
+        
+        // Add spiral motion
+        const spiralAngle = time * 0.5 + plasmaParticles.phases[i]
+        const spiralRadius = (distance - radius) * 0.3
+        const perpendicular = new THREE.Vector3(-direction.z, 0, direction.x).normalize()
+        const up = new THREE.Vector3().crossVectors(direction, perpendicular).normalize()
+        
+        const spiralOffset = perpendicular
+          .clone()
+          .multiplyScalar(Math.cos(spiralAngle) * spiralRadius)
+          .add(up.clone().multiplyScalar(Math.sin(spiralAngle) * spiralRadius))
+        
+        pos.copy(basePos.add(spiralOffset))
+      }
+      
+      // Update velocity for next frame
+      plasmaParticles.velocities[i3] = velocity.x
+      plasmaParticles.velocities[i3 + 1] = velocity.y
+      plasmaParticles.velocities[i3 + 2] = velocity.z
+      
+      plasmaPositions[i3] = pos.x
+      plasmaPositions[i3 + 1] = pos.y
+      plasmaPositions[i3 + 2] = pos.z
+    }
+    
+    plasmaParticlesRef.current.geometry.attributes.position.needsUpdate = true
   })
   
-  const handlePointerMove = () => {
-    if (!isMobileDevice) {
-      setMouseHover(true)
-    }
-  }
-  
-  const handlePointerLeave = () => {
-    setMouseHover(false)
-    setHoveredShow(null)
-    onShowHover?.(null)
-  }
-  
   return (
-    <group
-      ref={globeRef}
-      onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
-    >
+    <group ref={globeRef}>
       {/* Base particles (white, forming globe and continents) */}
       <points ref={baseParticlesRef}>
         <bufferGeometry>
@@ -512,6 +513,27 @@ export function ParticleConstellationGlobe({
           />
         </points>
       )}
+      
+      {/* Plasma particles (solar flare effect) */}
+      <points ref={plasmaParticlesRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={plasmaParticleCount}
+            array={plasmaParticles.positions}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.02}
+          color={0xffaa44}
+          transparent
+          opacity={0.7}
+          sizeAttenuation
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </points>
     </group>
   )
 }
