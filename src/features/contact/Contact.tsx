@@ -19,7 +19,6 @@ import {
   FaTwitter
 } from 'react-icons/fa'
 import { socialLinks as socialLinksData } from './data'
-import { ContactScene } from './components/ContactScene'
 
 // Social platform configurations with brand colors and icons
 const socialPlatforms = [
@@ -92,26 +91,6 @@ function Contact() {
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth)
   const [visibleSections, setVisibleSections] = useState(0)
   const [hoveredLink, setHoveredLink] = useState<string | null>(null)
-  const [hoveredContact, setHoveredContact] = useState<string | null>(null)
-  
-  // Combine contact methods for 3D scene
-  const contactMethods = useMemo(() => {
-    const methods = [
-      ...contactInfo.map(info => ({
-        id: `email-${info.label.toLowerCase().replace(/\s+/g, '-')}`,
-        label: info.label,
-        value: info.value,
-        type: 'email' as const,
-      })),
-      ...socialPlatforms.map(platform => ({
-        id: `social-${platform.name.toLowerCase()}`,
-        label: platform.name,
-        value: socialLinksData[platform.key] as string,
-        type: 'social' as const,
-      })),
-    ]
-    return methods
-  }, [])
 
   useEffect(() => {
     const handleResize = () => setViewportWidth(window.innerWidth)
@@ -146,9 +125,6 @@ function Contact() {
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
-      {/* 3D Background Scene */}
-      <ContactScene contactMethods={contactMethods} hoveredContact={hoveredContact} />
-      
       {/* Background image */}
       <div
         style={{
@@ -263,11 +239,9 @@ function Contact() {
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.color = '#e63946'
-                      setHoveredContact(`email-${info.label.toLowerCase().replace(/\s+/g, '-')}`)
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.color = '#ffffff'
-                      setHoveredContact(null)
                     }}
                   >
                     {info.value}
@@ -323,14 +297,12 @@ function Contact() {
                     : '0 2px 4px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
                   overflow: 'hidden',
                 }}
-                onMouseEnter={() => {
-                  setHoveredLink(platform.name)
-                  setHoveredContact(`social-${platform.name.toLowerCase()}`)
-                }}
-                onMouseLeave={() => {
-                  setHoveredLink(null)
-                  setHoveredContact(null)
-                }}
+                  onMouseEnter={() => {
+                    setHoveredLink(platform.name)
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredLink(null)
+                  }}
               >
                 {/* Animated liquid glass effect */}
                 <div
