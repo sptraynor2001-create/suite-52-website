@@ -35,47 +35,47 @@ function FallingCode() {
       let mean, stdDev, minVal, maxVal
       
       if (rowVariation < 0.14) {
-        // Group 1: Very subtle
-        mean = 0.010
-        stdDev = 0.008
-        minVal = 0.003
-        maxVal = 0.020
+        // Group 1: Subtle but visible
+        mean = 0.08
+        stdDev = 0.05
+        minVal = 0.03
+        maxVal = 0.15
       } else if (rowVariation < 0.28) {
-        // Group 2: Subtle
-        mean = 0.012
-        stdDev = 0.009
-        minVal = 0.004
-        maxVal = 0.025
+        // Group 2: Medium-low
+        mean = 0.10
+        stdDev = 0.06
+        minVal = 0.04
+        maxVal = 0.18
       } else if (rowVariation < 0.42) {
-        // Group 3: Medium-low
-        mean = 0.008
-        stdDev = 0.007
-        minVal = 0.002
-        maxVal = 0.018
+        // Group 3: Medium
+        mean = 0.12
+        stdDev = 0.07
+        minVal = 0.05
+        maxVal = 0.22
       } else if (rowVariation < 0.57) {
-        // Group 4: Medium
-        mean = 0.014
-        stdDev = 0.010
-        minVal = 0.005
-        maxVal = 0.028
+        // Group 4: Medium-high
+        mean = 0.14
+        stdDev = 0.08
+        minVal = 0.06
+        maxVal = 0.25
       } else if (rowVariation < 0.71) {
-        // Group 5: Medium-high
-        mean = 0.011
-        stdDev = 0.008
-        minVal = 0.003
-        maxVal = 0.022
+        // Group 5: Higher
+        mean = 0.16
+        stdDev = 0.09
+        minVal = 0.07
+        maxVal = 0.28
       } else if (rowVariation < 0.85) {
-        // Group 6: Higher
-        mean = 0.016
-        stdDev = 0.011
-        minVal = 0.006
-        maxVal = 0.030
+        // Group 6: High
+        mean = 0.18
+        stdDev = 0.10
+        minVal = 0.08
+        maxVal = 0.32
       } else {
-        // Group 7: Highest (but still subtle)
-        mean = 0.013
-        stdDev = 0.009
-        minVal = 0.004
-        maxVal = 0.026
+        // Group 7: Highest
+        mean = 0.20
+        stdDev = 0.11
+        minVal = 0.09
+        maxVal = 0.35
       }
       
       // Box-Muller transform for normal distribution
@@ -193,7 +193,7 @@ function FallingCode() {
 
     // Initialize with lines at fixed vertical positions (no vertical movement)
     const initialLines: CodeLine[] = []
-    const lineSpacing = 30 // Fixed spacing in pixels between lines
+    const lineSpacing = 35 // Fixed spacing in pixels between lines
     const numLines = Math.ceil(viewportHeight / lineSpacing) + 5 // Dynamic based on height, +5 for buffer
     
     for (let i = 0; i < numLines; i++) {
@@ -250,10 +250,10 @@ function FallingCode() {
           width: '100%',
           height: '100%',
           fontFamily: activeFont.family,
-          fontSize: '13px',
+          fontSize: '18px',
           fontWeight: '700',
           color: '#ffffff',
-          letterSpacing: '0.05em',
+          letterSpacing: '0.08em',
           lineHeight: '1.5',
           overflow: 'hidden',
         }}
@@ -268,10 +268,10 @@ function FallingCode() {
               key={line.id}
               style={{
                 position: 'absolute',
-                top: `${line.id * 30}px`, // Fixed pixel spacing (30px apart)
+                top: `${line.id * 35}px`, // Fixed pixel spacing (35px apart)
                 left: 0,
                 width: '100%',
-                height: '13px', // Consistent line height
+                height: '18px', // Consistent line height
                 whiteSpace: 'nowrap',
                 animation: [
                   line.direction === 'left' 
