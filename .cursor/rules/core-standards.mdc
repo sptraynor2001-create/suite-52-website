@@ -1,0 +1,79 @@
+---
+alwaysApply: false
+---
+
+# Suite 52 – Core Standards (Aurora)
+
+## Scope
+Applies to all code in `src/` unless a more specific rule overrides it.
+
+## Core idea (token-efficient)
+Rules should be **executable constraints** + **tiny checklists**.
+
+- If tooling can enforce it, this file should be **shorter**, not longer.
+- Avoid duplicated standards elsewhere: **one source of truth** lives here.
+
+## Canonical terms (don’t vary)
+- **agent**: a role/prompt (e.g. `@quality-reviewer`)
+- **tool**: a runnable script/command (usually `*.sh`)
+- **PROJECT_ROOT**: repo root
+- **AURORA_ROOT**: Aurora root (when running via CLI/adapters)
+
+## Quality budgets (enforced by tooling)
+- **max component file lines**: 300 (excluding comments/blank lines)
+- **max utility file lines**: 150 (excluding comments/blank lines)
+- **max function lines**: 50 (excluding comments/blank lines)
+- **max params**: 5
+- **max nesting depth**: 3
+- **max cyclomatic complexity**: 10
+- **TypeScript `any`**: disallowed (use `unknown` + narrowing)
+
+## TypeScript
+- **Do**: explicit types at boundaries (exports, props, API responses).
+- **Do**: prefer `unknown` over `any`, then narrow.
+- **Don’t**: cast unless provably safe; add a 1-line rationale when you must.
+
+## React
+- **Do**: keep components small and focused.
+- **Do**: stabilize deep props (`useCallback`/`useMemo`) when it prevents churn.
+- **Don’t**: do heavy work in render; move to helpers / `useMemo`.
+
+## Testing (Vitest)
+- **Do**: ship new utilities/components with tests.
+- **Do**: prefer Testing Library queries by role/label/text.
+- **Don’t**: rely on giant snapshots for core behavior.
+
+## Aurora usage
+- **Do**: run `npm run quality` (or `npm run quality:ci`) before pushing.
+- **Do**: use actionable scans: `./aurora/agents/quality-reviewer/tools/scan-violations.sh src --format text`
+
+## AI / Agent behavior (tool-first + token control)
+
+### Default response format (unless user asks for depth)
+- **Summary**: 1–3 bullets
+- **Risks**: 0–3 bullets
+- **Next actions**: 1–5 bullets, each with a file path and/or command
+- Stop (no long narrative by default)
+
+### Context discipline (hard rule)
+- Read the **smallest set of files** needed.
+- Don’t paste large chunks; prefer **paths + small excerpts**.
+- When showing code, cite only the **relevant lines**.
+
+### File creation policy (hard rule)
+- **DO NOT create new files** by default.
+- Prefer **editing existing files**.
+- Only create a new file when:
+  - the user explicitly requests it ("create a file", "write a doc", "add a README", etc.), or
+  - the task is clearly best handled as documentation *and* the user intent implies they want a persistent artifact.
+- Do not create “report”/“summary” markdown files for routine work.
+
+### Markdown length budgets (hard rule)
+- `README.md`: **≤ 200 lines**
+- Other markdown docs: **≤ 150 lines**
+- If more depth is needed, keep it in chat unless the user requests a doc.
+
+### Precision over tokens
+- Prefer minimal, high-signal answers.
+- Don’t dump long lists of commands/logs; show the few that matter.
+- Don’t paste entire files unless explicitly asked.
