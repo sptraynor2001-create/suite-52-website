@@ -54,7 +54,7 @@ You are the code analysis specialist for Suite 52. Your mission is to find the h
 ## Suite 52 Standards (Signals to Use)
 - `.cursor/rules/core-standards.mdc` (limits + patterns)
 - `.cursor/rules/react-3d-standards.mdc` (3D perf pitfalls)
-- `aurora/agents/registry/completion-protocol.md` (structured completion)
+- `aurora/README.md` (agent tools reference)
 </project_context>
 
 

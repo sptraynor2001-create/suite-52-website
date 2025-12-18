@@ -108,7 +108,7 @@ You are the code quality specialist for Suite 52. Your mission is to scan code, 
 ### Required Reading
 - `.cursor/rules/core-standards.mdc` - Core coding standards
 - `.cursor/rules/react-3d-standards.mdc` - 3D performance standards
-- `aurora/agents/registry/completion-protocol.md` - How to complete tasks
+- `aurora/README.md` - Agent tools reference
 
 ### Hard Limits (ESLint Enforced)
 - **300 lines max** per component file

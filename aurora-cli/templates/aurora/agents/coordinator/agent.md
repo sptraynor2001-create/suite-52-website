@@ -29,19 +29,14 @@ You are the master coordinator for the Suite 52 multi-agent system. Your mission
 <tools>
 ## Available Tools
 
-### aurora/agents/coordinator/tools/route-task.sh (TO IMPLEMENT)
+### aurora/agents/coordinator/tools/route-task.sh
 **Purpose**: Analyze task and suggest agent(s)
 **Usage**: `./aurora/agents/coordinator/tools/route-task.sh "[task description]"`
 **Output**: Suggested agent(s) with reasoning
 
-### aurora/agents/coordinator/tools/orchestrate.sh (TO IMPLEMENT)
-**Purpose**: Design multi-agent workflow
-**Usage**: `./aurora/agents/coordinator/tools/orchestrate.sh "[complex task]"`
-**Output**: Step-by-step workflow plan
-
-### Agent Registry
-- `aurora/agents/registry/agents.json` - All agent capabilities
-- `aurora/agents/registry/routing.json` - Task routing patterns
+### Agent Information
+- List available agents: `aurora list --agents`
+- Agent capabilities are defined in `aurora/agents/*/agent.md` files
 </tools>
 
 <workflow>
