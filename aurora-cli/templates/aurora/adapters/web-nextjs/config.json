@@ -1,0 +1,49 @@
+{
+  "adapter_name": "web-nextjs",
+  "adapter_version": "1.0.0",
+  "description": "Next.js 15 + React 19 adapter for Aurora",
+  "supported_features": [
+    "eslint",
+    "jest",
+    "nextjs-app-router",
+    "typescript",
+    "tailwind"
+  ],
+  "commands": {
+    "dev": "npm run dev",
+    "lint": "npm run lint",
+    "quality": "npm run lint && npm run typecheck",
+    "quality_ci": "npm run quality && npm run test && npm run build",
+    "test": "npm run test",
+    "build": "npm run build",
+    "typecheck": "tsc --noEmit"
+  },
+  "file_patterns": {
+    "source": ["app/**/*.{ts,tsx,js,jsx}", "src/**/*.{ts,tsx,js,jsx}", "components/**/*.{ts,tsx,js,jsx}"],
+    "test": ["**/__tests__/**/*.{ts,tsx,js,jsx}", "**/*.{test,spec}.{ts,tsx,js,jsx}"],
+    "config": [
+      "next.config.js",
+      "next.config.mjs",
+      "eslint.config.js",
+      ".eslintrc.json",
+      "tsconfig.json",
+      "tailwind.config.js",
+      "postcss.config.js",
+      "jest.config.js"
+    ],
+    "styles": ["app/**/*.{css,scss}", "styles/**/*.{css,scss}", "**/*.module.{css,scss}"]
+  },
+  "quality_limits": {
+    "max_file_lines": 300,
+    "max_utility_file_lines": 150,
+    "max_function_lines": 50,
+    "max_params": 5,
+    "max_depth": 3,
+    "max_complexity": 10
+  },
+  "nextjs_specific": {
+    "app_router": true,
+    "server_components": true,
+    "api_routes": "app/api"
+  }
+}

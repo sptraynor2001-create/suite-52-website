@@ -1,0 +1,41 @@
+{
+  "adapter_name": "web-react",
+  "adapter_version": "1.0.0",
+  "description": "React + Vite web app adapter for Aurora",
+  "supported_features": [
+    "eslint",
+    "vitest",
+    "vite",
+    "react-router",
+    "r3f"
+  ],
+  "commands": {
+    "dev": "npm run dev",
+    "lint": "npm run lint",
+    "quality": "npm run quality",
+    "quality_ci": "npm run quality:ci",
+    "test": "npm run test:run",
+    "build": "npm run build"
+  },
+  "file_patterns": {
+    "source": ["src/**/*.{ts,tsx,js,jsx}"],
+    "test": ["src/**/*.{test,spec}.{ts,tsx,js,jsx}"],
+    "config": [
+      "eslint.config.js",
+      "vite.config.ts",
+      "vitest.config.ts",
+      "tsconfig.json",
+      "tailwind.config.js",
+      "postcss.config.js"
+    ],
+    "styles": ["src/**/*.{css,scss}", "src/**/*.{ts,tsx,js,jsx}"]
+  },
+  "quality_limits": {
+    "max_file_lines": 300,
+    "max_utility_file_lines": 150,
+    "max_function_lines": 50,
+    "max_params": 5,
+    "max_depth": 3,
+    "max_complexity": 10
+  }
+}

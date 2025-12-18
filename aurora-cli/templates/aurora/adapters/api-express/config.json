@@ -1,0 +1,47 @@
+{
+  "adapter_name": "api-express",
+  "adapter_version": "1.0.0",
+  "description": "Express + Node.js API adapter for Aurora",
+  "supported_features": [
+    "eslint",
+    "jest",
+    "express",
+    "typescript",
+    "supertest"
+  ],
+  "commands": {
+    "dev": "npm run dev",
+    "start": "npm start",
+    "lint": "npm run lint",
+    "quality": "npm run lint && npm run typecheck",
+    "quality_ci": "npm run quality && npm run test",
+    "test": "npm run test",
+    "test:coverage": "npm run test:coverage",
+    "typecheck": "tsc --noEmit"
+  },
+  "file_patterns": {
+    "source": ["src/**/*.{ts,js}", "routes/**/*.{ts,js}", "controllers/**/*.{ts,js}", "middleware/**/*.{ts,js}"],
+    "test": ["**/__tests__/**/*.{ts,js}", "**/*.{test,spec}.{ts,js}"],
+    "config": [
+      "eslint.config.js",
+      ".eslintrc.json",
+      "tsconfig.json",
+      "jest.config.js"
+    ]
+  },
+  "quality_limits": {
+    "max_file_lines": 250,
+    "max_utility_file_lines": 150,
+    "max_function_lines": 40,
+    "max_params": 4,
+    "max_depth": 3,
+    "max_complexity": 8,
+    "max_route_handlers": 10
+  },
+  "api_specific": {
+    "require_error_handling": true,
+    "require_validation": true,
+    "require_logging": true,
+    "max_nested_routes": 3
+  }
+}

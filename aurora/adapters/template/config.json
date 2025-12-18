@@ -1,0 +1,19 @@
+{
+  "adapter_name": "template",
+  "adapter_version": "1.0.0",
+  "description": "Template adapter - copy to create a new project type",
+  "supported_features": [],
+  "commands": {},
+  "file_patterns": {
+    "source": [],
+    "test": [],
+    "config": [],
+    "styles": []
+  },
+  "quality_limits": {
+    "max_file_lines": 300,
+    "max_utility_file_lines": 150,
+    "max_function_lines": 50
+  }
+}
+

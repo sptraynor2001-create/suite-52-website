@@ -1,0 +1,38 @@
+{
+  "name": "@aurora-ai/cli",
+  "version": "1.0.0",
+  "description": "Multi-agent AI orchestration framework for lead developers",
+  "type": "module",
+  "bin": {
+    "aurora": "./bin/aurora.js"
+  },
+  "scripts": {
+    "test": "node --test test/**/*.test.js",
+    "test:watch": "node --test --watch test/**/*.test.js",
+    "lint": "eslint .",
+    "prepare": "chmod +x bin/aurora.js"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "automation",
+    "quality",
+    "testing",
+    "cli"
+  ],
+  "author": "Aurora AI Framework",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "inquirer": "^13.1.0",
+    "ora": "^8.1.2",
+    "fs-extra": "^11.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.36.0"
+  }
+}
