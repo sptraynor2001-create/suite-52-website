@@ -1,0 +1,91 @@
+{
+  "version": "2.0.0",
+  "routing_rules": [
+    {
+      "keywords": ["lint", "violation", "quality", "review.*code", "fix.*error", "eslint"],
+      "agent": "quality-reviewer",
+      "confidence": "high",
+      "alternatives": ["refactorer", "theme-enforcer"]
+    },
+    {
+      "keywords": ["hardcoded", "theme", "color", "spacing", "z-index", "design.*token"],
+      "agent": "theme-enforcer",
+      "confidence": "high",
+      "alternatives": ["quality-reviewer"]
+    },
+    {
+      "keywords": ["refactor", "split", "extract", "reduce.*complexity", "large.*file"],
+      "agent": "refactorer",
+      "confidence": "high",
+      "alternatives": ["architect", "quality-reviewer"]
+    },
+    {
+      "keywords": ["write.*test", "generate.*test", "create.*test", "add.*test"],
+      "agent": "test-generator",
+      "confidence": "high",
+      "alternatives": ["coverage-analyzer", "test-reviewer"]
+    },
+    {
+      "keywords": ["review.*test", "test.*quality", "improve.*test"],
+      "agent": "test-reviewer",
+      "confidence": "high",
+      "alternatives": ["test-generator"]
+    },
+    {
+      "keywords": ["coverage", "untested", "test.*gap", "coverage.*gap"],
+      "agent": "coverage-analyzer",
+      "confidence": "high",
+      "alternatives": ["test-generator", "test-reviewer"]
+    },
+    {
+      "keywords": ["architecture", "design.*pattern", "structure", "dependency.*graph", "coupling"],
+      "agent": "architect",
+      "confidence": "high",
+      "alternatives": ["refactorer", "dependency-manager"]
+    },
+    {
+      "keywords": ["deploy", "production", "staging", "release", "rollback"],
+      "agent": "deployment-manager",
+      "confidence": "medium",
+      "alternatives": ["quality-reviewer", "coverage-analyzer"]
+    },
+    {
+      "keywords": ["performance", "optimize", "slow", "bundle.*size", "lighthouse"],
+      "agent": "performance-optimizer",
+      "confidence": "medium",
+      "alternatives": ["refactorer"]
+    },
+    {
+      "keywords": ["debug", "error", "bug", "crash", "issue", "trace"],
+      "agent": "debugger",
+      "confidence": "medium",
+      "alternatives": ["quality-reviewer"]
+    },
+    {
+      "keywords": ["document", "doc", "readme", "tech.*stack", "jsdoc"],
+      "agent": "tech-doc-maintainer",
+      "confidence": "medium",
+      "alternatives": ["documenter"]
+    },
+    {
+      "keywords": ["complexity", "analyze.*code", "technical.*debt", "code.*smell"],
+      "agent": "code-analyzer",
+      "confidence": "high",
+      "alternatives": ["refactorer", "architect"]
+    },
+    {
+      "keywords": ["outdated", "dependency", "package", "security", "vulnerability", "circular"],
+      "agent": "dependency-manager",
+      "confidence": "medium",
+      "alternatives": ["architect"]
+    },
+    {
+      "keywords": ["and", "also", "multiple", "feature", "complete", "workflow"],
+      "agent": "coordinator",
+      "confidence": "medium",
+      "alternatives": []
+    }
+  ],
+  "default_agent": "quality-reviewer",
+  "default_confidence": "low"
+}

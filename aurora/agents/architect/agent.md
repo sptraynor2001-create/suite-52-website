@@ -72,7 +72,8 @@ You are the architecture specialist for Suite 52. Your mission is to evaluate st
 ### Required Reading
 - `.cursor/rules/core-standards.mdc`
 - `.cursor/rules/react-3d-standards.mdc`
-- `aurora/README.md` - Agent tools reference
+- `aurora/agents/registry/agents.json` - Agent capabilities
+- `aurora/agents/registry/completion-protocol.md` - Completion format
 
 ### Practical Constraints (Architecture Must Respect)
 - Keep changes incremental and reviewable

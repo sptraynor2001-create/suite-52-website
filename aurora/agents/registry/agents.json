@@ -1,0 +1,197 @@
+{
+  "version": "2.0.0",
+  "agents": [
+    {
+      "id": "quality-reviewer",
+      "name": "Quality Reviewer",
+      "category": "quality",
+      "description": "Scan code for violations, enforce standards, fix ESLint issues",
+      "tools": ["scan-violations", "quality-check"],
+      "access": {
+        "read": ["src/**/*.{ts,tsx,js,jsx}"],
+        "write": ["src/**/*.{ts,tsx,js,jsx}"]
+      },
+      "suggests_next": ["theme-enforcer", "refactorer", "test-generator"]
+    },
+    {
+      "id": "code-analyzer",
+      "name": "Code Analyzer",
+      "category": "quality",
+      "description": "Analyze cyclomatic complexity, file sizes, technical debt",
+      "tools": ["analyze-complexity"],
+      "access": {
+        "read": ["src/**/*.{ts,tsx,js,jsx}"],
+        "write": []
+      },
+      "suggests_next": ["refactorer", "architect", "test-generator"]
+    },
+    {
+      "id": "theme-enforcer",
+      "name": "Theme Enforcer",
+      "category": "quality",
+      "description": "Find and replace hardcoded colors, spacing, z-index values",
+      "tools": ["scan-hardcoded", "enforce-themes"],
+      "access": {
+        "read": ["src/**/*.{ts,tsx,css,scss}"],
+        "write": ["src/**/*.{ts,tsx,css,scss}"]
+      },
+      "suggests_next": ["quality-reviewer"]
+    },
+    {
+      "id": "test-generator",
+      "name": "Test Generator",
+      "category": "testing",
+      "description": "Generate comprehensive test suites for components and utilities",
+      "tools": ["generate-tests"],
+      "access": {
+        "read": ["src/**/*.{ts,tsx}", "src/**/*.test.{ts,tsx}"],
+        "write": ["src/**/*.test.{ts,tsx}"]
+      },
+      "suggests_next": ["test-reviewer", "coverage-analyzer"]
+    },
+    {
+      "id": "test-reviewer",
+      "name": "Test Reviewer",
+      "category": "testing",
+      "description": "Review test quality, suggest improvements, validate coverage",
+      "tools": ["analyze-tests", "coverage-report", "suggest-tests"],
+      "access": {
+        "read": ["src/**/*.test.{ts,tsx}"],
+        "write": ["src/**/*.test.{ts,tsx}"]
+      },
+      "suggests_next": ["coverage-analyzer", "test-generator"]
+    },
+    {
+      "id": "coverage-analyzer",
+      "name": "Coverage Analyzer",
+      "category": "testing",
+      "description": "Analyze test coverage gaps, prioritize testing efforts",
+      "tools": ["analyze-coverage", "find-gaps", "coverage-trends"],
+      "access": {
+        "read": ["src/**/*.{ts,tsx}", "coverage/**"],
+        "write": []
+      },
+      "suggests_next": ["test-generator", "test-reviewer"]
+    },
+    {
+      "id": "architect",
+      "name": "Architect",
+      "category": "architecture",
+      "description": "Analyze architecture, suggest patterns, evaluate design decisions",
+      "tools": ["analyze-architecture", "dependency-graph", "suggest-patterns"],
+      "access": {
+        "read": ["src/**/*.{ts,tsx}", "package.json", "tsconfig.json"],
+        "write": []
+      },
+      "suggests_next": ["refactorer", "quality-reviewer"]
+    },
+    {
+      "id": "refactorer",
+      "name": "Refactorer",
+      "category": "architecture",
+      "description": "Refactor code to reduce complexity, split files, extract hooks",
+      "tools": ["split-file", "extract-hook", "reduce-complexity"],
+      "access": {
+        "read": ["src/**/*.{ts,tsx}"],
+        "write": ["src/**/*.{ts,tsx}"]
+      },
+      "suggests_next": ["test-generator", "quality-reviewer"]
+    },
+    {
+      "id": "dependency-manager",
+      "name": "Dependency Manager",
+      "category": "dependencies",
+      "description": "Check for outdated packages, security vulnerabilities, circular deps",
+      "tools": ["check-deps"],
+      "access": {
+        "read": ["package.json", "package-lock.json", "src/**/*.{ts,tsx}"],
+        "write": []
+      },
+      "suggests_next": ["architect"]
+    },
+    {
+      "id": "performance-optimizer",
+      "name": "Performance Optimizer",
+      "category": "performance",
+      "description": "Analyze bundle size, identify performance bottlenecks",
+      "tools": ["check-bundle"],
+      "access": {
+        "read": ["dist/**", "package.json"],
+        "write": []
+      },
+      "suggests_next": ["refactorer"]
+    },
+    {
+      "id": "debugger",
+      "name": "Debugger",
+      "category": "utilities",
+      "description": "Find error-prone patterns, analyze stack traces, root cause analysis",
+      "tools": ["check-errors"],
+      "access": {
+        "read": ["src/**/*.{ts,tsx,js,jsx}"],
+        "write": []
+      },
+      "suggests_next": ["quality-reviewer", "test-generator"]
+    },
+    {
+      "id": "tech-doc-maintainer",
+      "name": "Tech Doc Maintainer",
+      "category": "documentation",
+      "description": "Maintain project-docs/tech-stack/ based on package.json changes",
+      "tools": ["scan-packages", "sync-docs", "update-docs"],
+      "access": {
+        "read": ["package.json", "aurora/project-docs/tech-stack/**"],
+        "write": ["aurora/project-docs/tech-stack/**"]
+      },
+      "suggests_next": []
+    },
+    {
+      "id": "documenter",
+      "name": "Documenter",
+      "category": "documentation",
+      "description": "Generate JSDoc, maintain READMEs, create API documentation",
+      "tools": [],
+      "access": {
+        "read": ["src/**/*.{ts,tsx}"],
+        "write": ["src/**/*.{ts,tsx}", "README.md"]
+      },
+      "suggests_next": []
+    },
+    {
+      "id": "onboarding-guide",
+      "name": "Onboarding Guide",
+      "category": "documentation",
+      "description": "Help new developers get started, explain project structure",
+      "tools": [],
+      "access": {
+        "read": ["README.md", "package.json", "src/**"],
+        "write": []
+      },
+      "suggests_next": []
+    },
+    {
+      "id": "deployment-manager",
+      "name": "Deployment Manager",
+      "category": "operations",
+      "description": "Validate deployment readiness, handle deployments",
+      "tools": [],
+      "access": {
+        "read": ["package.json", ".env*", "dist/**"],
+        "write": []
+      },
+      "suggests_next": ["quality-reviewer", "coverage-analyzer"]
+    },
+    {
+      "id": "coordinator",
+      "name": "Coordinator",
+      "category": "orchestration",
+      "description": "Route tasks to appropriate agents, orchestrate multi-agent workflows",
+      "tools": ["route-task"],
+      "access": {
+        "read": ["src/**"],
+        "write": []
+      },
+      "suggests_next": []
+    }
+  ]
+}
